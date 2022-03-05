@@ -15,19 +15,19 @@ CREATE TABLE IF NOT EXISTS Offices (
     name        VARCHAR(255) NOT NULL    COMMENT 'Название офиса',
     org_id      INTEGER      NOT NULL    COMMENT 'Организация',
     address     VARCHAR(255) NOT NULL    COMMENT 'Адрес офиса',
-    phone       VARCHAR                  COMMENT 'Номер телефона офиса',
+    phone       VARCHAR(25)              COMMENT 'Номер телефона офиса',
     is_active   BOOLEAN
 );
 COMMENT ON TABLE Offices  IS 'Офисы';
 
 CREATE TABLE IF NOT EXISTS Users (
     id                  INTEGER                 COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
-    office_id            INTEGER NOT NULL        COMMENT 'Офис',
+    office_id            INTEGER NOT NULL       COMMENT 'Офис',
     first_name          VARCHAR(255) NOT NULL   COMMENT 'Имя',
     second_name         VARCHAR(255)            COMMENT 'Фамилия',
     middle_name         VARCHAR(255)            COMMENT 'Отчество',
     position            VARCHAR(255) NOT NULL   COMMENT 'Должность',
-    phone               VARCHAR                 COMMENT 'Номер телефона пользователя',
+    phone               VARCHAR(25)             COMMENT 'Номер телефона пользователя',
     doc_id              INTEGER NOT NULL        COMMENT 'Документ'
     );
 COMMENT ON TABLE Users  IS 'Пользователи';
