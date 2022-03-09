@@ -1,4 +1,5 @@
-CREATE TABLE IF NOT EXISTS Organizations (
+CREATE TABLE IF NOT EXISTS Organization (
+        version    INTEGER NOT NULL         COMMENT 'Служебное поле hibernate',
         id          INTEGER                 COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
         name        VARCHAR(50) NOT NULL    COMMENT 'Название организации',
         full_name   VARCHAR(255) NOT NULL   COMMENT 'Полное название',
@@ -8,9 +9,10 @@ CREATE TABLE IF NOT EXISTS Organizations (
         phone       VARCHAR                 COMMENT 'Номер телефона организации',
         is_active   BOOLEAN
     );
-COMMENT ON TABLE Organizations IS 'Организации';
+COMMENT ON TABLE Organization IS 'Организация';
 
-CREATE TABLE IF NOT EXISTS Offices (
+CREATE TABLE IF NOT EXISTS Office (
+    version    INTEGER NOT NULL          COMMENT 'Служебное поле hibernate',
     id          INTEGER                  COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
     name        VARCHAR(255) NOT NULL    COMMENT 'Название офиса',
     org_id      INTEGER      NOT NULL    COMMENT 'Организация',
@@ -18,34 +20,48 @@ CREATE TABLE IF NOT EXISTS Offices (
     phone       VARCHAR(25)              COMMENT 'Номер телефона офиса',
     is_active   BOOLEAN
 );
-COMMENT ON TABLE Offices  IS 'Офисы';
+COMMENT ON TABLE Office  IS 'Офис';
 
-CREATE TABLE IF NOT EXISTS Users (
+CREATE TABLE IF NOT EXISTS User (
+    version    INTEGER NOT NULL                 COMMENT 'Служебное поле hibernate',
     id                  INTEGER                 COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
-    office_id            INTEGER NOT NULL       COMMENT 'Офис',
+    office_id           INTEGER NOT NULL        COMMENT 'Офис',
     first_name          VARCHAR(255) NOT NULL   COMMENT 'Имя',
     second_name         VARCHAR(255)            COMMENT 'Фамилия',
     middle_name         VARCHAR(255)            COMMENT 'Отчество',
     position            VARCHAR(255) NOT NULL   COMMENT 'Должность',
     phone               VARCHAR(25)             COMMENT 'Номер телефона пользователя',
-    doc_id              INTEGER NOT NULL        COMMENT 'Документ'
+    doc_id              INTEGER NOT NULL        COMMENT 'Документ',
+    country_id          INTEGER NOT NULL        COMMENT 'Гражданство'
     );
-COMMENT ON TABLE Users  IS 'Пользователи';
+COMMENT ON TABLE User  IS 'Пользователь';
 
-CREATE TABLE IF NOT EXISTS Documents (
+CREATE TABLE IF NOT EXISTS Document (
+    version        INTEGER NOT NULL     COMMENT 'Служебное поле hibernate',
     id                  INTEGER         COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
     doc_code            INTEGER         COMMENT 'Код документа',
     doc_name            VARCHAR(100)    COMMENT 'Название документа',
     doc_number          VARCHAR         COMMENT 'номер документа',
-    doc_date            DATE            COMMENT 'Дата выдачи документа',
-    citizenship_сode    VARCHAR(25)     COMMENT 'Гражданство'
+    doc_date            DATE            COMMENT 'Дата выдачи документа'
 );
-COMMENT ON TABLE Documents  IS 'Документы';
+COMMENT ON TABLE Document  IS 'Документ';
 
-CREATE TABLE IF NOT EXISTS Countries (
+CREATE TABLE IF NOT EXISTS Country (
+    version    INTEGER NOT NULL    COMMENT 'Служебное поле hibernate',
     id      INTEGER                COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
     name    VARCHAR(100) NOT NULL  COMMENT 'Название страны',
     code    INTEGER                COMMENT 'Код страны'
 );
-COMMENT ON TABLE Countries  IS 'Страны';
+COMMENT ON TABLE Country IS 'Страна';
 
+CREATE INDEX IX_DOCUMENT_ID  ON Document(id);
+ALTER TABLE User ADD FOREIGN KEY (doc_id) REFERENCES Document(id);
+
+CREATE INDEX IX_OFFICE_ID  ON Office(id);
+ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
+
+CREATE INDEX IX_ORGANIZATION_ID ON Organization(id);
+ALTER TABLE Office ADD FOREIGN KEY (org_id) REFERENCES Organization(id);
+
+CREATE INDEX IX_COUNTRY_ID ON Country(id);
+ALTER TABLE User ADD FOREIGN KEY (country_id) REFERENCES Country(id);

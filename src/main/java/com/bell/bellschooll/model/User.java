@@ -2,14 +2,29 @@ package com.bell.bellschooll.model;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "User")
 @Data
 public class User {
+    /**
+     * Служебное поле hibernate
+     */
+    @Version
+    private Integer version;
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
@@ -32,7 +47,11 @@ public class User {
     @Column(length = 25)
     private String phone;
 
-    //@ManyToMany
-    @Column(name = "doc_id",nullable = false)
-    private Integer docId;
+    @OneToOne
+    @JoinColumn(name = "doc_id",nullable = false)
+    private Document docId;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id",nullable = false)
+    private Country country ;
 }
