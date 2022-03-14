@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import java.util.Objects;
 
 @Entity
 @Table(name = "User")
@@ -47,11 +49,11 @@ public class User {
     @Column(length = 25)
     private String phone;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doc_id",nullable = false)
     private Document docId;
 
     @ManyToOne
     @JoinColumn(name = "country_id",nullable = false)
-    private Country country ;
+    private Country country;
 }
