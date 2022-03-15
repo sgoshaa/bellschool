@@ -1,7 +1,7 @@
 package com.bell.bellschooll.controller;
 
 import com.bell.bellschooll.service.OrganizationService;
-import com.bell.bellschooll.dto.request.OrganisationDTO;
+import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +21,8 @@ public class OrganizationController {
     }
 
     @PostMapping("list")
-    public ResponseEntity getListOrganization(@RequestBody OrganisationDTO organisationDTO){
-        return null;
+    public ResponseEntity getListOrganization(@RequestBody OrganisationDtoRequest organisationDTO){
+        return organizationService.getOrganizationByName(organisationDTO);
     }
     @GetMapping("{id}")
     public ResponseEntity getOrganizationById(@PathVariable Integer id){

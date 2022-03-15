@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class OrganisationDTO {
+public class OrganisationDtoRequest {
 
     @JsonProperty
     String name;

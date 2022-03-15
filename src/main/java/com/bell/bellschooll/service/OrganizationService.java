@@ -1,8 +1,9 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.OrganizationRepository;
+import com.bell.bellschooll.dao.OrganizationDaoImpl;
+import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
+import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.exception.ErrorException;
-import com.bell.bellschooll.exception.ErrorResponseException;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.mapper.OrganizationMapper;
 import com.bell.bellschooll.model.Organization;
@@ -11,27 +12,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class OrganizationService {
-    private final OrganizationRepository organizationRepository;
-    private final OrganizationMapper organisationMapper = Mappers.getMapper(OrganizationMapper.class);
+    private final OrganizationDaoImpl organizationDao;
+    private final OrganizationMapper organizationMapper = Mappers.getMapper(OrganizationMapper.class);
 
-    public OrganizationService(OrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
+    public OrganizationService(OrganizationDaoImpl organizationDao) {
+        this.organizationDao = organizationDao;
     }
-
     public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id){
-
-        Optional<Organization>organizationOptional = organizationRepository.findById(id);
-        if (organizationOptional.isEmpty())
-        {
+        Organization organization = organizationDao.getOrganizationById(id);
+        if (organization == null){
             throw new ErrorException("Организация не найдена!");
         }
-        Organization organization = organizationOptional.get();
-        OrganizationOutDto organizationOutDto = organisationMapper.organizationToDto(organization);
-
+        OrganizationOutDto organizationOutDto = organizationMapper.organizationToDto(organization);
         return new ResponseEntity<OrganizationOutDto>(organizationOutDto, HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<OrganizationListOut>> getOrganizationByName(OrganisationDtoRequest organisationDTO) {
+        List<Organization> organizationList = organizationDao.getListOrganizationByName(organisationDTO);
+        List<OrganizationListOut> organizations = new ArrayList<>();
+        organizationList.forEach(organization -> {
+            organizations.add(organizationMapper.organizationToListDto(organization));
+        });
+        return new ResponseEntity<>(organizations,HttpStatus.OK);
     }
 }
