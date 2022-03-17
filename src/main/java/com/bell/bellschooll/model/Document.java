@@ -21,7 +21,6 @@ public class Document {
     private Integer version;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
