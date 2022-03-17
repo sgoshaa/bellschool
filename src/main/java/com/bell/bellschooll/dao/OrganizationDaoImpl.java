@@ -1,6 +1,7 @@
 package com.bell.bellschooll.dao;
 
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
+import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.model.Organization;
 import org.springframework.stereotype.Repository;
@@ -32,6 +33,16 @@ public class OrganizationDaoImpl implements OrganizationDao {
         CriteriaQuery<Organization> organizationCriteriaQuery = buildCriteria(organisationDtoRequest);
         TypedQuery<Organization> query = entityManager.createQuery(organizationCriteriaQuery);
         return query.getResultList();
+    }
+
+    @Override
+    public void save(Organization organization) {
+        entityManager.persist(organization);
+    }
+
+    @Override
+    public Organization update(Organization organization) {
+        return entityManager.merge(organization);
     }
 
     private CriteriaQuery<Organization> buildCriteria(OrganisationDtoRequest organisationDtoRequest) {

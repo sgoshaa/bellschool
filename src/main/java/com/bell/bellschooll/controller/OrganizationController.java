@@ -1,5 +1,7 @@
 package com.bell.bellschooll.controller;
 
+import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
+import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.service.OrganizationService;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +26,19 @@ public class OrganizationController {
     public ResponseEntity getListOrganization(@RequestBody OrganisationDtoRequest organisationDTO){
         return organizationService.getOrganizationByName(organisationDTO);
     }
+
     @GetMapping("{id}")
     public ResponseEntity getOrganizationById(@PathVariable Integer id){
         return organizationService.getOrganizationById(id);
+    }
+
+    @PostMapping("save")
+    public ResponseEntity addOrganization(@RequestBody OrganizationSaveInDto organizationSaveInDto){
+        return organizationService.addOrganization(organizationSaveInDto);
+    }
+    @PostMapping("update")
+    public ResponseEntity updateOrganization(@RequestBody OrganizationUpdateInDto organizationUpdateInDto){
+
+        return organizationService.updateOrganization(organizationUpdateInDto);
     }
 }

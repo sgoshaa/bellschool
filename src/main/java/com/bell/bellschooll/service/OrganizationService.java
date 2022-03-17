@@ -2,15 +2,18 @@ package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.dao.OrganizationDaoImpl;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
+import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
+import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
+import com.bell.bellschooll.dto.response.OrganizationSuccessDto;
 import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.mapper.OrganizationMapper;
 import com.bell.bellschooll.model.Organization;
-import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +22,16 @@ import java.util.List;
 @Service
 public class OrganizationService {
     private final OrganizationDaoImpl organizationDao;
-    private final OrganizationMapper organizationMapper = Mappers.getMapper(OrganizationMapper.class);
+    private final OrganizationMapper organizationMapper;
 
-    public OrganizationService(OrganizationDaoImpl organizationDao) {
+    public OrganizationService(OrganizationDaoImpl organizationDao, OrganizationMapper organizationMapper) {
         this.organizationDao = organizationDao;
+        this.organizationMapper = organizationMapper;
     }
-    public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id){
+
+    public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id) {
         Organization organization = organizationDao.getOrganizationById(id);
-        if (organization == null){
+        if (organization == null) {
             throw new ErrorException("Организация не найдена!");
         }
         OrganizationOutDto organizationOutDto = organizationMapper.organizationToDto(organization);
@@ -39,6 +44,27 @@ public class OrganizationService {
         organizationList.forEach(organization -> {
             organizations.add(organizationMapper.organizationToListDto(organization));
         });
-        return new ResponseEntity<>(organizations,HttpStatus.OK);
+        return new ResponseEntity<>(organizations, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<OrganizationSuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
+        Organization organization = organizationMapper.organizationInToDomain(organizationSaveInDto);
+        organizationDao.save(organization);
+        return new ResponseEntity<>(new OrganizationSuccessDto(),HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<OrganizationSuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
+
+        Organization organization = organizationDao.getOrganizationById(organizationUpdateInDto.getId());
+        if (organization==null){
+            throw new ErrorException("организация не найдена.");
+        }
+        int lastVersion = organization.getVersion();
+        organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto);
+        organization.setVersion(lastVersion);
+        Organization updated = organizationDao.update(organization);
+        return new ResponseEntity<>(new OrganizationSuccessDto(),HttpStatus.OK);
     }
 }
