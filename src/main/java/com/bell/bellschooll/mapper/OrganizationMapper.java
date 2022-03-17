@@ -17,6 +17,35 @@ public interface OrganizationMapper {
 
     Organization organizationInToDomain(OrganizationSaveInDto organizationSaveInDto);
 
-    @Mapping(target = "version",ignore = true)
-    Organization organizationInToDomainUpdate(OrganizationUpdateInDto organizationUpdateInDto);
+    @Mapping(target = "offices",ignore = true)
+    @Mapping(target = "version",source = "currentOrganization.version")
+    @Mapping(target = "id",source = "currentOrganization.id")
+    @Mapping(target = "name",expression = "java(equalsData(currentOrganization.getName(),organizationUpdateInDto.getName()))")
+    @Mapping(target = "fullName",expression = "java(equalsData(currentOrganization.getFullName(),organizationUpdateInDto.getFullName()))")
+    @Mapping(target = "inn",expression = "java(equalsData(currentOrganization.getInn(),organizationUpdateInDto.getInn()))")
+    @Mapping(target = "kpp",expression = "java(equalsData(currentOrganization.getKpp(),organizationUpdateInDto.getKpp()))")
+    @Mapping(target = "address",expression = "java(equalsData(currentOrganization.getAddress(),organizationUpdateInDto.getAddress()))")
+    @Mapping(target = "phone",expression = "java(equalsData(currentOrganization.getPhone(),organizationUpdateInDto.getPhone()))")
+    @Mapping(target = "isActive",expression = "java(equalsData(currentOrganization.getIsActive(),organizationUpdateInDto.getIsActive()))")
+    Organization organizationInToDomainUpdate(OrganizationUpdateInDto organizationUpdateInDto,Organization currentOrganization);
+
+
+    default String equalsData(String field, String updateField){
+        if (!field.equals(updateField) && !updateField.isEmpty()){
+            field = updateField;
+        }
+        return field;
+    }
+    default Integer equalsData(Integer field, Integer updateField){
+        if (!field.equals(updateField)){
+            field = updateField;
+        }
+        return field;
+    }
+    default Boolean equalsData(Boolean field, Boolean updateField){
+        if (!field.equals(updateField)){
+            field = updateField;
+        }
+        return field;
+    }
 }

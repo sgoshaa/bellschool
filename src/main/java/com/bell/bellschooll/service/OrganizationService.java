@@ -56,15 +56,12 @@ public class OrganizationService {
 
     @Transactional
     public ResponseEntity<OrganizationSuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
-
         Organization organization = organizationDao.getOrganizationById(organizationUpdateInDto.getId());
         if (organization==null){
             throw new ErrorException("организация не найдена.");
         }
-        int lastVersion = organization.getVersion();
-        organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto);
-        organization.setVersion(lastVersion);
-        Organization updated = organizationDao.update(organization);
+        organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto,organization);
+        organizationDao.update(organization);
         return new ResponseEntity<>(new OrganizationSuccessDto(),HttpStatus.OK);
     }
 }

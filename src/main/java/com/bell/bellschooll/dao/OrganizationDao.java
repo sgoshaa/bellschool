@@ -17,6 +17,6 @@ public interface OrganizationDao {
 
     void save(Organization organization);
 
-    Organization update(Organization organization);
+    void update(Organization organization);
 
 }

@@ -41,8 +41,8 @@ public class OrganizationDaoImpl implements OrganizationDao {
     }
 
     @Override
-    public Organization update(Organization organization) {
-        return entityManager.merge(organization);
+    public void update(Organization organization) {
+        entityManager.merge(organization);
     }
 
     private CriteriaQuery<Organization> buildCriteria(OrganisationDtoRequest organisationDtoRequest) {
