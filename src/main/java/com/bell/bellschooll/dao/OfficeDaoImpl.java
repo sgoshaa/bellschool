@@ -19,4 +19,9 @@ public class OfficeDaoImpl  implements OfficeDao{
     public Office getOfficeById(Integer id) {
         return entityManager.find(Office.class,id);
     }
+
+    @Override
+    public void addOffice(Office office) {
+        entityManager.persist(office);
+    }
 }

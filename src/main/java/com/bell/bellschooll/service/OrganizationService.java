@@ -5,7 +5,7 @@ import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
-import com.bell.bellschooll.dto.response.OrganizationSuccessDto;
+import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.mapper.OrganizationMapper;
@@ -48,20 +48,20 @@ public class OrganizationService {
     }
 
     @Transactional
-    public ResponseEntity<OrganizationSuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
+    public ResponseEntity<SuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
         Organization organization = organizationMapper.organizationInToDomain(organizationSaveInDto);
         organizationDao.save(organization);
-        return new ResponseEntity<>(new OrganizationSuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
     }
 
     @Transactional
-    public ResponseEntity<OrganizationSuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
+    public ResponseEntity<SuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
         Organization organization = organizationDao.getOrganizationById(organizationUpdateInDto.getId());
         if (organization==null){
             throw new ErrorException("организация не найдена.");
         }
         organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto,organization);
         organizationDao.update(organization);
-        return new ResponseEntity<>(new OrganizationSuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
     }
 }

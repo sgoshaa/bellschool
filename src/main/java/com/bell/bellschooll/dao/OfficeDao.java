@@ -7,4 +7,5 @@ import com.bell.bellschooll.model.Office;
  */
 public interface OfficeDao {
      Office getOfficeById(Integer id);
+     void addOffice(Office office);
 }
