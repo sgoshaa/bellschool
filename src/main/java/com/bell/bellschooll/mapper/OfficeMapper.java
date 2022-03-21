@@ -1,6 +1,7 @@
 package com.bell.bellschooll.mapper;
 
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
+import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
@@ -20,4 +21,6 @@ public interface OfficeMapper {
     @Mapping(target = "id",ignore = true)
     @Mapping(target = "version",ignore = true)
     Office dtoToDomain(OfficeInSaveDto officeDto, Organization organization);
+
+    OfficeListOutDto offceToDto(Office office);
 }

@@ -11,7 +11,7 @@ INSERT INTO Office(version,id,name,org_id,address,phone,is_active)
 VALUES ( 0,1,'Офис Сбера1',2,'Уфа ул.Цурюпы 12','8937987456123',true );
 
 INSERT INTO Office(version,id,name,org_id,address,phone,is_active)
-VALUES ( 0,2,'Офис Сбера2',2,'Уфа ул.Цурюпы 122','8937987456123',true );
+VALUES ( 0,2,'Офис Сбера2',2,'Уфа ул.Цурюпы 122','8937987456123',false );
 
 INSERT INTO Office(version,id,name,org_id,address,phone,is_active)
 VALUES ( 0,3,'офис Bell1',1,'Уфа Свердлова','12321321321',true);
