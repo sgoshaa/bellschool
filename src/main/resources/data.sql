@@ -18,3 +18,9 @@ VALUES ( 0,3,'офис Bell1',1,'Уфа Свердлова','12321321321',true);
 
 INSERT INTO Office(version,id,name,org_id,address,phone,is_active)
 VALUES ( 0,4,'офис Bell2',1,'Уфа ул.Цурюпы 15','789456123',true);
+
+INSERT INTO Country(version,id,name,code)
+VALUES ( 0,1,'Российская Федерация',643 );
+
+INSERT INTO Country(version,id,name,code)
+VALUES ( 0,2,'США',62 );

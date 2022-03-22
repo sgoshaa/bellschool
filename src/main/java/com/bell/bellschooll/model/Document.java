@@ -36,6 +36,6 @@ public class Document {
     @Column(name = "doc_date")
     private LocalDate docDate;
 
-    @Column(name = "citizenship_сode")
-    private String citizenshipCode;
+//    @Column(name = "citizenship_сode")
+//    private String citizenshipCode;
 }

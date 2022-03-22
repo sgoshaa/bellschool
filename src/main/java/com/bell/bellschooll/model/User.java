@@ -53,9 +53,12 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doc_id",nullable = false)
     @MapsId
-    private Document docId;
+    private Document Document;
 
     @ManyToOne
     @JoinColumn(name = "country_id",nullable = false)
     private Country country;
+
+    @Column(name = "is_identified")
+    private Boolean isIdentified;
 }

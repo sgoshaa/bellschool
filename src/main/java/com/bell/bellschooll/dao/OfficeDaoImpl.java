@@ -2,8 +2,6 @@ package com.bell.bellschooll.dao;
 
 
 import com.bell.bellschooll.dto.request.OfficeInListDto;
-import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
-import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
 import org.springframework.stereotype.Repository;
@@ -12,13 +10,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class OfficeDaoImpl  implements OfficeDao{

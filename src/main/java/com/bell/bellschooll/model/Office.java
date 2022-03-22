@@ -1,6 +1,7 @@
 package com.bell.bellschooll.model;
 
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -18,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name="Office")
 @Data
+@ToString
 public class Office {
     /**
      * Служебное поле hibernate
@@ -46,6 +48,7 @@ public class Office {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
     private List<User> users;
 }

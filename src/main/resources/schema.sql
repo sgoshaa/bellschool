@@ -32,7 +32,8 @@ CREATE TABLE IF NOT EXISTS User (
     position            VARCHAR(255) NOT NULL   COMMENT 'Должность',
     phone               VARCHAR(25)             COMMENT 'Номер телефона пользователя',
     doc_id              INTEGER NOT NULL        COMMENT 'Документ',
-    country_id          INTEGER NOT NULL        COMMENT 'Гражданство'
+    country_id          INTEGER NOT NULL        COMMENT 'Гражданство',
+    is_identified       BOOLEAN                 COMMENT 'идентифицируется'
     );
 COMMENT ON TABLE User  IS 'Пользователь';
 
