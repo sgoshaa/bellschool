@@ -4,6 +4,7 @@ import com.bell.bellschooll.dao.OfficeDao;
 import com.bell.bellschooll.dao.OrganizationDao;
 import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
+import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
@@ -11,7 +12,6 @@ import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
-import jdk.dynalink.linker.LinkerServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -45,22 +45,36 @@ public class OfficeService {
     public ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto) {
 
         Organization organization = organizationDao.getOrganizationById(officeDto.getOrgId());
-        if (organization == null){
+        if (organization == null) {
             throw new ErrorException("Не найдена организация!");
         }
-        Office office = officeMapper.dtoToDomain(officeDto,organization);
+        Office office = officeMapper.dtoToDomain(officeDto, organization);
         officeDao.addOffice(office);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
     public ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto) {
         Organization organization = organizationDao.getOrganizationById(officeInListDto.getOrgId());
-        if (organization == null){
+        if (organization == null) {
             throw new ErrorException("Организация не найдена");
         }
-        List<Office> offices = officeDao.getListOffice(officeInListDto,organization);
+        List<Office> offices = officeDao.getListOffice(officeInListDto, organization);
+        if (offices.isEmpty()) {
+            throw new ErrorException("У " + organization.getFullName() + " нет офисов.");
+        }
         List<OfficeListOutDto> officeListOutDtos = new ArrayList<>();
-        offices.forEach(office ->officeListOutDtos.add(officeMapper.offceToDto(office)));
-        return new ResponseEntity<>(officeListOutDtos,HttpStatus.OK);
+        offices.forEach(office -> officeListOutDtos.add(officeMapper.officeToListDto(office)));
+        return new ResponseEntity<>(officeListOutDtos, HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<SuccessDto> updateOffice(OfficeInUpdateDto officeInUpdateDto) {
+        Office office = officeDao.getOfficeById(officeInUpdateDto.getId());
+        if (office == null) {
+            throw new ErrorException("Офис не найден");
+        }
+        office = officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office);
+        officeDao.updateOffice(office);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 }

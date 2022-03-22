@@ -46,6 +46,11 @@ public class OfficeDaoImpl  implements OfficeDao{
         return query.getResultList();
     }
 
+    @Override
+    public void updateOffice(Office office) {
+        entityManager.merge(office);
+    }
+
     private CriteriaQuery<Office> buildCriteriaOffice(OfficeInListDto office,Organization organization) {
         String name = office.getName();
         String phone = office.getPhone();

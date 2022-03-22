@@ -2,6 +2,7 @@ package com.bell.bellschooll.controller;
 
 import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
+import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
@@ -41,5 +42,10 @@ public class OfficeController {
     @PostMapping("list")
     public ResponseEntity<List<OfficeListOutDto>> listOffice(@Valid @RequestBody OfficeInListDto office){
         return officeService.listOffice(office);
+    }
+
+    @PostMapping("update")
+    public ResponseEntity<SuccessDto> updateOffice(@Valid @RequestBody OfficeInUpdateDto officeInUpdateDto){
+        return officeService.updateOffice(officeInUpdateDto);
     }
 }

@@ -15,4 +15,6 @@ public interface OfficeDao {
      void addOffice(Office office);
 
      List<Office> getListOffice(OfficeInListDto office, Organization organization);
+
+    void updateOffice(Office office);
 }
