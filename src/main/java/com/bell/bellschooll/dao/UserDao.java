@@ -7,4 +7,6 @@ import com.bell.bellschooll.model.User;
  */
 public interface UserDao {
     void addUser(User user);
+    void updateUser(User user);
+    User getUserById(Integer id);
 }

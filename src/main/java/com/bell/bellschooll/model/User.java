@@ -1,7 +1,9 @@
 package com.bell.bellschooll.model;
 
 import lombok.Data;
+import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,6 +21,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "User")
 @Data
+@ToString
 public class User {
     /**
      * Служебное поле hibernate
@@ -31,6 +34,7 @@ public class User {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name = "office_id", nullable = false)
     private Office office;
@@ -50,13 +54,17 @@ public class User {
     @Column(length = 25)
     private String phone;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "doc_id",nullable = false)
-    @MapsId
-    private Document Document;
 
+    @ToString.Exclude
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,optional = false,
+            mappedBy = "user")
+    @JoinColumn(name = "doc_id",nullable = false)
+    private Document document;
+
+    @ToString.Exclude
     @ManyToOne
-    @JoinColumn(name = "country_id",nullable = false)
+    @JoinColumn(name = "country_id")
     private Country country;
 
     @Column(name = "is_identified")

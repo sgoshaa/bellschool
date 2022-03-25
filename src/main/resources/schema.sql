@@ -31,19 +31,18 @@ CREATE TABLE IF NOT EXISTS User (
     middle_name         VARCHAR(255)            COMMENT 'Отчество',
     position            VARCHAR(255) NOT NULL   COMMENT 'Должность',
     phone               VARCHAR(25)             COMMENT 'Номер телефона пользователя',
-    doc_id              INTEGER NOT NULL        COMMENT 'Документ',
-    country_id          INTEGER NOT NULL        COMMENT 'Гражданство',
+--     doc_id              INTEGER         COMMENT 'Документ',
+    country_id          INTEGER     NOT NULL    COMMENT 'Гражданство',
     is_identified       BOOLEAN                 COMMENT 'идентифицируется'
     );
 COMMENT ON TABLE User  IS 'Пользователь';
 
 CREATE TABLE IF NOT EXISTS Document (
     version        INTEGER NOT NULL     COMMENT 'Служебное поле hibernate',
-    id                  INTEGER         COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
-    doc_code            INTEGER         COMMENT 'Код документа',
-    doc_name            VARCHAR(100)    COMMENT 'Название документа',
+    id                  INTEGER         COMMENT 'Уникальный идентификатор' PRIMARY KEY,
     doc_number          VARCHAR         COMMENT 'номер документа',
-    doc_date            DATE            COMMENT 'Дата выдачи документа'
+    doc_date            DATE            COMMENT 'Дата выдачи документа',
+    doc_type_id         INTEGER         COMMENT 'Тип документа'
 );
 COMMENT ON TABLE Document  IS 'Документ';
 
@@ -55,8 +54,16 @@ CREATE TABLE IF NOT EXISTS Country (
 );
 COMMENT ON TABLE Country IS 'Страна';
 
+CREATE TABLE IF NOT EXISTS Document_type (
+    version    INTEGER NOT NULL    COMMENT 'Служебное поле hibernate',
+    id      INTEGER                COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
+    name    VARCHAR(100) NOT NULL  COMMENT 'Название документа',
+    code    INTEGER                COMMENT 'Код страны'
+);
+COMMENT ON TABLE Document_type IS 'Тип документа';
+
 CREATE INDEX IX_DOCUMENT_ID  ON Document(id);
-ALTER TABLE User ADD FOREIGN KEY (doc_id) REFERENCES Document(id);
+-- ALTER TABLE User ADD FOREIGN KEY (doc_id) REFERENCES Document(id);
 
 CREATE INDEX IX_OFFICE_ID  ON Office(id);
 ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
@@ -66,3 +73,6 @@ ALTER TABLE Office ADD FOREIGN KEY (org_id) REFERENCES Organization(id);
 
 CREATE INDEX IX_COUNTRY_ID ON Country(id);
 ALTER TABLE User ADD FOREIGN KEY (country_id) REFERENCES Country(id);
+
+CREATE INDEX IX_DOCUMENT_TYPE_ID  ON Document_type(id);
+ALTER TABLE Document ADD FOREIGN KEY (doc_type_id) REFERENCES Document_type(id);

@@ -23,4 +23,10 @@ INSERT INTO Country(version,id,name,code)
 VALUES ( 0,1,'Российская Федерация',643 );
 
 INSERT INTO Country(version,id,name,code)
-VALUES ( 0,2,'США',62 );
+VALUES ( 0,2,'США',622 );
+
+INSERT INTO Document_type(version,id,name,code)
+VALUES ( 0,1,'Паспорт гражданина РФ',21 );
+
+INSERT INTO Document_type(version,id,name,code)
+VALUES ( 0,2,'Водительское удостоверение',22 );
