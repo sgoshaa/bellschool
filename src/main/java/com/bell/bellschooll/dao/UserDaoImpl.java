@@ -1,12 +1,24 @@
 package com.bell.bellschooll.dao;
 
+import com.bell.bellschooll.dto.request.OfficeInListDto;
+import com.bell.bellschooll.dto.request.UserInListDto;
+import com.bell.bellschooll.model.Office;
+import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.model.User;
+import org.mapstruct.control.MappingControl;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao{
+public class UserDaoImpl implements UserDao {
     private final EntityManager entityManager;
 
     public UserDaoImpl(EntityManager entityManager) {
@@ -25,6 +37,47 @@ public class UserDaoImpl implements UserDao{
 
     @Override
     public User getUserById(Integer id) {
-        return entityManager.find(User.class,id);
+        return entityManager.find(User.class, id);
+    }
+
+    @Override
+    public List<User> getListUser(UserInListDto userInListDto, Office office) {
+        CriteriaQuery<User> userCriteriaQuery = buildCriteriaUser(userInListDto, office);
+        TypedQuery<User> query = entityManager.createQuery(userCriteriaQuery);
+        return query.getResultList();
+    }
+
+    private CriteriaQuery<User> buildCriteriaUser(UserInListDto userInListDto, Office office) {
+        String firstName = userInListDto.getFirstName();
+        String lastName = userInListDto.getSecondName();
+        String middleName = userInListDto.getMiddleName();
+        String position = userInListDto.getPosition();
+        String docCode = userInListDto.getDocCode();
+        String citizenshipCode = userInListDto.getCitizenshipCode();
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> officeCriteriaQuery = criteriaBuilder.createQuery(User.class);
+        Root<User> root = officeCriteriaQuery.from(User.class);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.add(criteriaBuilder.equal(root.get("office"), office));
+        if (firstName != null && !firstName.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("firstName"), firstName));
+        }
+        if (lastName != null && !lastName.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("secondName"), lastName));
+        }
+        if (middleName != null && !middleName.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("middleName"), middleName));
+        }
+        if (position != null && !position.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("position"), position));
+        }
+        if (docCode != null && !docCode.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("document").get("docType").get("code"), docCode));
+        }
+        if (citizenshipCode != null && !citizenshipCode.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("country").get("code"), citizenshipCode));
+        }
+        return officeCriteriaQuery.where(predicates.toArray(new Predicate[0]));
     }
 }

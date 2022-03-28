@@ -2,6 +2,7 @@ package com.bell.bellschooll.mapper;
 
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
+import com.bell.bellschooll.dto.response.UserOutListDto;
 import com.bell.bellschooll.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -17,4 +18,6 @@ public interface UserMapper {
     @Mapping(target = "citizenshipName",expression = "java(user.getCountry().getName())")
     @Mapping(target = "citizenshipCode",expression = "java(user.getCountry().getCode())")
     UserOutDto domainToDto(User user);
+
+    UserOutListDto domainToOutListDto(User user);
 }

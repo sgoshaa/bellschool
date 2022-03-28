@@ -6,11 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-//{
-//        “name”:“Паспорт гражданина РФ”,
-//        “code”:”21”
-//        },
-//        ...
 
 
 @Data
