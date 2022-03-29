@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class OfficeDaoImpl  implements OfficeDao{
+public class OfficeDaoImpl implements OfficeDao {
 
     private final EntityManager entityManager;
 
@@ -26,7 +26,7 @@ public class OfficeDaoImpl  implements OfficeDao{
 
     @Override
     public Office getOfficeById(Integer id) {
-        return entityManager.find(Office.class,id);
+        return entityManager.find(Office.class, id);
     }
 
     @Override
@@ -35,8 +35,8 @@ public class OfficeDaoImpl  implements OfficeDao{
     }
 
     @Override
-    public List<Office> getListOffice(OfficeInListDto office,Organization organization) {
-        CriteriaQuery<Office> officeCriteriaQuery = buildCriteriaOffice(office,organization);
+    public List<Office> getListOffice(OfficeInListDto office, Organization organization) {
+        CriteriaQuery<Office> officeCriteriaQuery = buildCriteriaOffice(office, organization);
         TypedQuery<Office> query = entityManager.createQuery(officeCriteriaQuery);
         return query.getResultList();
     }
@@ -46,7 +46,7 @@ public class OfficeDaoImpl  implements OfficeDao{
         entityManager.merge(office);
     }
 
-    private CriteriaQuery<Office> buildCriteriaOffice(OfficeInListDto office,Organization organization) {
+    private CriteriaQuery<Office> buildCriteriaOffice(OfficeInListDto office, Organization organization) {
         String name = office.getName();
         String phone = office.getPhone();
         Boolean isActive = office.getIsActive();
@@ -54,15 +54,15 @@ public class OfficeDaoImpl  implements OfficeDao{
         CriteriaQuery<Office> officeCriteriaQuery = criteriaBuilder.createQuery(Office.class);
         Root<Office> root = officeCriteriaQuery.from(Office.class);
         List<Predicate> predicates = new ArrayList<>();
-        predicates.add(criteriaBuilder.equal(root.get("organization"),organization));
-        if (name!=null && !name.isEmpty()){
-            predicates.add(criteriaBuilder.equal(root.get("name"),name));
+        predicates.add(criteriaBuilder.equal(root.get("organization"), organization));
+        if (name != null && !name.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("name"), name));
         }
-        if (phone!=null && !phone.isEmpty()){
-            predicates.add(criteriaBuilder.equal(root.get("phone"),phone));
+        if (phone != null && !phone.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("phone"), phone));
         }
-        if(isActive!=null){
-            predicates.add(criteriaBuilder.equal(root.get("isActive"),isActive));
+        if (isActive != null) {
+            predicates.add(criteriaBuilder.equal(root.get("isActive"), isActive));
         }
         return officeCriteriaQuery.where(predicates.toArray(new Predicate[0]));
     }

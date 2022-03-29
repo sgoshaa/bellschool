@@ -1,5 +1,6 @@
 package com.bell.bellschooll.controller;
 
+import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
@@ -35,7 +36,12 @@ public class UserController {
     }
 
     @PostMapping("list")
-    public List<UserOutListDto> getListUser(@RequestBody UserInListDto userInListDto){
+    public List<UserOutListDto> getListUser(@Valid @RequestBody UserInListDto userInListDto){
         return userService.getListUser(userInListDto);
+    }
+
+    @PostMapping("update")
+    public SuccessDto updateUser(@RequestBody UpdateUserInDto updateUserInDto){
+        return userService.updateUser(updateUserInDto);
     }
 }

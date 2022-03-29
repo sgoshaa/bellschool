@@ -49,7 +49,7 @@ public class UserDaoImpl implements UserDao {
 
     private CriteriaQuery<User> buildCriteriaUser(UserInListDto userInListDto, Office office) {
         String firstName = userInListDto.getFirstName();
-        String lastName = userInListDto.getSecondName();
+        String secondName = userInListDto.getSecondName();
         String middleName = userInListDto.getMiddleName();
         String position = userInListDto.getPosition();
         String docCode = userInListDto.getDocCode();
@@ -63,8 +63,8 @@ public class UserDaoImpl implements UserDao {
         if (firstName != null && !firstName.isEmpty()) {
             predicates.add(criteriaBuilder.equal(root.get("firstName"), firstName));
         }
-        if (lastName != null && !lastName.isEmpty()) {
-            predicates.add(criteriaBuilder.equal(root.get("secondName"), lastName));
+        if (secondName != null && !secondName.isEmpty()) {
+            predicates.add(criteriaBuilder.equal(root.get("secondName"), secondName));
         }
         if (middleName != null && !middleName.isEmpty()) {
             predicates.add(criteriaBuilder.equal(root.get("middleName"), middleName));

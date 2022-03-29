@@ -2,10 +2,10 @@ package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.dao.CountryDao;
 import com.bell.bellschooll.dao.DocumentDao;
-import com.bell.bellschooll.dao.DocumentTypeRepository;
+import com.bell.bellschooll.dao.DocumentTypeDao;
 import com.bell.bellschooll.dao.OfficeDao;
 import com.bell.bellschooll.dao.UserDao;
-import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
+import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
@@ -35,24 +35,21 @@ public class UserService {
     private final DocumentMapper documentMapper;
     private final OfficeDao officeDao;
     private final CountryDao countryDao;
-    private final DocumentTypeRepository documentTypeRepository;
+    private final DocumentTypeDao documentTypeDao;
 
-    public UserService(UserDao userDao, DocumentDao documentDao, UserMapper userMapper, DocumentMapper documentMapper, OfficeDao officeDao, CountryDao countryDao, DocumentTypeRepository documentTypeRepository) {
+    public UserService(UserDao userDao, DocumentDao documentDao, UserMapper userMapper, DocumentMapper documentMapper, OfficeDao officeDao, CountryDao countryDao, DocumentTypeDao documentTypeDao) {
         this.userDao = userDao;
         this.documentDao = documentDao;
         this.userMapper = userMapper;
         this.documentMapper = documentMapper;
         this.officeDao = officeDao;
         this.countryDao = countryDao;
-        this.documentTypeRepository = documentTypeRepository;
+        this.documentTypeDao = documentTypeDao;
     }
 
     @Transactional
     public ResponseEntity<SuccessDto> addUser(UserInSaveDto userInSaveDto) {
-        Office office = officeDao.getOfficeById(userInSaveDto.getOfficeId());
-        if (office == null) {
-            throw new ErrorException("Не найден офис.");
-        }
+        Office office = getOffice(userInSaveDto.getOfficeId());
         User user = userMapper.dtoToDomain(userInSaveDto);
         user.setOffice(office);
         if (!userInSaveDto.getDocCode().isEmpty() &&
@@ -69,7 +66,7 @@ public class UserService {
     }
 
     private Document createDocument(UserInSaveDto userInSaveDto) {
-        DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode());
+        DocumentType documentType = documentTypeDao.getDocumentTypeByCode(userInSaveDto.getDocCode());
         if (documentType == null) {
             throw new ErrorException("Не найден нужный тип документа.");
         }
@@ -87,23 +84,47 @@ public class UserService {
     }
 
     public ResponseEntity<UserOutDto> getUser(Integer id) {
-        User user = userDao.getUserById(id);
-        if (user == null) {
-            throw new ErrorException("Пользователь с данным id = " + id + " не найден.");
-        }
+        User user = getUserById(id);
         UserOutDto userOutDto = userMapper.domainToDto(user);
         return new ResponseEntity<>(userOutDto, HttpStatus.OK);
     }
 
-    public List<UserOutListDto> getListUser(UserInListDto userInListDto) {
-        Office office = officeDao.getOfficeById(userInListDto.getOfficeId());
-        if (office == null) {
-            throw new ErrorException("Не найден офис с данным id = " + userInListDto.getOfficeId());
+    private User getUserById(Integer id) {
+        User user = userDao.getUserById(id);
+        if (user == null) {
+            throw new ErrorException("Пользователь с данным id = " + id + " не найден.");
         }
+        return user;
+    }
 
+    public List<UserOutListDto> getListUser(UserInListDto userInListDto) {
+        Office office = getOffice(userInListDto.getOfficeId());
         List<User> users = userDao.getListUser(userInListDto, office);
         List<UserOutListDto> userOutListDtos = new ArrayList<>();
         users.forEach(user -> userOutListDtos.add(userMapper.domainToOutListDto(user)));
         return userOutListDtos;
+    }
+
+    @Transactional
+    public SuccessDto updateUser(UpdateUserInDto updateUserInDto) {
+        User user = getUserById(updateUserInDto.getId());
+        User currentUser = userMapper.updateUserFromDto(updateUserInDto, user);
+        currentUser.setDocument(documentMapper.updateDocument(updateUserInDto, currentUser.getDocument()));
+        if (updateUserInDto.getCitizenshipCode() != null) {
+            currentUser.setCountry(getCountry(updateUserInDto.getCitizenshipCode()));
+        }
+        if (updateUserInDto.getOfficeId() != null) {
+            currentUser.setOffice(getOffice(updateUserInDto.getOfficeId()));
+        }
+        userDao.updateUser(currentUser);
+        return new SuccessDto();
+    }
+
+    private Office getOffice(Integer officeId) {
+        Office office = officeDao.getOfficeById(officeId);
+        if (office == null && officeId != 0) {
+            throw new ErrorException("Не найден офис c таким id = " + officeId);
+        }
+        return office;
     }
 }
