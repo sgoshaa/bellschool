@@ -48,7 +48,7 @@ public class UserService {
     }
 
     @Transactional
-    public ResponseEntity<SuccessDto> addUser(UserInSaveDto userInSaveDto) {
+    public SuccessDto addUser(UserInSaveDto userInSaveDto) {
         Office office = getOffice(userInSaveDto.getOfficeId());
         User user = userMapper.dtoToDomain(userInSaveDto);
         user.setOffice(office);
@@ -62,7 +62,7 @@ public class UserService {
             user.setCountry(getCountry(userInSaveDto.getCountryCode()));
         }
         userDao.addUser(user);
-        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+        return new SuccessDto();
     }
 
     private Document createDocument(UserInSaveDto userInSaveDto) {
@@ -83,10 +83,10 @@ public class UserService {
         return country;
     }
 
-    public ResponseEntity<UserOutDto> getUser(Integer id) {
+    public UserOutDto getUser(Integer id)  {
         User user = getUserById(id);
         UserOutDto userOutDto = userMapper.domainToDto(user);
-        return new ResponseEntity<>(userOutDto, HttpStatus.OK);
+        return userOutDto;
     }
 
     private User getUserById(Integer id) {

@@ -37,8 +37,7 @@ public class OfficeService {
         if (office == null) {
             throw new ErrorException("Офис не найден");
         }
-
-        return new ResponseEntity<OfficeOutDto>(officeMapper.officeToDto(office), HttpStatus.OK);
+        return new ResponseEntity<>(officeMapper.officeToDto(office),HttpStatus.OK);
     }
 
     @Transactional
@@ -50,7 +49,7 @@ public class OfficeService {
         }
         Office office = officeMapper.dtoToDomain(officeDto, organization);
         officeDao.addOffice(office);
-        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
     }
 
     public ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto) {
@@ -64,7 +63,7 @@ public class OfficeService {
         }
         List<OfficeListOutDto> officeListOutDtos = new ArrayList<>();
         offices.forEach(office -> officeListOutDtos.add(officeMapper.officeToListDto(office)));
-        return new ResponseEntity<>(officeListOutDtos, HttpStatus.OK);
+        return new ResponseEntity<>(officeListOutDtos,HttpStatus.OK);
     }
 
     @Transactional
@@ -75,6 +74,6 @@ public class OfficeService {
         }
         office = officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office);
         officeDao.updateOffice(office);
-        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
     }
 }

@@ -27,11 +27,11 @@ public class UserController {
     }
 
     @PostMapping("save")
-    public ResponseEntity<SuccessDto>addUser(@Valid @RequestBody UserInSaveDto userInSaveDto){
+    public SuccessDto addUser(@Valid @RequestBody UserInSaveDto userInSaveDto){
         return userService.addUser(userInSaveDto);
     }
     @GetMapping("{id}")
-    public ResponseEntity<UserOutDto> getUser(@PathVariable Integer id){
+    public UserOutDto getUser(@PathVariable Integer id){
         return userService.getUser(id);
     }
 
