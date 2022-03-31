@@ -15,7 +15,6 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.LocalDate;
 
 @Entity

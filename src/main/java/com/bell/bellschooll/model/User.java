@@ -35,17 +35,17 @@ public class User {
     private Integer id;
 
     @ToString.Exclude
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "office_id", nullable = false)
     private Office office;
 
-    @Column(name = "first_name",nullable = false,length = 50)
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name = "second_name",length = 50)
+    @Column(name = "second_name", length = 50)
     private String secondName;
 
-    @Column(name = "middle_name",length = 50)
+    @Column(name = "middle_name", length = 50)
     private String middleName;
 
     @Column(nullable = false, length = 255)
@@ -54,12 +54,11 @@ public class User {
     @Column(length = 25)
     private String phone;
 
-
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,optional = false,
+            cascade = CascadeType.ALL, optional = false,
             mappedBy = "user")
-    @JoinColumn(name = "doc_id",nullable = false)
+    @JoinColumn(name = "doc_id", nullable = false)
     private Document document;
 
     @ToString.Exclude
