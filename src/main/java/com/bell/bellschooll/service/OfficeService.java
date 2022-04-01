@@ -25,11 +25,13 @@ public class OfficeService {
     private final OfficeDao officeDao;
     private final OrganizationDao organizationDao;
     private final OfficeMapper officeMapper;
+    private final OrganizationService organizationService;
 
-    public OfficeService(OfficeDao officeDao, OrganizationDao organizationDao, OfficeMapper officeMapper) {
+    public OfficeService(OfficeDao officeDao, OrganizationDao organizationDao, OfficeMapper officeMapper, OrganizationService organizationService) {
         this.officeDao = officeDao;
         this.organizationDao = organizationDao;
         this.officeMapper = officeMapper;
+        this.organizationService = organizationService;
     }
 
     public ResponseEntity<OfficeOutDto> getOfficeById(Integer id) {
@@ -42,21 +44,14 @@ public class OfficeService {
 
     @Transactional
     public ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto) {
-
-        Organization organization = organizationDao.getOrganizationById(officeDto.getOrgId());
-        if (organization == null) {
-            throw new ErrorException("Не найдена организация!");
-        }
+        Organization organization = organizationService.getOrgById(officeDto.getOrgId());
         Office office = officeMapper.dtoToDomain(officeDto, organization);
         officeDao.addOffice(office);
         return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
     }
 
     public ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto) {
-        Organization organization = organizationDao.getOrganizationById(officeInListDto.getOrgId());
-        if (organization == null) {
-            throw new ErrorException("Организация не найдена");
-        }
+        Organization organization = organizationService.getOrgById(officeInListDto.getOrgId());
         List<Office> offices = officeDao.getListOffice(officeInListDto, organization);
         if (offices.isEmpty()) {
             throw new ErrorException("У " + organization.getFullName() + " нет офисов.");

@@ -30,10 +30,7 @@ public class OrganizationService {
     }
 
     public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id) {
-        Organization organization = organizationDao.getOrganizationById(id);
-        if (organization == null) {
-            throw new ErrorException("Организация не найдена!");
-        }
+        Organization organization = getOrgById(id);
         OrganizationOutDto organizationOutDto = organizationMapper.organizationToDto(organization);
         return new ResponseEntity<OrganizationOutDto>(organizationOutDto, HttpStatus.OK);
     }
@@ -51,17 +48,22 @@ public class OrganizationService {
     public ResponseEntity<SuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
         Organization organization = organizationMapper.organizationInToDomain(organizationSaveInDto);
         organizationDao.save(organization);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
     @Transactional
     public ResponseEntity<SuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
-        Organization organization = organizationDao.getOrganizationById(organizationUpdateInDto.getId());
-        if (organization==null){
-            throw new ErrorException("организация не найдена.");
-        }
-        organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto,organization);
+        Organization organization = getOrgById(organizationUpdateInDto.getId());
+        organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto, organization);
         organizationDao.update(organization);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+    }
+
+    public Organization getOrgById(Integer id) {
+        Organization organization = organizationDao.getOrganizationById(id);
+        if (organization == null) {
+            throw new ErrorException("Не найдена организация с id = "+id);
+        }
+        return organization;
     }
 }
