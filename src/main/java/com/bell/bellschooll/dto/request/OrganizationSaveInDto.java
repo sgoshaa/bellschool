@@ -11,13 +11,11 @@ import javax.validation.constraints.NotNull;
 public class OrganizationSaveInDto {
 
     @NotNull
-    @NotBlank
-    @NotEmpty(message = "Название - обязательное поле")
+    @NotBlank(message = "Название - обязательное поле")
     private String name;
 
     @NotNull
     @NotBlank
-    @NotEmpty
     private String fullName;
 
     @NotNull

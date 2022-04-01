@@ -41,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("update")
-    public SuccessDto updateUser(@RequestBody UpdateUserInDto updateUserInDto){
+    public SuccessDto updateUser(@Valid @RequestBody UpdateUserInDto updateUserInDto){
         return userService.updateUser(updateUserInDto);
     }
 }

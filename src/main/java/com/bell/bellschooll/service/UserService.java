@@ -52,10 +52,6 @@ public class UserService {
         Office office = getOffice(userInSaveDto.getOfficeId());
         User user = userMapper.dtoToDomain(userInSaveDto);
         user.setOffice(office);
-//        boolean flag = true;
-//        if (flag){
-//            throw new RuntimeException("Привет");
-//        }
         if (!userInSaveDto.getDocCode().isEmpty() &&
                 !userInSaveDto.getDocCode().isBlank() && userInSaveDto.getDocCode() != null) {
             Document document = createDocument(userInSaveDto);
@@ -95,10 +91,6 @@ public class UserService {
 
     private User getUserById(Integer id) {
         User user = userDao.getUserById(id);
-        boolean flag=true;
-        if (flag){
-            throw  new RuntimeException("привет");
-        }
         if (user == null) {
             throw new ErrorException("Пользователь с данным id = " + id + " не найден.");
         }

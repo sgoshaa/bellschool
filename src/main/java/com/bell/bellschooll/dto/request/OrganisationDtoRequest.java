@@ -11,9 +11,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class OrganisationDtoRequest {
 
-    @NotEmpty
     @NotBlank
-    @NotNull
     @JsonProperty
     String name;
     @JsonProperty

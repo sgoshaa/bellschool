@@ -1,6 +1,7 @@
 package com.bell.bellschooll.dto.request;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -10,9 +11,9 @@ import javax.validation.constraints.NotNull;
 public class OrganizationUpdateInDto {
 
     @NotNull
+    @Range(min = 1, message = "id не может равняться 0")
     private Integer id;
 
-    @NotEmpty(message = "Название - обязательное поле")
     @NotBlank(message = "Название - обязательное поле")
     @NotNull
     private String name;

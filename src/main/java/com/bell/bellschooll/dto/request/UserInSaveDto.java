@@ -2,34 +2,25 @@ package com.bell.bellschooll.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-
-
-//officeId”:””, //обязательный параметр
-//        “firstName”:””, //обязательный параметр
-//        “secondName”:””,
-//        “middleName”:””,
-//        “position”:”” //обязательный параметр
-
 
 @Data
 public class UserInSaveDto {
     @NotNull
+    @Range(min = 1, message = "id не может равняться 0")
     private Integer officeId;
-    @NotEmpty
     @NotBlank
-//    @Min(2)
+    @Min(2)
     private String firstName;
     private String secondName;
     private String middleName;
-    @NotEmpty
     @NotBlank
-//    @Min(4)
+    @Min(2)
     private String position;
     private String phone;
     private String docCode;
