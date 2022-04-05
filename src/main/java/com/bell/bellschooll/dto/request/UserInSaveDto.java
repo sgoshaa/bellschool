@@ -15,12 +15,10 @@ public class UserInSaveDto {
     @Range(min = 1, message = "id не может равняться 0")
     private Integer officeId;
     @NotBlank
-    @Min(2)
     private String firstName;
     private String secondName;
     private String middleName;
     @NotBlank
-    @Min(2)
     private String position;
     private String phone;
     private String docCode;

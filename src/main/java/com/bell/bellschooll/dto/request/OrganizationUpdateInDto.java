@@ -15,12 +15,9 @@ public class OrganizationUpdateInDto {
     private Integer id;
 
     @NotBlank(message = "Название - обязательное поле")
-    @NotNull
     private String name;
 
-    @NotEmpty
     @NotBlank
-    @NotNull
     private String fullName;
 
     @NotNull

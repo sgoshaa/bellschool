@@ -23,13 +23,11 @@ import java.util.List;
 @Service
 public class OfficeService {
     private final OfficeDao officeDao;
-    private final OrganizationDao organizationDao;
     private final OfficeMapper officeMapper;
     private final OrganizationService organizationService;
 
-    public OfficeService(OfficeDao officeDao, OrganizationDao organizationDao, OfficeMapper officeMapper, OrganizationService organizationService) {
+    public OfficeService(OfficeDao officeDao, OfficeMapper officeMapper, OrganizationService organizationService) {
         this.officeDao = officeDao;
-        this.organizationDao = organizationDao;
         this.officeMapper = officeMapper;
         this.organizationService = organizationService;
     }
@@ -39,7 +37,7 @@ public class OfficeService {
         if (office == null) {
             throw new ErrorException("Офис не найден");
         }
-        return new ResponseEntity<>(officeMapper.officeToDto(office),HttpStatus.OK);
+        return new ResponseEntity<>(officeMapper.officeToDto(office), HttpStatus.OK);
     }
 
     @Transactional
@@ -47,7 +45,7 @@ public class OfficeService {
         Organization organization = organizationService.getOrgById(officeDto.getOrgId());
         Office office = officeMapper.dtoToDomain(officeDto, organization);
         officeDao.addOffice(office);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
     public ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto) {
@@ -58,7 +56,7 @@ public class OfficeService {
         }
         List<OfficeListOutDto> officeListOutDtos = new ArrayList<>();
         offices.forEach(office -> officeListOutDtos.add(officeMapper.officeToListDto(office)));
-        return new ResponseEntity<>(officeListOutDtos,HttpStatus.OK);
+        return new ResponseEntity<>(officeListOutDtos, HttpStatus.OK);
     }
 
     @Transactional
@@ -69,6 +67,6 @@ public class OfficeService {
         }
         office = officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office);
         officeDao.updateOffice(office);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 }

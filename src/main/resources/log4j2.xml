@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN" monitorInterval="60">
+    <Properties>
+        <Property name="LOG_PATTERN"> %d{yyyy-MM-dd HH:mm:ss.SSS}  %5p --- [%15.15t] %-40.40c{1.} : %m%n%ex</Property>
+    </Properties>
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <File name="AllErrors" fileName="logs/errors.log" append="true" immediateFlush="true" >
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </File>
+
+    </appenders>
+    <loggers>
+        <root level="info">
+            <appender-ref ref="Console" level="debug"/>
+            <appender-ref ref="AllErrors" level="error"/>
+        </root>
+    </loggers>
+</configuration>

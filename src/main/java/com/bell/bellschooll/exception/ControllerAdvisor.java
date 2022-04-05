@@ -1,7 +1,10 @@
 package com.bell.bellschooll.exception;
 
 
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 
 @ControllerAdvice
+@Log4j2
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ErrorException.class)
     public ResponseEntity<ErrorResponseException> handlerErrorException(ErrorException exception) {
@@ -30,7 +34,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseException> handlerException(Exception exception) {
         String stringError = getRandomString(exception.getMessage());
-        System.out.println(stringError);
+        log.error(stringError);
         ErrorResponseException errorResponse = new ErrorResponseException(stringError);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

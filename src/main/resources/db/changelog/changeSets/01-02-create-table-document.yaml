@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-2
+      author: Admin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_document
+                  name: id
+                  type: INT
+              - column:
+                  name: version
+                  type: INT
+              - column:
+                  name: doc_number
+                  type: VARCHAR(50)
+              - column:
+                  name: doc_date
+                  type: DATE
+              - column:
+                  constraints:
+                    nullable: false
+                  name: doc_type_id
+                  type: INT
+            tableName: document

@@ -1,0 +1,40 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-4
+      author: Admin
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_office
+                  name: id
+                  type: INT
+              - column:
+                  name: version
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: org_id
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: address
+                  type: VARCHAR(255)
+              - column:
+                  name: phone
+                  type: VARCHAR(255)
+              - column:
+                  name: is_active
+                  type: BOOLEAN
+            tableName: office

@@ -1,0 +1,113 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2-1
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: Офис Сбера1
+              - column:
+                  name: org_id
+                  value: 2
+              - column:
+                  name: address
+                  value: Уфа ул.Цурюпы 12
+              - column:
+                  name: phone
+                  value: 8937987456123
+              - column:
+                  name: is_active
+                  value: true
+            tableName: office
+  - changeSet:
+      id: 2-2
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: Офис Сбера2
+              - column:
+                  name: org_id
+                  value: 2
+              - column:
+                  name: address
+                  value: Уфа ул.Цурюпы 122
+              - column:
+                  name: phone
+                  value: 893898878887
+              - column:
+                  name: is_active
+                  value: false
+            tableName: office
+  - changeSet:
+      id: 2-3
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: name
+                  value: офис Bell1
+              - column:
+                  name: org_id
+                  value: 1
+              - column:
+                  name: address
+                  value: Уфа Свердлова
+              - column:
+                  name: phone
+                  value: 12321321321
+              - column:
+                  name: is_active
+                  value: true
+            tableName: office
+  - changeSet:
+      id: 2-4
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 4
+              - column:
+                  name: name
+                  value: офис Bell2
+              - column:
+                  name: org_id
+                  value: 1
+              - column:
+                  name: address
+                  value: Уфа ул.Цурюпы 15
+              - column:
+                  name: phone
+                  value: 789456123
+              - column:
+                  name: is_active
+                  value: true
+            tableName: office

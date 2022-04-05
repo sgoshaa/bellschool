@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-1
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: Российская Федерация
+              - column:
+                  name: code
+                  value: 643
+            tableName: country
+  - changeSet:
+      id: 3-2
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: США
+              - column:
+                  name: code
+                  value: 622
+            tableName: country

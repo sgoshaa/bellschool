@@ -19,6 +19,9 @@ import com.bell.bellschooll.model.Document;
 import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.User;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.LogManager;
 
 @Service
 public class UserService {

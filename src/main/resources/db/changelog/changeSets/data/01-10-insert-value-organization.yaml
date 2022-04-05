@@ -1,0 +1,103 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-1
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: BELL
+              - column:
+                  name: full_name
+                  value: BELL INTEGRATOR
+              - column:
+                  name: inn
+                  value: 123456789
+              - column:
+                  name: kpp
+                  value: 987654
+              - column:
+                  name: address
+                  value: Уфа ул.Свердлова 92
+              - column:
+                  name: phone
+                  value: 9371627419
+              - column:
+                  name: is_active
+                  value: true
+            tableName: organization
+  - changeSet:
+      id: 1-2
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: СБЕР
+              - column:
+                  name: full_name
+                  value: ОАО СберБанк
+              - column:
+                  name: inn
+                  value: 456123787
+              - column:
+                  name: kpp
+                  value: 654321
+              - column:
+                  name: address
+                  value: Уфа ул.Цурюпы 12
+              - column:
+                  name: phone
+                  value: 937123456
+              - column:
+                  name: is_active
+                  value: true
+            tableName: organization
+  - changeSet:
+      id: 1-3
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 3
+              - column:
+                  name: name
+                  value: СБЕР
+              - column:
+                  name: full_name
+                  value: ЗАО СберБанк
+              - column:
+                  name: inn
+                  value: 456123789
+              - column:
+                  name: kpp
+                  value: 654321
+              - column:
+                  name: address
+                  value: Уфа ул.Цурюпы 1
+              - column:
+                  name: phone
+                  value: 8937123456
+              - column:
+                  name: is_active
+                  value: false
+            tableName: organization
