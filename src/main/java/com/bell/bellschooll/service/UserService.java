@@ -56,8 +56,8 @@ public class UserService {
         Office office = getOffice(userInSaveDto.getOfficeId());
         User user = userMapper.dtoToDomain(userInSaveDto);
         user.setOffice(office);
-        if (!userInSaveDto.getDocCode().isEmpty() &&
-                !userInSaveDto.getDocCode().isBlank() && userInSaveDto.getDocCode() != null) {
+        if (userInSaveDto.getDocCode() != null &&
+                !userInSaveDto.getDocCode().isBlank() && !userInSaveDto.getDocCode().isEmpty() ) {
             Document document = createDocument(userInSaveDto);
             document.setUser(user);
             user.setDocument(document);

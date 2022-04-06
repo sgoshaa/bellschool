@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6-1
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: doc_number
+                  value: 232323234
+              - column:
+                  name: doc_date
+                  value: '2022-03-24'
+              - column:
+                  name: doc_type_id
+                  value: 1
+            tableName: document
+  - changeSet:
+      id: 6-2
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: doc_number
+                  value: 789456123
+              - column:
+                  name: doc_date
+                  value: '2022-02-22'
+              - column:
+                  name: doc_type_id
+                  value: 2
+            tableName: document

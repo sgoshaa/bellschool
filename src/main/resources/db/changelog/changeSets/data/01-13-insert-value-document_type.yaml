@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4-1
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 1
+              - column:
+                  name: name
+                  value: Паспорт гражданина РФ
+              - column:
+                  name: code
+                  value: 21
+            tableName: document_type
+  - changeSet:
+      id: 4-2
+      author: Admin
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: version
+                  value: 1
+              - column:
+                  name: id
+                  value: 2
+              - column:
+                  name: name
+                  value: Водительское удостоверение
+              - column:
+                  name: code
+                  value: 22
+            tableName: document_type

@@ -6,6 +6,9 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
+                  name: version
+                  type: INT
+              - column:
                   constraints:
                     nullable: false
                     primaryKey: true

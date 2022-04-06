@@ -14,11 +14,11 @@ public interface UserMapper {
 
     User dtoToDomain(UserInSaveDto userInSaveDto);
 
-    @Mapping(target = "docName",expression = "java(user.getDocument().getDocType().getName())")
-    @Mapping(target = "docNumber",expression = "java(user.getDocument().getDocNumber())")
-    @Mapping(target = "docDate",expression = "java(user.getDocument().getDocDate())")
-    @Mapping(target = "citizenshipName",expression = "java(user.getCountry().getName())")
-    @Mapping(target = "citizenshipCode",expression = "java(user.getCountry().getCode())")
+    @Mapping(target = "docName",source = "document.docType.name")
+    @Mapping(target = "docNumber",source = "document.docNumber")
+    @Mapping(target = "docDate",source = "document.docDate")
+    @Mapping(target = "citizenshipName",source = "country.name")
+    @Mapping(target = "citizenshipCode",source = "country.code")
     UserOutDto domainToDto(User user);
 
     UserOutListDto domainToOutListDto(User user);

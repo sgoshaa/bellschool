@@ -12,14 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
-import java.util.Objects;
+
 
 @Entity
-@Table(name = "User")
+@Table(name = "User1")
 @Data
 @ToString
 public class User {
@@ -56,7 +55,7 @@ public class User {
 
     @ToString.Exclude
     @OneToOne(fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL, optional = false,
+            cascade = CascadeType.ALL, optional = true,
             mappedBy = "user")
     @JoinColumn(name = "doc_id", nullable = false)
     private Document document;

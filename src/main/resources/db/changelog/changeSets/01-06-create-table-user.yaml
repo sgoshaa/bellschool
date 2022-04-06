@@ -46,4 +46,4 @@ databaseChangeLog:
             - column:
                 name: is_identified
                 type: BOOLEAN
-          tableName: user
+          tableName: user1
