@@ -24,11 +24,17 @@ public class OrganizationDaoImpl implements OrganizationDao {
         this.entityManager = entityManager;
     }
 
+    /**
+     * @see OrganizationDao#getOrganizationById(Integer)
+     */
     @Override
     public Organization getOrganizationById(Integer id) {
-        return entityManager.find(Organization.class,id);
+        return entityManager.find(Organization.class, id);
     }
 
+    /**
+     * @see OrganizationDao#getListOrganizationByName(OrganisationDtoRequest)
+     */
     @Override
     public List<Organization> getListOrganizationByName(OrganisationDtoRequest organisationDtoRequest) {
         CriteriaQuery<Organization> organizationCriteriaQuery = buildCriteria(organisationDtoRequest);
@@ -36,11 +42,17 @@ public class OrganizationDaoImpl implements OrganizationDao {
         return query.getResultList();
     }
 
+    /**
+     * @see OrganizationDao#save(Organization)
+     */
     @Override
     public void save(Organization organization) {
         entityManager.persist(organization);
     }
 
+    /**
+     * @see OrganizationDao#update(Organization)
+     */
     @Override
     public void update(Organization organization) {
         entityManager.merge(organization);
@@ -50,27 +62,27 @@ public class OrganizationDaoImpl implements OrganizationDao {
         String name = organisationDtoRequest.getName();
         Integer inn = organisationDtoRequest.getInn();
         Boolean isActive = organisationDtoRequest.getIsActive();
-        if (name.isEmpty()){
+        if (name.isEmpty()) {
             throw new ErrorException("Не заполнено название организации");
         }
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Organization> organizationCriteriaQuery = criteriaBuilder.createQuery(Organization.class);
         Root<Organization> root = organizationCriteriaQuery.from(Organization.class);
 
-        if(inn!=null && isActive!=null){
+        if (inn != null && isActive != null) {
             return organizationCriteriaQuery.where(
-                    criteriaBuilder.equal(root.get("name"),name),
-                    criteriaBuilder.equal(root.get("inn"),inn),
-                    criteriaBuilder.equal(root.get("isActive"),isActive));
-        }else if (isActive!=null){
+                    criteriaBuilder.equal(root.get("name"), name),
+                    criteriaBuilder.equal(root.get("inn"), inn),
+                    criteriaBuilder.equal(root.get("isActive"), isActive));
+        } else if (isActive != null) {
             return organizationCriteriaQuery.where(
-                    criteriaBuilder.equal(root.get("name"),name),
-                    criteriaBuilder.equal(root.get("isActive"),isActive));
-        }else if (inn!=null){
+                    criteriaBuilder.equal(root.get("name"), name),
+                    criteriaBuilder.equal(root.get("isActive"), isActive));
+        } else if (inn != null) {
             return organizationCriteriaQuery.where(
-                    criteriaBuilder.equal(root.get("name"),name),
-                    criteriaBuilder.equal(root.get("inn"),inn));
+                    criteriaBuilder.equal(root.get("name"), name),
+                    criteriaBuilder.equal(root.get("inn"), inn));
         }
-        return organizationCriteriaQuery.where(criteriaBuilder.equal(root.get("name"),name));
+        return organizationCriteriaQuery.where(criteriaBuilder.equal(root.get("name"), name));
     }
 }

@@ -13,30 +13,30 @@ public interface OrganizationDao {
     /**
      * Получение организации по id
      *
-     * @param id
-     * @return
+     * @param id уникальный идентификатор организации
+     * @return Organization Объект,содержащий организацию
      */
     Organization getOrganizationById(Integer id);
 
     /**
      * Получение списка организации по фильтру
      *
-     * @param organisationDtoRequest
-     * @return
+     * @param organisationDtoRequest Объект, содержащий параметры для фильтрации организации
+     * @return List объектов типа Organization
      */
     List<Organization> getListOrganizationByName(OrganisationDtoRequest organisationDtoRequest);
 
     /**
      * Сохранение организации
      *
-     * @param organization
+     * @param organization Объект, содержащий описание организации
      */
     void save(Organization organization);
 
     /**
      * Обновление организации
      *
-     * @param organization
+     * @param organization Объект, содержащий описание организации
      */
     void update(Organization organization);
 

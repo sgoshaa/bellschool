@@ -13,31 +13,31 @@ public interface OfficeDao {
     /**
      * Метод для получения офиса по id
      *
-     * @param id
-     * @return
+     * @param id уникальный идентификатор офиса
+     * @return Office
      */
     Office getOfficeById(Integer id);
 
     /**
      * Метод для сохранения офиса
      *
-     * @param office
+     * @param office Объект,содержащий параметры,для сохранения офиса
      */
     void addOffice(Office office);
 
     /**
      * Метод для получения списка офисов по фильтру
      *
-     * @param office
-     * @param organization
-     * @return
+     * @param officeInListDto список параметров по которому мы фильтруем офисы
+     * @param organization организация ,у которой есть данный офис
+     * @return List объектов типа Office
      */
-    List<Office> getListOffice(OfficeInListDto office, Organization organization);
+    List<Office> getListOffice(OfficeInListDto officeInListDto, Organization organization);
 
     /**
      * Обновление офиса
      *
-     * @param office
+     * @param office Объект,содержащий параметры офиса
      */
     void updateOffice(Office office);
 }

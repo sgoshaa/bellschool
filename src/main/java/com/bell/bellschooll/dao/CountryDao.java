@@ -12,8 +12,8 @@ public interface CountryDao extends JpaRepository<Country, Integer> {
     /**
      * Метод для получения страны по полю код
      *
-     * @param code
-     * @return
+     * @param code Код страны
+     * @return Country Объект, содержащий страну
      */
     Country getCountryByCode(Integer code);
 }

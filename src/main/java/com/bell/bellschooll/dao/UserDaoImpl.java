@@ -1,5 +1,6 @@
 package com.bell.bellschooll.dao;
 
+import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.User;
@@ -26,9 +27,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * Сохранение нового пользователя
-     *
-     * @param user
+     * @see UserDao#addUser(User)
      */
     @Override
     public void addUser(User user) {
@@ -36,9 +35,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * Обновление пользователя
-     *
-     * @param user
+     * @see UserDao#updateUser(User)
      */
     @Override
     public void updateUser(User user) {
@@ -46,10 +43,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * Получение пользователя по id
-     *
-     * @param id
-     * @return
+     * @see UserDao#getUserById(Integer)
      */
     @Override
     public User getUserById(Integer id) {
@@ -57,11 +51,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     /**
-     * Получение списка  пользователей по фильтру
-     *
-     * @param userInListDto
-     * @param office
-     * @return
+     * @see UserDao#getListUser(UserInListDto, Office)
      */
     @Override
     public List<User> getListUser(UserInListDto userInListDto, Office office) {

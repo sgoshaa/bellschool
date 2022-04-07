@@ -28,10 +28,7 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     /**
-     * Метод для получения офиса по id
-     *
-     * @param id
-     * @return
+     * @see OfficeDao#getOfficeById(Integer)
      */
     @Override
     public Office getOfficeById(Integer id) {
@@ -39,9 +36,7 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     /**
-     * Сохранение офиса
-     *
-     * @param office
+     * @see OfficeDao#addOffice(Office)
      */
     @Override
     public void addOffice(Office office) {
@@ -49,11 +44,7 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     /**
-     * Получение списка офисов по фильтру
-     *
-     * @param office
-     * @param organization
-     * @return
+     * @see OfficeDao#getListOffice(OfficeInListDto, Organization)
      */
     @Override
     public List<Office> getListOffice(OfficeInListDto office, Organization organization) {
@@ -63,9 +54,7 @@ public class OfficeDaoImpl implements OfficeDao {
     }
 
     /**
-     * Обновление офиса
-     *
-     * @param office
+     * @see OfficeDao#updateOffice(Office)
      */
     @Override
     public void updateOffice(Office office) {
