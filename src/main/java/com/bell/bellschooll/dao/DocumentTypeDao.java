@@ -6,7 +6,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * DAO для работы с DocumentType
+ */
 @Repository
-public interface DocumentTypeDao extends JpaRepository<DocumentType,Integer> {
+public interface DocumentTypeDao extends JpaRepository<DocumentType, Integer> {
+    /**
+     * Метод для получения типа документа по полю Код
+     *
+     * @param code
+     * @return
+     */
     DocumentType getDocumentTypeByCode(String code);
 }

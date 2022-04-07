@@ -20,37 +20,56 @@ import java.util.List;
 @ToString
 public class Organization {
     /**
-     * Служебное поле hibernate
+     * Уникальный идентификатор
      */
-    @Version
-    private Integer version;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
+    /**
+     * Служебное поле hibernate
+     */
+    @Version
+    private Integer version;
+    /**
+     * Название организации
+     */
     @Column(name = "name",nullable = false ,length = 50)
     private String name;
-
+    /**
+     * Полное название организации
+     */
     @Column(name = "full_name",nullable = false,length = 255)
     private String fullName;
-
+    /**
+     * ИНН организации
+     */
     @Column(name = "inn",nullable = false)
     private Integer inn;
-
+    /**
+     * КПП организации
+     */
     @Column(name = "kpp",nullable = false)
     private Integer kpp;
-
+    /**
+     * Адрес организации
+     */
     @Column(name = "address",nullable = false)
     private String address;
-
+    /**
+     * Телефон организации
+     */
     @Column
     private String phone;
-
+    /**
+     * Поле isActive
+     */
     @Column(name = "is_active")
     private Boolean isActive;
 
+    /**
+     * Список офисов в организации
+     */
     @ToString.Exclude
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
     private List<Office> offices;

@@ -1,15 +1,18 @@
 package com.bell.bellschooll.exception;
-//{
-//        “error”:”текст ошибки”
-//        }
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+/**
+ * Response DTO для вывода исключений
+ */
 @Data
 @AllArgsConstructor
 public class ErrorResponseException {
+    /**
+     * Поле с описание ошибки
+     */
     @JsonProperty
     private String error;
 }

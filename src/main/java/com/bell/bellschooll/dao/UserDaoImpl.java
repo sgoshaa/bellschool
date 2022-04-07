@@ -1,11 +1,8 @@
 package com.bell.bellschooll.dao;
 
-import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.model.Office;
-import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.model.User;
-import org.mapstruct.control.MappingControl;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -17,6 +14,9 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Репозиторий для работы с User, реализация UserDao
+ */
 @Repository
 public class UserDaoImpl implements UserDao {
     private final EntityManager entityManager;
@@ -25,21 +25,44 @@ public class UserDaoImpl implements UserDao {
         this.entityManager = entityManager;
     }
 
+    /**
+     * Сохранение нового пользователя
+     *
+     * @param user
+     */
     @Override
     public void addUser(User user) {
         entityManager.persist(user);
     }
 
+    /**
+     * Обновление пользователя
+     *
+     * @param user
+     */
     @Override
     public void updateUser(User user) {
         entityManager.merge(user);
     }
 
+    /**
+     * Получение пользователя по id
+     *
+     * @param id
+     * @return
+     */
     @Override
     public User getUserById(Integer id) {
         return entityManager.find(User.class, id);
     }
 
+    /**
+     * Получение списка  пользователей по фильтру
+     *
+     * @param userInListDto
+     * @param office
+     * @return
+     */
     @Override
     public List<User> getListUser(UserInListDto userInListDto, Office office) {
         CriteriaQuery<User> userCriteriaQuery = buildCriteriaUser(userInListDto, office);

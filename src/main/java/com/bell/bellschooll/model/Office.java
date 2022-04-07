@@ -22,32 +22,46 @@ import java.util.List;
 @ToString
 public class Office {
     /**
-     * Служебное поле hibernate
+     * Уникальный идентификатор
      */
-    @Version
-    private Integer version;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-
+    /**
+     * Служебное поле hibernate
+     */
+    @Version
+    private Integer version;
+    /**
+     * Название офиса
+     */
     @Column(nullable = false,length = 255)
     private String name;
-
+    /**
+     * Организация,внешний ключ таблицы организация
+     */
     @ManyToOne
     @JoinColumn(name = "org_id", nullable = false)
     private Organization organization;
-
+    /**
+     * Адрес офиса
+     */
     @Column(name = "address",nullable = false,length = 255)
     private String address;
-
+    /**
+     * Телефон офиса
+     */
     @Column(name = "phone")
     private String phone;
-
+    /**
+     * Поле isActive
+     */
     @Column(name = "is_active")
     private Boolean isActive;
-
+    /**
+     * Список сотрудников
+     */
     @ToString.Exclude
     @OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
     private List<User> users;

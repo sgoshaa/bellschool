@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Сервис для Organization
+ */
 @Service
 public class OrganizationService {
     private final OrganizationDaoImpl organizationDao;
@@ -29,12 +31,24 @@ public class OrganizationService {
         this.organizationMapper = organizationMapper;
     }
 
+    /**
+     * Метод для получения организации по id
+     *
+     * @param id
+     * @return
+     */
     public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id) {
         Organization organization = getOrgById(id);
         OrganizationOutDto organizationOutDto = organizationMapper.organizationToDto(organization);
         return new ResponseEntity<OrganizationOutDto>(organizationOutDto, HttpStatus.OK);
     }
 
+    /**
+     * Метод для получения организации по имени
+     *
+     * @param organisationDTO
+     * @return
+     */
     public ResponseEntity<List<OrganizationListOut>> getOrganizationByName(OrganisationDtoRequest organisationDTO) {
         List<Organization> organizationList = organizationDao.getListOrganizationByName(organisationDTO);
         List<OrganizationListOut> organizations = new ArrayList<>();
@@ -44,6 +58,12 @@ public class OrganizationService {
         return new ResponseEntity<>(organizations, HttpStatus.OK);
     }
 
+    /**
+     * Метод для сохранения новой организации
+     *
+     * @param organizationSaveInDto
+     * @return
+     */
     @Transactional
     public ResponseEntity<SuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
         Organization organization = organizationMapper.organizationInToDomain(organizationSaveInDto);
@@ -51,6 +71,12 @@ public class OrganizationService {
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
+    /**
+     * Метод для обновления организации
+     *
+     * @param organizationUpdateInDto
+     * @return
+     */
     @Transactional
     public ResponseEntity<SuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
         Organization organization = getOrgById(organizationUpdateInDto.getId());
@@ -59,10 +85,16 @@ public class OrganizationService {
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
+    /**
+     * Служебный метод для получения организации по id
+     *
+     * @param id
+     * @return
+     */
     public Organization getOrgById(Integer id) {
         Organization organization = organizationDao.getOrganizationById(id);
         if (organization == null) {
-            throw new ErrorException("Не найдена организация с id = "+id);
+            throw new ErrorException("Не найдена организация с id = " + id);
         }
         return organization;
     }

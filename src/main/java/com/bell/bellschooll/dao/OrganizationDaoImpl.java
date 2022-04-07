@@ -1,7 +1,6 @@
 package com.bell.bellschooll.dao;
 
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
-import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.model.Organization;
 import org.springframework.stereotype.Repository;
@@ -11,9 +10,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Репозиторий для работы с Organization, реализация OrganizationDao
+ */
 @Repository
 public class OrganizationDaoImpl implements OrganizationDao {
 

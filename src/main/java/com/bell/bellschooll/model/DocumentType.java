@@ -13,12 +13,24 @@ import javax.persistence.Version;
 @Entity
 @Table(name = "Document_type")
 public class DocumentType {
-    @Version
-    private Integer version;
+    /**
+     * Уникальный идентификатор
+     */
     @Id
     private Integer id;
+    /**
+     * Служебное поле hibernate
+     */
+    @Version
+    private Integer version;
+    /**
+     * Название документа
+     */
     @Column(nullable = false)
     private String name;
+    /**
+     * Код документа
+     */
     @Column(nullable = false)
     private String code;
 }

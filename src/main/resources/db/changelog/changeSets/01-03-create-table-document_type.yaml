@@ -6,14 +6,14 @@ databaseChangeLog:
         - createTable:
             columns:
               - column:
-                  name: version
-                  type: INT
-              - column:
                   constraints:
                     nullable: false
                     primaryKey: true
                     primaryKeyName: pk_document_type
                   name: id
+                  type: INT
+              - column:
+                  name: version
                   type: INT
               - column:
                   constraints:

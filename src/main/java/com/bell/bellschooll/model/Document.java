@@ -23,20 +23,28 @@ import java.time.LocalDate;
 @ToString
 public class Document {
     /**
+     * Уникальный идентификатор
+     */
+    @Id
+    private Integer id;
+    /**
      * Служебное поле hibernate
      */
     @Version
     private Integer version;
-
-    @Id
-    private Integer id;
-
+    /**
+     * Номер документа
+     */
     @Column(length = 50)
     private String docNumber;
-
+    /**
+     * Дата документа
+     */
     @Column
     private LocalDate docDate;
-
+    /**
+     * Внешний ключ на таблицу юзер
+     */
     @ToString.Exclude
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
@@ -44,6 +52,6 @@ public class Document {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "doc_type_id",nullable = false)
+    @JoinColumn(name = "doc_type_id", nullable = false)
     private DocumentType docType;
 }

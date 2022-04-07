@@ -15,6 +15,9 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Репозиторий для работы с Office,реализация OfficeDao
+ */
 @Repository
 public class OfficeDaoImpl implements OfficeDao {
 
@@ -24,16 +27,34 @@ public class OfficeDaoImpl implements OfficeDao {
         this.entityManager = entityManager;
     }
 
+    /**
+     * Метод для получения офиса по id
+     *
+     * @param id
+     * @return
+     */
     @Override
     public Office getOfficeById(Integer id) {
         return entityManager.find(Office.class, id);
     }
 
+    /**
+     * Сохранение офиса
+     *
+     * @param office
+     */
     @Override
     public void addOffice(Office office) {
         entityManager.persist(office);
     }
 
+    /**
+     * Получение списка офисов по фильтру
+     *
+     * @param office
+     * @param organization
+     * @return
+     */
     @Override
     public List<Office> getListOffice(OfficeInListDto office, Organization organization) {
         CriteriaQuery<Office> officeCriteriaQuery = buildCriteriaOffice(office, organization);
@@ -41,6 +62,11 @@ public class OfficeDaoImpl implements OfficeDao {
         return query.getResultList();
     }
 
+    /**
+     * Обновление офиса
+     *
+     * @param office
+     */
     @Override
     public void updateOffice(Office office) {
         entityManager.merge(office);

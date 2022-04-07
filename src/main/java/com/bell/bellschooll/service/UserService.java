@@ -31,6 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogManager;
 
+/**
+ * Сервис для User
+ */
 @Service
 public class UserService {
     private final UserDao userDao;
@@ -51,13 +54,19 @@ public class UserService {
         this.documentTypeDao = documentTypeDao;
     }
 
+    /**
+     * Метод для сохранения нового пользователя
+     *
+     * @param userInSaveDto
+     * @return
+     */
     @Transactional
     public SuccessDto addUser(UserInSaveDto userInSaveDto) {
         Office office = getOffice(userInSaveDto.getOfficeId());
         User user = userMapper.dtoToDomain(userInSaveDto);
         user.setOffice(office);
         if (userInSaveDto.getDocCode() != null &&
-                !userInSaveDto.getDocCode().isBlank() && !userInSaveDto.getDocCode().isEmpty() ) {
+                !userInSaveDto.getDocCode().isBlank() && !userInSaveDto.getDocCode().isEmpty()) {
             Document document = createDocument(userInSaveDto);
             document.setUser(user);
             user.setDocument(document);
@@ -87,7 +96,13 @@ public class UserService {
         return country;
     }
 
-    public UserOutDto getUser(Integer id)  {
+    /**
+     * Метод для получения пользователя по id
+     *
+     * @param id
+     * @return
+     */
+    public UserOutDto getUser(Integer id) {
         User user = getUserById(id);
         UserOutDto userOutDto = userMapper.domainToDto(user);
         return userOutDto;
@@ -101,6 +116,12 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Метод для получения списка пользователей по фильтру
+     *
+     * @param userInListDto
+     * @return
+     */
     public List<UserOutListDto> getListUser(UserInListDto userInListDto) {
         Office office = getOffice(userInListDto.getOfficeId());
         List<User> users = userDao.getListUser(userInListDto, office);
@@ -109,6 +130,12 @@ public class UserService {
         return userOutListDtos;
     }
 
+    /**
+     * Метод для обновление пользователя
+     *
+     * @param updateUserInDto
+     * @return
+     */
     @Transactional
     public SuccessDto updateUser(UpdateUserInDto updateUserInDto) {
         User user = getUserById(updateUserInDto.getId());

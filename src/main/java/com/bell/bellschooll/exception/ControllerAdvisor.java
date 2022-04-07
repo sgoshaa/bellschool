@@ -21,16 +21,30 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+/**
+ * ControllerAdvisor для обработки исключений
+ */
 @ControllerAdvice
 @Log4j2
 public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+    /**
+     * Метод для обработки исключений типа ErrorException
+     *
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(ErrorException.class)
     public ResponseEntity<ErrorResponseException> handlerErrorException(ErrorException exception) {
         ErrorResponseException errorResponse = new ErrorResponseException(exception.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Метод для  обработки исключений типа Exception
+     *
+     * @param exception
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseException> handlerException(Exception exception) {
         String stringError = getRandomString(exception.getMessage());
@@ -39,12 +53,21 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Метод для обработки исключений валидации
+     *
+     * @param ex
+     * @param headers
+     * @param status
+     * @param request
+     * @return
+     */
     @Override
-    public ResponseEntity<Object>handleMethodArgumentNotValid(MethodArgumentNotValidException ex,HttpHeaders headers, HttpStatus status, WebRequest request){
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> list = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> fieldError.getField()+" : "+fieldError.getDefaultMessage())
+                .map(fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage())
                 .sorted()
                 .collect(Collectors.toList());
         ErrorResponseException errorResponse = new ErrorResponseException(list.toString());

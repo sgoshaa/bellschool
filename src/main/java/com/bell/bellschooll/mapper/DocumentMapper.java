@@ -7,15 +7,35 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-
+/**
+ * Маппер для работы с Document
+ */
 @Mapper(componentModel = "spring")
 public interface DocumentMapper {
-
+    /**
+     * Метод для маппинга из RequestDTO  UserInSaveDto в Document
+     *
+     * @param userInSaveDto
+     * @return
+     */
     Document dtoToDomain(UserInSaveDto userInSaveDto);
 
-    @Mapping(target = "id",ignore = true)
+    /**
+     * Метод для маппинга из UpdateUserInDto в Document
+     *
+     * @param updateUserInDto
+     * @return
+     */
+    @Mapping(target = "id", ignore = true)
     Document dtoToDomainUpdate(UpdateUserInDto updateUserInDto);
 
-    @Mapping(target = "id",ignore = true)
-    Document updateDocument(UpdateUserInDto updateUserInDto,@MappingTarget Document document);
+    /**
+     * Метод для маппинга из UpdateUserInDto в Document
+     *
+     * @param updateUserInDto
+     * @param document
+     * @return
+     */
+    @Mapping(target = "id", ignore = true)
+    Document updateDocument(UpdateUserInDto updateUserInDto, @MappingTarget Document document);
 }

@@ -20,6 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сервис для Office
+ */
 @Service
 public class OfficeService {
     private final OfficeDao officeDao;
@@ -32,14 +35,26 @@ public class OfficeService {
         this.organizationService = organizationService;
     }
 
+    /**
+     * Метод для получения офиса по его id
+     *
+     * @param id
+     * @return
+     */
     public ResponseEntity<OfficeOutDto> getOfficeById(Integer id) {
         Office office = officeDao.getOfficeById(id);
         if (office == null) {
             throw new ErrorException("Офис не найден");
         }
-        return new ResponseEntity<>(officeMapper.officeToDto(office), HttpStatus.OK);
+        return new ResponseEntity<>(officeMapper.officeToDto(office),HttpStatus.OK);
     }
 
+    /**
+     * Метод для сохранения нового офиса
+     * @see OfficeDao#addOffice(Office) 
+     * @param officeDto
+     * @return
+     */
     @Transactional
     public ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto) {
         Organization organization = organizationService.getOrgById(officeDto.getOrgId());
@@ -48,6 +63,12 @@ public class OfficeService {
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
+    /**
+     * Метод для поиска офиса по фильтру
+     *
+     * @param officeInListDto запрос с параметрами
+     * @return список офисов, подходящих под фильтр
+     */
     public ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto) {
         Organization organization = organizationService.getOrgById(officeInListDto.getOrgId());
         List<Office> offices = officeDao.getListOffice(officeInListDto, organization);
@@ -59,6 +80,12 @@ public class OfficeService {
         return new ResponseEntity<>(officeListOutDtos, HttpStatus.OK);
     }
 
+    /**
+     * Метод для обновления офиса
+     *
+     * @param officeInUpdateDto запрос с обновленными полями
+     * @return
+     */
     @Transactional
     public ResponseEntity<SuccessDto> updateOffice(OfficeInUpdateDto officeInUpdateDto) {
         Office office = officeDao.getOfficeById(officeInUpdateDto.getId());

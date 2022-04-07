@@ -16,17 +16,25 @@ import javax.persistence.Version;
 @Data
 public class Country {
     /**
-     * Служебное поле hibernate
+     * уникальный идентификатор
      */
-    @Version
-    private Integer version;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
-    @Column(length = 100,nullable = false)
+    /**
+     * Служебное поле hibernate
+     */
+    @Version
+    private Integer version;
+    /**
+     * Название страны
+     */
+    @Column(length = 100, nullable = false)
     private String name;
+    /**
+     * Код страны
+     */
     @Column
     private Integer code;
 }
