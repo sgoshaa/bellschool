@@ -42,18 +42,16 @@ public class OfficeService {
      * @return
      */
     public ResponseEntity<OfficeOutDto> getOfficeById(Integer id) {
-        Office office = officeDao.getOfficeById(id);
-        if (office == null) {
-            throw new ErrorException("Офис не найден");
-        }
-        return new ResponseEntity<>(officeMapper.officeToDto(office),HttpStatus.OK);
+        Office office = getOffice(id);
+        return new ResponseEntity<>(officeMapper.officeToDto(office), HttpStatus.OK);
     }
 
     /**
      * Метод для сохранения нового офиса
-     * @see OfficeDao#addOffice(Office) 
+     *
      * @param officeDto
      * @return
+     * @see OfficeDao#addOffice(Office)
      */
     @Transactional
     public ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto) {
@@ -84,16 +82,27 @@ public class OfficeService {
      * Метод для обновления офиса
      *
      * @param officeInUpdateDto запрос с обновленными полями
-     * @return
+     * @return SuccessDto
      */
     @Transactional
     public ResponseEntity<SuccessDto> updateOffice(OfficeInUpdateDto officeInUpdateDto) {
-        Office office = officeDao.getOfficeById(officeInUpdateDto.getId());
-        if (office == null) {
-            throw new ErrorException("Офис не найден");
-        }
+        Office office = getOffice(officeInUpdateDto.getId());
         office = officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office);
         officeDao.updateOffice(office);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+    }
+
+    /**
+     * Метод для получения офиса по его Id
+     *
+     * @param id Уникальный идентификатор пользователя
+     * @return Office
+     */
+    public Office getOffice(Integer id) {
+        Office office = officeDao.getOfficeById(id);
+        if (office == null) {
+            throw new ErrorException("Офис не найден");
+        }
+        return office;
     }
 }

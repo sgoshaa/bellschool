@@ -34,8 +34,8 @@ public class OrganizationService {
     /**
      * Метод для получения организации по id
      *
-     * @param id
-     * @return
+     * @param id Уникальный идентификатор организации
+     * @return OrganizationOutDto
      */
     public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id) {
         Organization organization = getOrgById(id);
@@ -46,8 +46,8 @@ public class OrganizationService {
     /**
      * Метод для получения организации по имени
      *
-     * @param organisationDTO
-     * @return
+     * @param organisationDTO Объект,содержащий параметры, для фильтрации организаций
+     * @return List Список объектов типа OrganizationListOut
      */
     public ResponseEntity<List<OrganizationListOut>> getOrganizationByName(OrganisationDtoRequest organisationDTO) {
         List<Organization> organizationList = organizationDao.getListOrganizationByName(organisationDTO);
@@ -61,8 +61,8 @@ public class OrganizationService {
     /**
      * Метод для сохранения новой организации
      *
-     * @param organizationSaveInDto
-     * @return
+     * @param organizationSaveInDto Объект, содержащий параметры для новой организации
+     * @return SuccessDto
      */
     @Transactional
     public ResponseEntity<SuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
@@ -74,8 +74,8 @@ public class OrganizationService {
     /**
      * Метод для обновления организации
      *
-     * @param organizationUpdateInDto
-     * @return
+     * @param organizationUpdateInDto Объект, содержащий параметры для обновления организаци
+     * @return SuccessDto
      */
     @Transactional
     public ResponseEntity<SuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
@@ -88,8 +88,8 @@ public class OrganizationService {
     /**
      * Служебный метод для получения организации по id
      *
-     * @param id
-     * @return
+     * @param id Уникальный идентификатор организации
+     * @return Organization
      */
     public Organization getOrgById(Integer id) {
         Organization organization = organizationDao.getOrganizationById(id);

@@ -6,6 +6,7 @@ import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.dto.response.UserOutListDto;
+import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,44 +34,45 @@ public class UserController {
     /**
      * Сохранение нового пользователя
      *
-     * @param userInSaveDto
-     * @return
+     * @param userInSaveDto Объект, содержащий параметры, нового пользователя
+     * @return SuccessDto
      */
     @PostMapping("save")
-    public SuccessDto addUser(@Valid @RequestBody UserInSaveDto userInSaveDto) {
+    public ResponseEntity<SuccessDto> addUser(@Valid @RequestBody UserInSaveDto userInSaveDto) {
         return userService.addUser(userInSaveDto);
     }
 
     /**
      * Получение пользователя по id
      *
-     * @param id
-     * @return
+     * @param id Уникальный идентификатор пользователя
+     * @return UserOutDto Объект, содержащий представление пользователя
      */
     @GetMapping("{id}")
-    public UserOutDto getUser(@PathVariable Integer id) {
+    public ResponseEntity<UserOutDto> getUser(@PathVariable Integer id) {
         return userService.getUser(id);
     }
 
     /**
      * Получение списка пользователей по фильтру
      *
-     * @param userInListDto
-     * @return
+     * @param userInListDto Объект,содержащий параметры, для фильтрации пользователей
+     * @return List объектов типа UserOutListDto
+     * @see com.bell.bellschooll.dao.UserDao#getListUser(UserInListDto, Office)
      */
     @PostMapping("list")
-    public List<UserOutListDto> getListUser(@Valid @RequestBody UserInListDto userInListDto) {
+    public ResponseEntity<List<UserOutListDto>> getListUser(@Valid @RequestBody UserInListDto userInListDto) {
         return userService.getListUser(userInListDto);
     }
 
     /**
      * Обновление пользователя
      *
-     * @param updateUserInDto
-     * @return
+     * @param updateUserInDto Объект,содержащий параметры для обновления пользователя
+     * @return SuccessDto
      */
     @PostMapping("update")
-    public SuccessDto updateUser(@Valid @RequestBody UpdateUserInDto updateUserInDto) {
+    public ResponseEntity<SuccessDto> updateUser(@Valid @RequestBody UpdateUserInDto updateUserInDto) {
         return userService.updateUser(updateUserInDto);
     }
 }

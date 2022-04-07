@@ -36,8 +36,8 @@ public class OfficeController {
     /**
      * метод для получения офиса по id
      *
-     * @param id офиса
-     * @return офис
+     * @param id Уникальный идентификатор офиса
+     * @return OfficeOutDto объект ,содержащий представление офиса
      */
     @GetMapping("{id}")
     public ResponseEntity<OfficeOutDto> getById(@PathVariable Integer id) {
@@ -47,7 +47,7 @@ public class OfficeController {
     /**
      * Метод для сохранения нового офиса
      *
-     * @param office реквест OfficeInSaveDto
+     * @param office запрос OfficeInSaveDto,содержащий параметы нового офиса
      * @return SuccessDto
      */
     @PostMapping("save")
@@ -58,7 +58,7 @@ public class OfficeController {
     /**
      * Метод для получения списка офиса по фильтру
      *
-     * @param office реквест OfficeInListDto
+     * @param office запрос OfficeInListDto, содержащий параметры для фильтрации офисов
      * @return Список офисов
      */
     @PostMapping("list")
@@ -69,7 +69,7 @@ public class OfficeController {
     /**
      * Обновление офиса
      *
-     * @param officeInUpdateDto реквест OfficeInUpdateDto
+     * @param officeInUpdateDto запрос OfficeInUpdateDto, содержащий параметры для обновления офиса
      * @return SuccessDto
      */
     @PostMapping("update")
