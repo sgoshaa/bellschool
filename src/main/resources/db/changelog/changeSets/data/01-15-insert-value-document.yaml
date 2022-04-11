@@ -10,7 +10,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 1
+                  value: 101
               - column:
                   name: doc_number
                   value: 232323234
@@ -19,7 +19,7 @@ databaseChangeLog:
                   value: '2022-03-24'
               - column:
                   name: doc_type_id
-                  value: 1
+                  value: 101
             tableName: document
   - changeSet:
       id: 6-2
@@ -32,7 +32,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 2
+                  value: 102
               - column:
                   name: doc_number
                   value: 789456123
@@ -41,5 +41,5 @@ databaseChangeLog:
                   value: '2022-02-22'
               - column:
                   name: doc_type_id
-                  value: 2
+                  value: 102
             tableName: document

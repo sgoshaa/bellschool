@@ -23,6 +23,7 @@
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
 		<liquibase-core.version>4.9.1</liquibase-core.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+		<org.postgresql.version>42.3.3</org.postgresql.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -95,6 +96,11 @@
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-maven-plugin</artifactId>
 			<version>${liquibase-maven-plugin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${org.postgresql.version}</version>
 		</dependency>
 	</dependencies>
 

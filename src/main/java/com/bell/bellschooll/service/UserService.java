@@ -127,7 +127,7 @@ public class UserService {
     /**
      * Метод для обновление пользователя
      *
-     * @param updateUserInDto бъект, содержащий параметры,для обновления пользователя
+     * @param updateUserInDto Объект, содержащий параметры,для обновления пользователя
      * @return SuccessDto
      */
     @Transactional

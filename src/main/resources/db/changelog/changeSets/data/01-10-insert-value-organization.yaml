@@ -10,7 +10,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 1
+                  value: 101
               - column:
                   name: name
                   value: BELL
@@ -44,7 +44,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 2
+                  value: 102
               - column:
                   name: name
                   value: СБЕР
@@ -78,7 +78,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 3
+                  value: 103
               - column:
                   name: name
                   value: СБЕР

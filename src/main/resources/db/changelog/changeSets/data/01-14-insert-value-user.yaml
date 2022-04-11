@@ -10,10 +10,10 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 1
+                  value: 101
               - column:
                   name: office_id
-                  value: 1
+                  value: 101
               - column:
                   name: first_name
                   value: Спирин
@@ -47,10 +47,10 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 2
+                  value: 102
               - column:
                   name: office_id
-                  value: 1
+                  value: 101
               - column:
                   name: first_name
                   value: Иванов

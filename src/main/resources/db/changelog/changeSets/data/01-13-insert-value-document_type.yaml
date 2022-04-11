@@ -10,7 +10,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 1
+                  value: 101
               - column:
                   name: name
                   value: Паспорт гражданина РФ
@@ -29,7 +29,7 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 2
+                  value: 102
               - column:
                   name: name
                   value: Водительское удостоверение
