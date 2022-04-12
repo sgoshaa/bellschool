@@ -35,7 +35,7 @@ databaseChangeLog:
               - column:
                   name: is_identified
                   value: true
-            tableName: user1
+            tableName: user
   - changeSet:
       id: 5-2
       author: Admin
@@ -72,4 +72,4 @@ databaseChangeLog:
               - column:
                   name: is_identified
                   value: true
-            tableName: user1
+            tableName: user

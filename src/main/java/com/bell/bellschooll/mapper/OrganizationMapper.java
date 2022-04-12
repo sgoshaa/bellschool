@@ -58,6 +58,9 @@ public interface OrganizationMapper {
 
 
     default String equalsData(String field, String updateField) {
+        if (updateField == null) {
+            return field;
+        }
         if (!field.equals(updateField) && !updateField.isEmpty()) {
             field = updateField;
         }

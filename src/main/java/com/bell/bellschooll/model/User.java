@@ -18,7 +18,7 @@ import javax.persistence.Version;
 
 
 @Entity
-@Table(name = "User1")
+@Table(name = "User")
 @Data
 @ToString
 public class User {
@@ -73,7 +73,7 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, optional = true,
             mappedBy = "user")
-    @JoinColumn(name = "doc_id", nullable = false)
+    //@JoinColumn(name = "doc_id", nullable = false)
     private Document document;
     /**
      * Внешний ключ на таблицу стран

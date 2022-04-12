@@ -18,7 +18,7 @@ databaseChangeLog:
             baseTableName: document
             constraintName: FK_DOCUMENT_ON_ID
             referencedColumnNames: id
-            referencedTableName: user1
+            referencedTableName: user
   - changeSet:
       id: 1-9
       author: Admin
@@ -35,7 +35,7 @@ databaseChangeLog:
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: country_id
-            baseTableName: user1
+            baseTableName: user
             constraintName: FK_USER_ON_COUNTRY
             referencedColumnNames: id
             referencedTableName: country
@@ -55,7 +55,7 @@ databaseChangeLog:
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: office_id
-            baseTableName: user1
+            baseTableName: user
             constraintName: FK_USER_ON_OFFICE
             referencedColumnNames: id
             referencedTableName: office

@@ -21,7 +21,7 @@
 		<liquibase-maven-plugin.version>4.9.0</liquibase-maven-plugin.version>
 		<org.apache.commons.version>3.4</org.apache.commons.version>
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
-		<liquibase-core.version>4.9.1</liquibase-core.version>
+		<liquibase-core.version>4.6.2</liquibase-core.version>
 		<maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
 		<org.postgresql.version>42.3.3</org.postgresql.version>
 	</properties>
@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -101,6 +101,12 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${org.postgresql.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
