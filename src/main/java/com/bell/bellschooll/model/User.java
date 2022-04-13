@@ -18,7 +18,7 @@ import javax.persistence.Version;
 
 
 @Entity
-@Table(name = "User")
+@Table(name = "User1")
 @Data
 @ToString
 public class User {

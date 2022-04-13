@@ -69,7 +69,7 @@ public class UserService {
             user.setCountry(getCountry(userInSaveDto.getCountryCode()));
         }
         userDao.addUser(user);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
     private Document createDocument(UserInSaveDto userInSaveDto) {
@@ -99,7 +99,7 @@ public class UserService {
     public ResponseEntity<UserOutDto> getUser(Integer id) {
         User user = getUserById(id);
         UserOutDto userOutDto = userMapper.domainToDto(user);
-        return new ResponseEntity<>(userOutDto,HttpStatus.OK);
+        return new ResponseEntity<>(userOutDto, HttpStatus.OK);
     }
 
     private User getUserById(Integer id) {
@@ -121,7 +121,7 @@ public class UserService {
         List<User> users = userDao.getListUser(userInListDto, office);
         List<UserOutListDto> userOutListDtos = new ArrayList<>();
         users.forEach(user -> userOutListDtos.add(userMapper.domainToOutListDto(user)));
-        return new ResponseEntity<>(userOutListDtos,HttpStatus.OK);
+        return new ResponseEntity<>(userOutListDtos, HttpStatus.OK);
     }
 
     /**
@@ -142,6 +142,6 @@ public class UserService {
             currentUser.setOffice(officeService.getOffice(updateUserInDto.getOfficeId()));
         }
         userDao.updateUser(currentUser);
-        return new ResponseEntity<>(new SuccessDto(),HttpStatus.OK);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 }

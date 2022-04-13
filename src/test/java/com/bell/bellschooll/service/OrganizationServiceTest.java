@@ -7,6 +7,7 @@ import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
+import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OrganizationRequestHelper;
 import org.junit.jupiter.api.Test;
@@ -19,10 +20,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 class OrganizationServiceTest {
 
@@ -47,7 +49,7 @@ class OrganizationServiceTest {
     void getOrganizationByName() {
         OrganisationDtoRequest organisationDtoRequest = OrganizationRequestHelper.createOrganisationDtoRequest();
         ResponseEntity<List<OrganizationListOut>> organizationByName = organizationService.getOrganizationByName(organisationDtoRequest);
-        assertTrue(organizationByName.getBody().size()>0);
+        assertTrue(organizationByName.getBody().size() > 0);
     }
 
     @Test
@@ -56,5 +58,10 @@ class OrganizationServiceTest {
         ResponseEntity<SuccessDto> successDtoResponseEntity
                 = organizationService.updateOrganization(organizationUpdateInDto);
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
+    }
+
+    @Test
+    void getOrgById() {
+        assertThrows(ErrorException.class, () -> organizationService.getOrgById(35));
     }
 }
