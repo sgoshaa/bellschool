@@ -3,6 +3,7 @@ package com.bell.bellschooll.util;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
+import com.bell.bellschooll.model.User;
 
 import java.time.LocalDate;
 
@@ -55,5 +56,15 @@ public class UserHelper {
         userInListDto.setOfficeId(ConstantValue.ID);
         userInListDto.setCitizenshipCode("643");
         return userInListDto;
+    }
+
+    public static User createUser() {
+        User user = new User();
+        user.setFirstName("firstname");
+        user.setMiddleName("middlename");
+        user.setSecondName("secondname");
+        user.setPosition("position");
+        user.setPhone("2-57-05");
+        return user;
     }
 }

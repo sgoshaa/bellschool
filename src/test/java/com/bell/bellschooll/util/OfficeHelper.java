@@ -3,11 +3,13 @@ package com.bell.bellschooll.util;
 import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
 import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
+import com.bell.bellschooll.model.Office;
+import com.bell.bellschooll.model.Organization;
 
 /**
  * Класс для создания RequestDTO для офиса
  */
-public class OfficeRequestHelper {
+public class OfficeHelper {
 
     public static OfficeInListDto createOfficeInListDto() {
         OfficeInListDto officeInListDto = new OfficeInListDto();
@@ -33,5 +35,15 @@ public class OfficeRequestHelper {
         officeInUpdateDto.setPhone("2-57-05");
         officeInUpdateDto.setIsActive(true);
         return officeInUpdateDto;
+    }
+
+    public static Office createOffice(Organization organization) {
+        Office office = new Office();
+        office.setName("name");
+        office.setAddress("address");
+        office.setIsActive(true);
+        office.setOrganization(organization);
+        office.setPhone("2-57-05");
+        return office;
     }
 }

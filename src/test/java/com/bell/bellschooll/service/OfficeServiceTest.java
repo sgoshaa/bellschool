@@ -6,7 +6,7 @@ import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.util.ConstantValue;
-import com.bell.bellschooll.util.OfficeRequestHelper;
+import com.bell.bellschooll.util.OfficeHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,19 +34,19 @@ class OfficeServiceTest {
 
     @Test
     void addOffice() {
-        ResponseEntity<SuccessDto> successDtoResponseEntity = officeService.addOffice(OfficeRequestHelper.createOfficeInSaveDto());
+        ResponseEntity<SuccessDto> successDtoResponseEntity = officeService.addOffice(OfficeHelper.createOfficeInSaveDto());
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 
     @Test
     void listOffice() {
-        ResponseEntity<List<OfficeListOutDto>> listResponseEntity = officeService.listOffice(OfficeRequestHelper.createOfficeInListDto());
+        ResponseEntity<List<OfficeListOutDto>> listResponseEntity = officeService.listOffice(OfficeHelper.createOfficeInListDto());
         assertTrue(listResponseEntity.getBody().size() > 0);
     }
 
     @Test
     void updateOffice() {
-        ResponseEntity<SuccessDto> successDtoResponseEntity = officeService.updateOffice(OfficeRequestHelper.createOfficeInUpdateDto());
+        ResponseEntity<SuccessDto> successDtoResponseEntity = officeService.updateOffice(OfficeHelper.createOfficeInUpdateDto());
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 
@@ -58,7 +58,7 @@ class OfficeServiceTest {
     @Test
     @Sql("/addNewOrganizationId10005.sql")
     void listOfficeEmptyList() {
-        OfficeInListDto officeInListDto = OfficeRequestHelper.createOfficeInListDto();
+        OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
         officeInListDto.setOrgId(10005);
         assertThrows(ErrorException.class, () -> officeService.listOffice(officeInListDto));
     }
