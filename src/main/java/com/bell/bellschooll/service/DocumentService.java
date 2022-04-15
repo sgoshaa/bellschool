@@ -1,23 +1,9 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.DocumentDao;
 import com.bell.bellschooll.dto.response.DocumentDto;
-import com.bell.bellschooll.mapper.DocumentMapper;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class DocumentService {
-    private final DocumentDao documentDao;
-    private final DocumentMapper documentMapper;
-
-    public DocumentService(DocumentDao documentDao, DocumentMapper documentMapper) {
-        this.documentDao = documentDao;
-        this.documentMapper = documentMapper;
-    }
-
-    public List<DocumentDto> getAllDocument() {
-        return  documentMapper.toListDto(documentDao.findAll());
-    }
+public interface DocumentService {
+    List<DocumentDto> getAllDocument();
 }
