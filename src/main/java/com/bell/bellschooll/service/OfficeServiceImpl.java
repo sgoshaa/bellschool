@@ -66,7 +66,7 @@ public class OfficeServiceImpl implements OfficeService {
      * @param officeInListDto запрос с параметрами
      * @return список офисов, подходящих под фильтр
      */
-    public ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto) {
+    public ResponseEntity<List<OfficeListOutDto>> getListOffice(OfficeInListDto officeInListDto) {
         Organization organization = organizationService.getOrgById(officeInListDto.getOrgId());
         List<Office> offices = officeDao.getListOffice(officeInListDto, organization);
         if (offices.isEmpty()) {

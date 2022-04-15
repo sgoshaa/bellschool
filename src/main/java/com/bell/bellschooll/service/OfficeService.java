@@ -11,15 +11,35 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
+/**
+ * Интерфейс для работы с Office
+ */
 public interface OfficeService {
-
+    /**
+     * @see OfficeServiceImpl#getOfficeById(Integer)
+     */
     ResponseEntity<OfficeOutDto> getOfficeById(Integer id);
 
+    /**
+     * @see OfficeServiceImpl#addOffice(OfficeInSaveDto)
+     */
     ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto);
 
-    ResponseEntity<List<OfficeListOutDto>> listOffice(OfficeInListDto officeInListDto);
+    /**
+     * @see OfficeServiceImpl#getListOffice(OfficeInListDto)
+     */
+    ResponseEntity<List<OfficeListOutDto>> getListOffice(OfficeInListDto officeInListDto);
 
+    /**
+     * @see OfficeServiceImpl#updateOffice(OfficeInUpdateDto)
+     */
     ResponseEntity<SuccessDto> updateOffice(OfficeInUpdateDto officeInUpdateDto);
 
+    /**
+     * Служебный метод который возвращает office по его id
+     *
+     * @param id Уникальный идентификатор office
+     * @return Office
+     */
     Office getOffice(Integer id);
 }

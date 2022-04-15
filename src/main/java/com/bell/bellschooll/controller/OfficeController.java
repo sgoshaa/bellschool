@@ -6,7 +6,6 @@ import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.service.OfficeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -63,7 +61,7 @@ public class OfficeController {
      */
     @PostMapping("list")
     public ResponseEntity<List<OfficeListOutDto>> listOffice(@Valid @RequestBody OfficeInListDto office) {
-        return officeService.listOffice(office);
+        return officeService.getListOffice(office);
     }
 
     /**

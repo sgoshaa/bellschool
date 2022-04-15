@@ -39,7 +39,7 @@ class OrganizationDaoImplTest {
     @Test
     void getListOrganizationByName() {
         OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
-        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByName(organisationDtoRequest);
+        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDtoRequest);
 
         assertFalse(listOrganizationByName.isEmpty());
         assertThat(listOrganizationByName.stream()
@@ -52,14 +52,14 @@ class OrganizationDaoImplTest {
     void getListOrganizationByNameFailEmptyName() {
         OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
         organisationDtoRequest.setName("");
-        assertThrows(ErrorException.class, () -> organizationDao.getListOrganizationByName(organisationDtoRequest));
+        assertThrows(ErrorException.class, () -> organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDtoRequest));
     }
 
     @Test
     void getListOrganizationByNameAnyName() {
         OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
         organisationDtoRequest.setName("name");
-        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByName(organisationDtoRequest);
+        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDtoRequest);
 
         assertTrue(listOrganizationByName.isEmpty());
     }
@@ -68,7 +68,7 @@ class OrganizationDaoImplTest {
     void getListOrganizationByNameAndInn() {
         OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
         organisationDtoRequest.setInn(456123787);
-        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByName(organisationDtoRequest);
+        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDtoRequest);
 
         assertFalse(listOrganizationByName.isEmpty());
         assertThat(listOrganizationByName.stream()
@@ -82,7 +82,7 @@ class OrganizationDaoImplTest {
         OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
         organisationDtoRequest.setInn(456123787);
         organisationDtoRequest.setIsActive(true);
-        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByName(organisationDtoRequest);
+        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDtoRequest);
 
         assertFalse(listOrganizationByName.isEmpty());
         assertThat(listOrganizationByName.stream()
@@ -95,7 +95,7 @@ class OrganizationDaoImplTest {
     void getListOrganizationByNameAndIsActive() {
         OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
         organisationDtoRequest.setIsActive(true);
-        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByName(organisationDtoRequest);
+        List<Organization> listOrganizationByName = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDtoRequest);
 
         assertFalse(listOrganizationByName.isEmpty());
         assertThat(listOrganizationByName.stream()

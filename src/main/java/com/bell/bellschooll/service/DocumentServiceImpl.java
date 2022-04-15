@@ -17,6 +17,9 @@ public class DocumentServiceImpl implements DocumentService {
         this.documentMapper = documentMapper;
     }
 
+    /**
+     * @see DocumentService#getAllDocument()
+     */
     public List<DocumentDto> getAllDocument() {
         return  documentMapper.toListDto(documentDao.findAll());
     }

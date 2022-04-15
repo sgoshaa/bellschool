@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Сервис для работы с Country
+ */
 @Service
 public class CountryServiceImpl implements CountryService {
     private final CountryDao countryDao;
@@ -18,6 +21,9 @@ public class CountryServiceImpl implements CountryService {
         this.countryMapper = countryMapper;
     }
 
+    /**
+     * @see CountryService#getAllCountry()
+     */
     public List<CountryDto> getAllCountry() {
         List<Country> countryList = countryDao.findAll();
         return countryMapper.toListDto(countryList);

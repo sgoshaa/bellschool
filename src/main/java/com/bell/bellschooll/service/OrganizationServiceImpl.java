@@ -51,8 +51,8 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @return List Список объектов типа OrganizationListOut
      */
     @Override
-    public ResponseEntity<List<OrganizationListOut>> getOrganizationByName(OrganisationDtoRequest organisationDTO) {
-        List<Organization> organizationList = organizationDao.getListOrganizationByName(organisationDTO);
+    public ResponseEntity<List<OrganizationListOut>> getOrganizationByOrganizationDtoRequest(OrganisationDtoRequest organisationDTO) {
+        List<Organization> organizationList = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDTO);
         List<OrganizationListOut> organizations = new ArrayList<>();
         organizationList.forEach(organization -> {
             organizations.add(organizationMapper.organizationToListDto(organization));
@@ -95,7 +95,6 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @param id Уникальный идентификатор организации
      * @return Organization
      */
-    @Override
     public Organization getOrgById(Integer id) {
         Organization organization = organizationDao.getOrganizationById(id);
         if (organization == null) {

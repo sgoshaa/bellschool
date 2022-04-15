@@ -33,10 +33,10 @@ public class OrganizationDaoImpl implements OrganizationDao {
     }
 
     /**
-     * @see OrganizationDao#getListOrganizationByName(OrganisationDtoRequest)
+     * @see OrganizationDao#getListOrganizationByOrganizationDtoRequest(OrganisationDtoRequest)
      */
     @Override
-    public List<Organization> getListOrganizationByName(OrganisationDtoRequest organisationDtoRequest) {
+    public List<Organization> getListOrganizationByOrganizationDtoRequest(OrganisationDtoRequest organisationDtoRequest) {
         CriteriaQuery<Organization> organizationCriteriaQuery = buildCriteria(organisationDtoRequest);
         TypedQuery<Organization> query = entityManager.createQuery(organizationCriteriaQuery);
         return query.getResultList();

@@ -7,6 +7,7 @@ import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.model.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.http.ResponseEntity;
 
 /**
  * Маппер для работы с Organization

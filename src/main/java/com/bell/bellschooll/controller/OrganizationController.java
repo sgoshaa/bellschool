@@ -39,7 +39,7 @@ public class OrganizationController {
      */
     @PostMapping("list")
     public ResponseEntity<List<OrganizationListOut>> getListOrganization(@Valid @RequestBody OrganisationDtoRequest organisationDTO) {
-        return organizationService.getOrganizationByName(organisationDTO);
+        return organizationService.getOrganizationByOrganizationDtoRequest(organisationDTO);
     }
 
     /**
