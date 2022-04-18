@@ -15,9 +15,11 @@ import com.bell.bellschooll.model.Country;
 import com.bell.bellschooll.model.Document;
 import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.model.Office;
+import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.model.User;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OfficeHelper;
+import com.bell.bellschooll.util.OrganizationHelper;
 import com.bell.bellschooll.util.UserHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -60,6 +63,7 @@ class UserServiceImplTest {
 
 
     @Test
+    @Transactional
     void addUser() {
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
         DocumentType documentType = new DocumentType();
@@ -75,15 +79,15 @@ class UserServiceImplTest {
         country.setId(1);
         when(countryDao.getCountryByCode(643)).thenReturn(country);
 
+        Organization organization = OrganizationHelper.createOrganization();
+        organization.setId(1);
+
         Office office = new Office();
         office.setId(1);
+        office.setOrganization(organization);
         office.setName("name");
 
-        when(officeService.getOffice(1)).thenReturn(office);
-
-        ResponseEntity<SuccessDto> successDtoResponseEntity = userService.addUser(userInSaveDto);
-
-
+        when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
 
         User user = userMapper.dtoToDomain(userInSaveDto);
 
@@ -94,9 +98,15 @@ class UserServiceImplTest {
         document.setUser(user);
         document.setDocType(documentType);
         document.setDocNumber(userInSaveDto.getDocNumber());
-        user.setDocument(document);
+        document.setDocDate(userInSaveDto.getDocDate());
+//        user.setDocument(document);
+
+        doNothing().when(userDao).addUser(user);
+
+        ResponseEntity<SuccessDto> successDtoResponseEntity = userService.addUser(userInSaveDto);
 
         verify(userDao).addUser(user);
+
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 

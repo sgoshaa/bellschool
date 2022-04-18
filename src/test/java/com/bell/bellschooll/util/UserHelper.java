@@ -11,14 +11,14 @@ public class UserHelper {
 
     public static UserInSaveDto createUserInSaveDto() {
         UserInSaveDto userInSaveDto = new UserInSaveDto();
-        userInSaveDto.setFirstName("фамилия");
+        userInSaveDto.setFirstName("Фамилия");
         userInSaveDto.setSecondName("Имя");
         userInSaveDto.setMiddleName("Отчество");
         userInSaveDto.setPosition("должность");
         userInSaveDto.setCountryCode(643);
-        userInSaveDto.setDocDate(LocalDate.now());
-        userInSaveDto.setDocCode("21");
-        userInSaveDto.setDocNumber("123456");
+//        userInSaveDto.setDocDate(LocalDate.now());
+//        userInSaveDto.setDocCode("21");
+//        userInSaveDto.setDocNumber("123456");
         userInSaveDto.setIsIdentified(true);
         userInSaveDto.setOfficeId(ConstantValue.ID);
         userInSaveDto.setPhone("2-57-05");

@@ -1,6 +1,8 @@
 package com.bell.bellschooll.model;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
@@ -19,6 +21,8 @@ import javax.persistence.Version;
 
 @Entity
 @Table(name = "User1")
+@Getter
+@Setter
 @Data
 @ToString
 public class User {
@@ -51,6 +55,7 @@ public class User {
      */
     @Column(name = "second_name", length = 50)
     private String secondName;
+
     /**
      * Отчество пользователя
      */
