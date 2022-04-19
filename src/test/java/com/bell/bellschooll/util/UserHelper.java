@@ -3,6 +3,8 @@ package com.bell.bellschooll.util;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
+import com.bell.bellschooll.model.Country;
+import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.model.User;
 
 import java.time.LocalDate;
@@ -16,9 +18,9 @@ public class UserHelper {
         userInSaveDto.setMiddleName("Отчество");
         userInSaveDto.setPosition("должность");
         userInSaveDto.setCountryCode(643);
-//        userInSaveDto.setDocDate(LocalDate.now());
-//        userInSaveDto.setDocCode("21");
-//        userInSaveDto.setDocNumber("123456");
+        userInSaveDto.setDocDate(LocalDate.now());
+        userInSaveDto.setDocCode("21");
+        userInSaveDto.setDocNumber("123456");
         userInSaveDto.setIsIdentified(true);
         userInSaveDto.setOfficeId(ConstantValue.ID);
         userInSaveDto.setPhone("2-57-05");
@@ -40,6 +42,7 @@ public class UserHelper {
     public static UpdateUserInDto createUpdateUserInDto() {
         UpdateUserInDto updateUserInDto = new UpdateUserInDto();
         updateUserInDto.setId(ConstantValue.ID);
+        updateUserInDto.setOfficeId(ConstantValue.ID);
         updateUserInDto.setFirstName("фамилия");
         updateUserInDto.setSecondName("Имя");
         updateUserInDto.setMiddleName("Отчество");
@@ -51,7 +54,8 @@ public class UserHelper {
         updateUserInDto.setPhone("2-57-05");
         return updateUserInDto;
     }
-    public static UserInListDto createUserInListDto(){
+
+    public static UserInListDto createUserInListDto() {
         UserInListDto userInListDto = new UserInListDto();
         userInListDto.setOfficeId(ConstantValue.ID);
         userInListDto.setCitizenshipCode("643");
@@ -67,4 +71,22 @@ public class UserHelper {
         user.setPhone("2-57-05");
         return user;
     }
+
+    public static DocumentType createDocumentTypeForTest() {
+        DocumentType documentType = new DocumentType();
+        documentType.setId(1);
+        documentType.setName("тип документа");
+        documentType.setCode("21");
+        documentType.setVersion(1);
+        return documentType;
+    }
+
+    public static Country createCountryForTestUser() {
+        Country country = new Country();
+        country.setCode(643);
+        country.setName("Страна");
+        country.setId(1);
+        return country;
+    }
+
 }

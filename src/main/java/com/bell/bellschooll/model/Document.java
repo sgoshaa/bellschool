@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Document")
@@ -29,6 +30,7 @@ public class Document {
      */
     @Id
     private Integer id;
+
     /**
      * Служебное поле hibernate
      */
@@ -56,4 +58,17 @@ public class Document {
     @ManyToOne
     @JoinColumn(name = "doc_type_id", nullable = false)
     private DocumentType docType;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Document document = (Document) o;
+        return Objects.equals(id, document.id) && Objects.equals(version, document.version) && Objects.equals(docNumber, document.docNumber) && Objects.equals(docDate, document.docDate) && Objects.equals(docType, document.docType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version, docNumber, docDate, docType);
+    }
 }

@@ -36,7 +36,7 @@ class OfficeDaoImplTest {
         Office officeById = officeDao.getOfficeById(1);
 
         assertNotNull(officeById);
-        assertEquals(1,officeById.getId());
+        assertEquals(1, officeById.getId());
     }
 
     @Test
@@ -47,12 +47,12 @@ class OfficeDaoImplTest {
         Office officeById = officeDao.getOfficeById(office.getId());
 
         assertNotNull(officeById);
-        assertEquals(office.getId(),officeById.getId());
-        assertEquals(office.getName(),officeById.getName());
-        assertEquals(office.getAddress(),officeById.getAddress());
-        assertEquals(office.getIsActive(),officeById.getIsActive());
-        assertEquals(office.getOrganization(),officeById.getOrganization());
-        assertEquals(office.getPhone(),officeById.getPhone());
+        assertEquals(office.getId(), officeById.getId());
+        assertEquals(office.getName(), officeById.getName());
+        assertEquals(office.getAddress(), officeById.getAddress());
+        assertEquals(office.getIsActive(), officeById.getIsActive());
+        assertEquals(office.getOrganization(), officeById.getOrganization());
+        assertEquals(office.getPhone(), officeById.getPhone());
     }
 
     @Test
@@ -85,7 +85,7 @@ class OfficeDaoImplTest {
         assertFalse(listOffice.isEmpty());
         assertThat(listOffice.stream()
                 .findFirst()
-                .get(),hasProperty("name",equalTo(officeInListDto.getName())));
+                .get(), hasProperty("name", equalTo(officeInListDto.getName())));
     }
 
     @Test
@@ -97,6 +97,6 @@ class OfficeDaoImplTest {
         Office updateOffice = officeDao.getOfficeById(officeById.getId());
 
         assertNotNull(updateOffice);
-        assertEquals(officeById.getName(),updateOffice.getName());
+        assertEquals(officeById.getName(), updateOffice.getName());
     }
 }

@@ -38,11 +38,17 @@ public class OfficeHelper {
     }
 
     public static Office createOffice(Organization organization) {
+        Office office = createOffice();
+        office.setOrganization(organization);
+        return office;
+    }
+
+    public static Office createOffice() {
         Office office = new Office();
         office.setName("name");
         office.setAddress("address");
         office.setIsActive(true);
-        office.setOrganization(organization);
+        office.setOrganization(OrganizationHelper.createOrganization());
         office.setPhone("2-57-05");
         return office;
     }

@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -79,6 +80,7 @@ public class User {
             cascade = CascadeType.ALL, optional = true,
             mappedBy = "user")
     //@JoinColumn(name = "doc_id", nullable = false)
+    @PrimaryKeyJoinColumn
     private Document document;
     /**
      * Внешний ключ на таблицу стран

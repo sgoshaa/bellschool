@@ -43,6 +43,7 @@ class UserDaoImplTest {
 
     @Test
     void addUser() {
+        //Given
         User newUser = UserHelper.createUser();
 
         Document document = new Document();
@@ -54,28 +55,38 @@ class UserDaoImplTest {
         newUser.setDocument(document);
         newUser.setCountry(countryDao.getCountryByCode(643));
         newUser.setOffice(officeDao.getOfficeById(ConstantValue.ID));
+
+        //When
         userDao.addUser(newUser);
 
+        //Then
         User userById = userDao.getUserById(newUser.getId());
 
         assertNotNull(userById);
         assertEquals(newUser.getFirstName(), userById.getFirstName());
         assertEquals(newUser.getMiddleName(), userById.getMiddleName());
         assertEquals(newUser.getSecondName(), userById.getSecondName());
+        assertEquals(newUser.getDocument().getDocNumber(),userById.getDocument().getDocNumber());
+        assertEquals(newUser.getDocument().getDocDate(),userById.getDocument().getDocDate());
+        assertEquals(newUser.getDocument().getDocType(),userById.getDocument().getDocType());
 
     }
 
     @Test
     void updateUser() {
+        //Given
         User userById = userDao.getUserById(ConstantValue.ID);
-        assertNotNull(userById);
-
         userById.setFirstName("UpdateFirstName");
+        userById.getDocument().setDocNumber("789456123");
+
+        //When
         userDao.updateUser(userById);
 
+        //Then
         User updateUser = userDao.getUserById(userById.getId());
         assertNotNull(updateUser);
         assertEquals(userById.getFirstName(), updateUser.getFirstName());
+        assertEquals(userById.getDocument().getDocNumber(),updateUser.getDocument().getDocNumber());
     }
 
     @Test
@@ -86,6 +97,7 @@ class UserDaoImplTest {
 
     @Test
     void getListUser() {
+        //Given
         UserInListDto userInListDto = UserHelper.createUserInListDto();
         List<User> listUser = userDao.getListUser(userInListDto, officeDao.getOfficeById(ConstantValue.ID));
         assertFalse(listUser.isEmpty());
@@ -93,11 +105,15 @@ class UserDaoImplTest {
 
     @Test
     void getListUserFirstName() {
+        //Given
         UserInListDto userInListDto = UserHelper.createUserInListDto();
         userInListDto.setFirstName("Иванов");
-        List<User> listUser = userDao.getListUser(userInListDto, officeDao.getOfficeById(ConstantValue.ID));
-        assertFalse(listUser.isEmpty());
 
+        //When
+        List<User> listUser = userDao.getListUser(userInListDto, officeDao.getOfficeById(ConstantValue.ID));
+
+        //Then
+        assertFalse(listUser.isEmpty());
         assertThat(listUser.stream()
                         .map(User::getFirstName)
                         .collect(Collectors.toList())
@@ -106,10 +122,15 @@ class UserDaoImplTest {
 
     @Test
     void getListUserFirstAndLastName() {
+        //Given
         UserInListDto userInListDto = UserHelper.createUserInListDto();
         userInListDto.setFirstName("Иванов");
         userInListDto.setSecondName("Иван");
+
+        //When
         List<User> listUser = userDao.getListUser(userInListDto, officeDao.getOfficeById(ConstantValue.ID));
+
+        //Then
         assertFalse(listUser.isEmpty());
 
         User tempUser = listUser.stream()
@@ -124,13 +145,18 @@ class UserDaoImplTest {
 
     @Test
     void getListUserAllField() {
+        //Given
         UserInListDto userInListDto = UserHelper.createUserInListDto();
         userInListDto.setFirstName("Иванов");
         userInListDto.setSecondName("Иван");
         userInListDto.setMiddleName("Иванович");
         userInListDto.setPosition("водитель");
         userInListDto.setDocCode("22");
+
+        //When
         List<User> listUser = userDao.getListUser(userInListDto, officeDao.getOfficeById(ConstantValue.ID));
+
+        //Then
         assertFalse(listUser.isEmpty());
 
         User tempUser = listUser.stream()

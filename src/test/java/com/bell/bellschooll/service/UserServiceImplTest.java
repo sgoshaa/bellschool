@@ -4,6 +4,7 @@ import com.bell.bellschooll.dao.CountryDao;
 import com.bell.bellschooll.dao.DocumentTypeDao;
 import com.bell.bellschooll.dao.UserDao;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
+import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
@@ -29,14 +30,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -65,94 +68,165 @@ class UserServiceImplTest {
     @Test
     @Transactional
     void addUser() {
+        //Given
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
-        DocumentType documentType = new DocumentType();
-        documentType.setId(1);
-        documentType.setName("тип документа");
-        documentType.setCode("21");
-        documentType.setVersion(1);
-
-        when(documentTypeDao.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(documentType);
-        Country country = new Country();
-        country.setCode(643);
-        country.setName("Страна");
-        country.setId(1);
-        when(countryDao.getCountryByCode(643)).thenReturn(country);
-
-        Organization organization = OrganizationHelper.createOrganization();
-        organization.setId(1);
-
-        Office office = new Office();
-        office.setId(1);
-        office.setOrganization(organization);
-        office.setName("name");
-
-        when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
+        DocumentType documentType = UserHelper.createDocumentTypeForTest();
+        Country country = UserHelper.createCountryForTestUser();
+        Office office = OfficeHelper.createOffice();
 
         User user = userMapper.dtoToDomain(userInSaveDto);
-
         user.setOffice(office);
         user.setCountry(country);
 
-        Document document = new Document();
-        document.setUser(user);
+        Document document = documentMapper.dtoToDomain(userInSaveDto);
         document.setDocType(documentType);
-        document.setDocNumber(userInSaveDto.getDocNumber());
-        document.setDocDate(userInSaveDto.getDocDate());
-//        user.setDocument(document);
+        document.setUser(user);
 
-        doNothing().when(userDao).addUser(user);
+        user.setDocument(document);
 
+        when(countryDao.getCountryByCode(643)).thenReturn(country);
+        when(documentTypeDao.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(documentType);
+        when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
+
+        //When
         ResponseEntity<SuccessDto> successDtoResponseEntity = userService.addUser(userInSaveDto);
 
+        //Then
         verify(userDao).addUser(user);
 
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 
     @Test
+    @Transactional
     void addUserFailDocumentType() {
-        assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto("1005")));
+        String failDocCode = "1005";
+        when(documentTypeDao.getDocumentTypeByCode(failDocCode)).thenReturn(null);
+        assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(failDocCode)));
     }
 
     @Test
+    @Transactional
     void addUserFailCountryCode() {
-        assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(1005)));
+        //Given
+        UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
+        DocumentType documentType = UserHelper.createDocumentTypeForTest();
+        Country country = UserHelper.createCountryForTestUser();
+        Organization organization = OrganizationHelper.createOrganization();
+        organization.setId(1);
+        Office office = OfficeHelper.createOffice();
+
+        User user = userMapper.dtoToDomain(userInSaveDto);
+        user.setOffice(office);
+        user.setCountry(country);
+
+        Document document = documentMapper.dtoToDomain(userInSaveDto);
+        document.setDocType(documentType);
+        document.setUser(user);
+
+        user.setDocument(document);
+
+        when(documentTypeDao.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(documentType);
+        when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
+
+        int failCountryCode = 1005;
+        when(countryDao.getCountryByCode(failCountryCode)).thenReturn(null);
+        //Then
+        assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(failCountryCode)));
     }
 
     @Test
     void getUser() {
-        ResponseEntity<UserOutDto> user = userService.getUser(ConstantValue.ID);
-        assertNotNull(user);
-        assertEquals(ConstantValue.ID, Objects.requireNonNull(user.getBody()).getId());
+        User user = UserHelper.createUser();
+        user.setId(ConstantValue.ID);
+        //Given
+        when(userDao.getUserById(user.getId())).thenReturn(user);
+
+        //When
+        ResponseEntity<UserOutDto> userServiceResponse = userService.getUser(ConstantValue.ID);
+
+        //Then
+        verify(userDao).getUserById(ConstantValue.ID);
+        UserOutDto userOutDto = userServiceResponse.getBody();
+        assertNotNull(userServiceResponse);
+        assertEquals(ConstantValue.ID, userOutDto.getId());
+        assertEquals(user.getFirstName(), userOutDto.getFirstName());
+        assertEquals(user.getSecondName(), userOutDto.getSecondName());
+        assertEquals(user.getMiddleName(), userOutDto.getMiddleName());
     }
 
     @Test
     void getUserFail() {
-        assertThrows(ErrorException.class, () -> userService.getUser(10005));
+        int failIdUser = 10005;
+        when(userDao.getUserById(failIdUser)).thenReturn(null);
+        assertThrows(ErrorException.class, () -> userService.getUser(failIdUser));
+        verify(userDao).getUserById(failIdUser);
     }
 
     @Test
     void getListUser() {
-        List<UserOutListDto> listUser = userService.getListUser(UserHelper.createUserInListDto()).getBody();
+        //Given
+        User first = UserHelper.createUser();
+        first.setFirstName("first");
+        User second = UserHelper.createUser();
+        second.setFirstName("second");
+
+        List<User> users = List.of(first, second);
+        UserInListDto userInListDto = UserHelper.createUserInListDto();
+        Office office = OfficeHelper.createOffice();
+
+        when(officeService.getOffice(ConstantValue.ID)).thenReturn(office);
+        when(userDao.getListUser(userInListDto, office)).thenReturn(users);
+
+        //When
+        ResponseEntity<List<UserOutListDto>> listUser = userService.getListUser(userInListDto);
+
+        //Then
+        verify(userDao).getListUser(userInListDto, office);
+        verify(officeService).getOffice(ConstantValue.ID);
         assertNotNull(listUser);
-        assertTrue(listUser.size() > 0);
-        UserOutListDto userOutListDto = listUser.stream().findFirst().get();
-        assertThat(userOutListDto, hasProperty("firstName", equalTo("Спирин")));
+        assertTrue(listUser.getBody().size() == users.size());
+        assertThat(listUser.getBody()
+                        .stream()
+                        .map(UserOutListDto::getFirstName)
+                        .collect(Collectors.toList())
+                , hasItems(first.getFirstName(),second.getFirstName()));
+
     }
 
     @Test
     void updateUser() {
+        //Given
+        User user = UserHelper.createUser();
+        user.setId(ConstantValue.ID);
+
+        Document document = new Document();
+        document.setDocDate(LocalDate.now());
+        document.setDocNumber("123456");
+        document.setUser(user);
+        document.setDocType(UserHelper.createDocumentTypeForTest());
+        document.setId(ConstantValue.ID);
+        user.setDocument(document);
+
+        Country countryForTestUser = UserHelper.createCountryForTestUser();
+        user.setCountry(countryForTestUser);
+
+        Office office = OfficeHelper.createOffice();
+        office.setId(ConstantValue.ID);
+
         UpdateUserInDto updateUserInDto = UserHelper.createUpdateUserInDto();
+        when(userDao.getUserById(ConstantValue.ID)).thenReturn(user);
+        when(countryDao.getCountryByCode(countryForTestUser.getCode())).thenReturn(countryForTestUser);
+        when(officeService.getOffice(updateUserInDto.getOfficeId())).thenReturn(office);
+
+        //When
         ResponseEntity<SuccessDto> successDtoResponseEntity = userService.updateUser(updateUserInDto);
+
+        //Then
+        verify(userDao).updateUser(user);
+        verify(userDao).getUserById(ConstantValue.ID);
+        verify(countryDao).getCountryByCode(countryForTestUser.getCode());
+        verify(officeService).getOffice(updateUserInDto.getOfficeId());
         assertEquals(ConstantValue.RESULT, Objects.requireNonNull(successDtoResponseEntity.getBody()).getResult());
-
-        UserOutDto user = userService.getUser(updateUserInDto.getId()).getBody();
-
-        assert user != null;
-
-        assertEquals(updateUserInDto.getId(), user.getId());
-        assertEquals(updateUserInDto.getFirstName(), user.getFirstName());
-        assertEquals(updateUserInDto.getPosition(), user.getPosition());
     }
 }
