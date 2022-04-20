@@ -1,6 +1,7 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.OrganizationDao;
+import com.bell.bellschooll.repository.OrganizationRepository;
+import com.bell.bellschooll.repository.specification.OrganizationSpecification;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
@@ -17,18 +18,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис для Organization
  */
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
-    private final OrganizationDao organizationDao;
     private final OrganizationMapper organizationMapper;
+    private final OrganizationRepository organizationRepository;
+    private final OrganizationSpecification organizationSpecification;
 
-    public OrganizationServiceImpl(OrganizationDao organizationDao, OrganizationMapper organizationMapper) {
-        this.organizationDao = organizationDao;
+    public OrganizationServiceImpl(OrganizationMapper organizationMapper, OrganizationRepository organizationRepository, OrganizationSpecification organizationSpecification) {
         this.organizationMapper = organizationMapper;
+        this.organizationRepository = organizationRepository;
+        this.organizationSpecification = organizationSpecification;
     }
 
     /**
@@ -52,7 +56,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @Override
     public ResponseEntity<List<OrganizationListOut>> getOrganizationByOrganizationDtoRequest(OrganisationDtoRequest organisationDTO) {
-        List<Organization> organizationList = organizationDao.getListOrganizationByOrganizationDtoRequest(organisationDTO);
+        List<Organization> organizationList = organizationRepository.findAll(organizationSpecification.getSpecification(organisationDTO));
         List<OrganizationListOut> organizations = new ArrayList<>();
         organizationList.forEach(organization -> {
             organizations.add(organizationMapper.organizationToListDto(organization));
@@ -70,7 +74,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @Transactional
     public ResponseEntity<SuccessDto> addOrganization(OrganizationSaveInDto organizationSaveInDto) {
         Organization organization = organizationMapper.organizationInToDomain(organizationSaveInDto);
-        organizationDao.save(organization);
+        organizationRepository.save(organization);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
@@ -85,7 +89,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public ResponseEntity<SuccessDto> updateOrganization(OrganizationUpdateInDto organizationUpdateInDto) {
         Organization organization = getOrgById(organizationUpdateInDto.getId());
         organization = organizationMapper.organizationInToDomainUpdate(organizationUpdateInDto, organization);
-        organizationDao.update(organization);
+        organizationRepository.save(organization);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
@@ -96,10 +100,10 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @return Organization
      */
     public Organization getOrgById(Integer id) {
-        Organization organization = organizationDao.getOrganizationById(id);
-        if (organization == null) {
+        Optional<Organization> organization = organizationRepository.findById(id);
+        if (organization.isEmpty()) {
             throw new ErrorException("Не найдена организация с id = " + id);
         }
-        return organization;
+        return organization.get();
     }
 }

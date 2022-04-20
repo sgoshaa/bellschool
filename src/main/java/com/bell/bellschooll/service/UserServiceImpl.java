@@ -2,7 +2,6 @@ package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.dao.CountryDao;
 import com.bell.bellschooll.dao.DocumentTypeDao;
-import com.bell.bellschooll.dao.UserDao;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
@@ -17,6 +16,8 @@ import com.bell.bellschooll.model.Document;
 import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.User;
+import com.bell.bellschooll.repository.UserRepository;
+import com.bell.bellschooll.repository.specification.UserSpecification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,27 +25,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис для User
  */
 @Service
-public class  UserServiceImpl implements UserService {
-
-    private final UserDao userDao;
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final DocumentMapper documentMapper;
     private final OfficeService officeService;
     private final CountryDao countryDao;
     private final DocumentTypeDao documentTypeDao;
+    private final UserSpecification userSpecification;
 
-    public UserServiceImpl(UserDao userDao, UserMapper userMapper, DocumentMapper documentMapper, OfficeService officeService, CountryDao countryDao, DocumentTypeDao documentTypeDao) {
-        this.userDao = userDao;
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, DocumentMapper documentMapper, OfficeService officeService, CountryDao countryDao, DocumentTypeDao documentTypeDao, UserSpecification userSpecification) {
+        this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.documentMapper = documentMapper;
         this.officeService = officeService;
         this.countryDao = countryDao;
         this.documentTypeDao = documentTypeDao;
+        this.userSpecification = userSpecification;
     }
 
     /**
@@ -68,7 +71,7 @@ public class  UserServiceImpl implements UserService {
         if (userInSaveDto.getCountryCode() != null) {
             user.setCountry(getCountry(userInSaveDto.getCountryCode()));
         }
-        userDao.addUser(user);
+        userRepository.save(user);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
@@ -104,11 +107,11 @@ public class  UserServiceImpl implements UserService {
     }
 
     private User getUserById(Integer id) {
-        User user = userDao.getUserById(id);
-        if (user == null) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isEmpty()) {
             throw new ErrorException("Пользователь с данным id = " + id + " не найден.");
         }
-        return user;
+        return user.get();
     }
 
     /**
@@ -120,7 +123,7 @@ public class  UserServiceImpl implements UserService {
     @Override
     public ResponseEntity<List<UserOutListDto>> getListUser(UserInListDto userInListDto) {
         Office office = officeService.getOffice(userInListDto.getOfficeId());
-        List<User> users = userDao.getListUser(userInListDto, office);
+        List<User> users = userRepository.findAll(userSpecification.getUserSpecification(userInListDto, office));
         List<UserOutListDto> userOutListDtos = new ArrayList<>();
         users.forEach(user -> userOutListDtos.add(userMapper.domainToOutListDto(user)));
         return new ResponseEntity<>(userOutListDtos, HttpStatus.OK);
@@ -144,7 +147,7 @@ public class  UserServiceImpl implements UserService {
         if (updateUserInDto.getOfficeId() != null) {
             currentUser.setOffice(officeService.getOffice(updateUserInDto.getOfficeId()));
         }
-        userDao.updateUser(currentUser);
+        userRepository.save(currentUser);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 }

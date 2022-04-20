@@ -11,6 +11,8 @@ import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
+import com.bell.bellschooll.repository.OfficeRepository;
+import com.bell.bellschooll.repository.specification.OfficeSpecification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,20 +20,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис для Office
  */
 @Service
 public class OfficeServiceImpl implements OfficeService {
-    private final OfficeDao officeDao;
     private final OfficeMapper officeMapper;
     private final OrganizationService organizationService;
+    private final OfficeRepository officeRepository;
+    private final OfficeSpecification officeSpecification;
 
-    public OfficeServiceImpl(OfficeDao officeDao, OfficeMapper officeMapper, OrganizationService organizationService) {
-        this.officeDao = officeDao;
+    public OfficeServiceImpl(OfficeMapper officeMapper, OrganizationService organizationService, OfficeRepository officeRepository, OfficeSpecification officeSpecification) {
+        this.officeRepository = officeRepository;
         this.officeMapper = officeMapper;
         this.organizationService = organizationService;
+        this.officeSpecification = officeSpecification;
     }
 
     /**
@@ -56,7 +61,7 @@ public class OfficeServiceImpl implements OfficeService {
     public ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto) {
         Organization organization = organizationService.getOrgById(officeDto.getOrgId());
         Office office = officeMapper.dtoToDomain(officeDto, organization);
-        officeDao.addOffice(office);
+        officeRepository.save(office);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
@@ -68,7 +73,7 @@ public class OfficeServiceImpl implements OfficeService {
      */
     public ResponseEntity<List<OfficeListOutDto>> getListOffice(OfficeInListDto officeInListDto) {
         Organization organization = organizationService.getOrgById(officeInListDto.getOrgId());
-        List<Office> offices = officeDao.getListOffice(officeInListDto, organization);
+        List<Office> offices = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto, organization));
         if (offices.isEmpty()) {
             throw new ErrorException("У " + organization.getFullName() + " нет офисов.");
         }
@@ -87,7 +92,7 @@ public class OfficeServiceImpl implements OfficeService {
     public ResponseEntity<SuccessDto> updateOffice(OfficeInUpdateDto officeInUpdateDto) {
         Office office = getOffice(officeInUpdateDto.getId());
         office = officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office);
-        officeDao.updateOffice(office);
+        officeRepository.save(office);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
@@ -98,10 +103,10 @@ public class OfficeServiceImpl implements OfficeService {
      * @return Office
      */
     public Office getOffice(Integer id) {
-        Office office = officeDao.getOfficeById(id);
-        if (office == null) {
-            throw new ErrorException("Офис не найден");
+        Optional<Office> office = officeRepository.findById(id);
+        if (office.isEmpty()) {
+            throw new ErrorException("Офис не найден c таким id= "+id);
         }
-        return office;
+        return office.get();
     }
 }

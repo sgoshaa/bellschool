@@ -45,8 +45,8 @@ class OrganizationServiceImplTest {
     @Autowired
     OrganizationMapper organizationMapper;
 
-    @Autowired
-    private OrganizationService organizationService = new OrganizationServiceImpl(organizationDao, organizationMapper);
+//    @Autowired
+    private OrganizationService organizationService ;//= new OrganizationServiceImpl(organizationDao, organizationMapper, organizationRepository);
 
 
     @Test
