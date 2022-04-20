@@ -49,9 +49,7 @@ class CountryControllerTest {
         when(countryService.getAllCountry()).thenReturn(countryList);
         //When
         mockMvc.perform(
-                        get("/api/countries")
-                                .content(objectMapper.writeValueAsString(countryList))
-                                .contentType(MediaType.APPLICATION_JSON))
+                        get("/api/countries"))
                 //Then
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

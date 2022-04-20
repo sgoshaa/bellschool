@@ -55,9 +55,7 @@ class DocumentControllerTest {
 
         //Then
         mockMvc.perform(
-                        get("/api/docs")
-                                .content(objectMapper.writeValueAsString(dtoList))
-                                .contentType(MediaType.APPLICATION_JSON))
+                        get("/api/docs"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json(objectMapper.writeValueAsString(responseDto)));

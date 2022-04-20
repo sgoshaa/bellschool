@@ -11,7 +11,15 @@ import com.bell.bellschooll.model.Organization;
  * Класс для помощи при тестировании сервиса организаций
  */
 public class OrganizationHelper {
-    private static String TEST_ORG_ADDRESS = "Test address";
+    public static final String FULL_NAME = "full name";
+    public static final String ADDRESS = "address";
+    public static final String PHONE = "2-57-05";
+    public static final String NAME = "name";
+    public static final int KPP = 4567891;
+    private static final String TEST_ORG_ADDRESS = "Test address";
+    public static final int INN = 456456789;
+    public static final String NEW_ORGANIZATION = "new organization";
+    public static final String FN_ORGANIZATION = "FN organization";
 
     public static OrganizationSaveInDto createOrganizationSaveInDto() {
         OrganizationSaveInDto organizationSaveInDto = new OrganizationSaveInDto();
@@ -23,14 +31,15 @@ public class OrganizationHelper {
         organizationSaveInDto.setIsActive(true);
         organizationSaveInDto.setPhone("89374567891");
         return organizationSaveInDto;
+
     }
 
     public static OrganizationUpdateInDto createOrganizationUpdateInDto() {
         OrganizationUpdateInDto organizationUpdateInDto = new OrganizationUpdateInDto();
         organizationUpdateInDto.setId(ConstantValue.ID);
         organizationUpdateInDto.setName("СБЕР");
-        organizationUpdateInDto.setInn(456456789);
-        organizationUpdateInDto.setKpp(4567891);
+        organizationUpdateInDto.setInn(INN);
+        organizationUpdateInDto.setKpp(KPP);
         organizationUpdateInDto.setIsActive(true);
         organizationUpdateInDto.setFullName("ОАО Сбер");
         organizationUpdateInDto.setAddress("Уфа");
@@ -45,30 +54,30 @@ public class OrganizationHelper {
 
     public static Organization createOrganization() {
         Organization organization = new Organization();
-        organization.setPhone("2-57-05");
-        organization.setKpp(45645646);
-        organization.setInn(1565464564);
-        organization.setName("new organization");
-        organization.setAddress("address");
-        organization.setFullName("FN organization");
+        organization.setPhone(PHONE);
+        organization.setKpp(KPP);
+        organization.setInn(INN);
+        organization.setName(NEW_ORGANIZATION);
+        organization.setAddress(ADDRESS);
+        organization.setFullName(FN_ORGANIZATION);
         organization.setIsActive(true);
         return organization;
     }
 
     public static OrganizationOutDto createOrganizationOutDto() {
         OrganizationOutDto organizationOutDto = new OrganizationOutDto();
-        organizationOutDto.setFullName("full name");
+        organizationOutDto.setFullName(FULL_NAME);
         organizationOutDto.setId(ConstantValue.ID);
-        organizationOutDto.setAddress("address");
-        organizationOutDto.setPhone("2-57-05");
-        organizationOutDto.setName("name");
+        organizationOutDto.setAddress(ADDRESS);
+        organizationOutDto.setPhone(PHONE);
+        organizationOutDto.setName(NAME);
         organizationOutDto.setIsActive(true);
         return organizationOutDto;
     }
 
     public static OrganizationListOut createOrganizationListOutDto() {
         OrganizationListOut organizationListOut = new OrganizationListOut();
-        organizationListOut.setName("name");
+        organizationListOut.setName(NAME);
         organizationListOut.setIsActive(true);
         organizationListOut.setId(ConstantValue.ID);
         return organizationListOut;

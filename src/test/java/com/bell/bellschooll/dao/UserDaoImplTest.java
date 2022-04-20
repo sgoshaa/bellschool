@@ -2,11 +2,9 @@ package com.bell.bellschooll.dao;
 
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.model.Document;
-import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.User;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.UserHelper;
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
