@@ -1,6 +1,5 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.OfficeDao;
 import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
 import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
@@ -11,27 +10,27 @@ import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
+import com.bell.bellschooll.repository.OfficeRepository;
+import com.bell.bellschooll.repository.specification.OfficeSpecification;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OfficeHelper;
 import com.bell.bellschooll.util.OrganizationHelper;
-import org.checkerframework.checker.units.qual.A;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -42,7 +41,7 @@ import static org.mockito.Mockito.when;
 class OfficeServiceImplTest {
 
     @MockBean
-    OfficeDao officeDao;
+    OfficeRepository officeRepository;
 
     @Autowired
     OfficeMapper officeMapper;
@@ -53,41 +52,59 @@ class OfficeServiceImplTest {
     @MockBean
     OrganizationService organizationService;
 
+    @MockBean
+    OfficeSpecification officeSpecification;
+
     @Test
+    @DisplayName("Метод проверяет работу метода сервиса getOfficeById()")
     void getOfficeById() {
-        Office newOffice = OfficeHelper.createOffice(OrganizationHelper.createOrganization());
-        newOffice.setId(ConstantValue.ID);
+        //Given
+        Office office = OfficeHelper.createOffice(OrganizationHelper.createOrganization());
+        office.setId(ConstantValue.ID);
 
-        when(officeDao.getOfficeById(ConstantValue.ID)).thenReturn(newOffice);
-        ResponseEntity<OfficeOutDto> office = officeService.getOfficeById(ConstantValue.ID);
-        verify(officeDao).getOfficeById(ConstantValue.ID);
+        when(officeRepository.findById(ConstantValue.ID)).thenReturn(Optional.of(office));
 
-        assertNotNull(office);
-        assertEquals(ConstantValue.ID, office.getBody().getId());
-        assertEquals(newOffice.getName(), office.getBody().getName());
+        //When
+        ResponseEntity<OfficeOutDto> officeById = officeService.getOfficeById(ConstantValue.ID);
+
+        //Then
+        verify(officeRepository).findById(ConstantValue.ID);
+        assertNotNull(officeById);
+        assertEquals(ConstantValue.ID, officeById.getBody().getId());
+        assertEquals(office.getName(), officeById.getBody().getName());
+        assertEquals(office.getPhone(), officeById.getBody().getPhone());
+        assertEquals(office.getAddress(), officeById.getBody().getAddress());
+        assertEquals(office.getIsActive(), officeById.getBody().getIsActive());
     }
 
     @Test
     @Transactional
+    @DisplayName("Метод проверяет работу метода сервиса addOffice()")
     void addOffice() {
+        //Given
         Organization organization = OrganizationHelper.createOrganization();
         organization.setId(ConstantValue.ID);
         organization.setVersion(1);
+        OfficeInSaveDto officeInSaveDto = OfficeHelper.createOfficeInSaveDto();
+        Office entity = officeMapper.dtoToDomain(officeInSaveDto, organization);
 
         when(organizationService.getOrgById(organization.getId())).thenReturn(organization);
+        when(officeRepository.save(entity)).thenReturn(entity);
 
-        OfficeInSaveDto officeInSaveDto = OfficeHelper.createOfficeInSaveDto();
+        //When
         ResponseEntity<SuccessDto> successDtoResponseEntity = officeService.addOffice(officeInSaveDto);
 
-        verify(officeDao).addOffice(officeMapper.dtoToDomain(officeInSaveDto, organization));
-
+        //Then
+        verify(organizationService).getOrgById(organization.getId());
+        verify(officeRepository).save(entity);
         assertNotNull(successDtoResponseEntity);
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 
     @Test
+    @DisplayName("Метод проверяет работы метода сервиса listOffice() ")
     void listOffice() {
-
+        //Given
         Organization organization = OrganizationHelper.createOrganization();
         organization.setId(ConstantValue.ID);
 
@@ -100,11 +117,15 @@ class OfficeServiceImplTest {
         List<Office> officeList = List.of(first, second);
         OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
 
-        when(officeDao.getListOffice(officeInListDto, organization)).thenReturn(officeList);
+        when(officeRepository.findAll(officeSpecification
+                .getSpecification(officeInListDto, organization))).thenReturn(officeList);
 
+        //When
         ResponseEntity<List<OfficeListOutDto>> listResponseEntity = officeService.getListOffice(officeInListDto);
 
-        verify(officeDao).getListOffice(officeInListDto, organization);
+        //Then
+        verify(organizationService).getOrgById(organization.getId());
+        verify(officeRepository).findAll(officeSpecification.getSpecification(officeInListDto, organization));
 
         assertNotNull(listResponseEntity);
         assertEquals(officeList.size(), Objects.requireNonNull(listResponseEntity.getBody()).size());
@@ -115,39 +136,54 @@ class OfficeServiceImplTest {
     }
 
     @Test
+    @DisplayName("Метод проверяет рабоату метода сервиса updateOffice() ")
     void updateOffice() {
+        //Given
         OfficeInUpdateDto officeInUpdateDto = OfficeHelper.createOfficeInUpdateDto();
         Office office = OfficeHelper.createOffice(OrganizationHelper.createOrganization());
         office.setId(ConstantValue.ID);
+        Office entity = officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office);
 
-        when(officeDao.getOfficeById(office.getId())).thenReturn(office);
+        when(officeRepository.findById(office.getId())).thenReturn(Optional.of(office));
+        when(officeRepository.save(entity)).thenReturn(entity);
+
+        //Then
         ResponseEntity<SuccessDto> successDtoResponseEntity = officeService.updateOffice(officeInUpdateDto);
 
-        verify(officeDao).updateOffice(officeMapper.updateOfficeDtoToDomain(officeInUpdateDto, office));
+        //When
+        verify(officeRepository).findById(office.getId());
+        verify(officeRepository).save(entity);
         assertNotNull(successDtoResponseEntity);
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 
     @Test
+    @DisplayName("Метод проверяет работу метода сервиса getOffice() и выбрасывает исключение")
     void getOffice() {
-        when(officeDao.getOfficeById(ConstantValue.ID)).thenReturn(null);
+        //When
+        when(officeRepository.findById(ConstantValue.ID)).thenReturn(Optional.empty());
 
+        //then
         assertThrows(ErrorException.class, () -> officeService.getOffice(ConstantValue.ID));
-        verify(officeDao).getOfficeById(ConstantValue.ID);
+        verify(officeRepository).findById(ConstantValue.ID);
     }
 
     @Test
+    @DisplayName("Метод проверяет работу сервиса listOffice ,который возвращает пустое значение ")
     void listOfficeEmptyList() {
+        //Given
         OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-        officeInListDto.setOrgId(1);
         Organization organization = OrganizationHelper.createOrganization();
-        organization.setId(1);
 
-        when(officeDao.getListOffice(officeInListDto, organization)).thenReturn(Collections.emptyList());
+        when(officeRepository.findAll(officeSpecification
+                .getSpecification(officeInListDto, organization))).thenReturn(Collections.emptyList());
         when(organizationService.getOrgById(officeInListDto.getOrgId())).thenReturn(organization);
 
+        //When
         assertThrows(ErrorException.class, () -> officeService.getListOffice(officeInListDto));
-        verify(officeDao).getListOffice(officeInListDto, organization);
+
+        //Then
+        verify(officeRepository).findAll(officeSpecification.getSpecification(officeInListDto, organization));
         verify(organizationService).getOrgById(officeInListDto.getOrgId());
     }
 }

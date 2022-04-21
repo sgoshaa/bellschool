@@ -54,6 +54,7 @@ public class OrganizationHelper {
 
     public static Organization createOrganization() {
         Organization organization = new Organization();
+        organization.setId(ConstantValue.ID);
         organization.setPhone(PHONE);
         organization.setKpp(KPP);
         organization.setInn(INN);

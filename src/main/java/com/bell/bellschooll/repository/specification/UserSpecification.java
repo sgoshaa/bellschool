@@ -6,10 +6,7 @@ import com.bell.bellschooll.model.User;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 
 /**
@@ -19,11 +16,11 @@ import java.util.ArrayList;
 public class UserSpecification {
     /**
      * меотд для создания спецификации для фильтрации пользователей
+     *
      * @param userInListDto объект с параметрами для фильтрации
-     * @param office офис
+     * @param office        офис
      * @return Specification<User>
      */
-
     public Specification<User> getUserSpecification(UserInListDto userInListDto, Office office) {
         return (root, query, criteriaBuilder) -> {
             ArrayList<Predicate> predicates = new ArrayList<>();

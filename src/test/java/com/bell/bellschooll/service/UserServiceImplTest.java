@@ -18,10 +18,13 @@ import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.model.User;
+import com.bell.bellschooll.repository.UserRepository;
+import com.bell.bellschooll.repository.specification.UserSpecification;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OfficeHelper;
 import com.bell.bellschooll.util.OrganizationHelper;
 import com.bell.bellschooll.util.UserHelper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -50,21 +54,27 @@ class UserServiceImplTest {
     UserService userService;
 
     @MockBean
-    UserDao userDao;
+    UserRepository userRepository;
+
+    @MockBean
+    UserSpecification userSpecification;
+
     @Autowired
     UserMapper userMapper;
+
     @Autowired
     DocumentMapper documentMapper;
+
     @MockBean
     OfficeService officeService;
+
     @MockBean
     CountryDao countryDao;
+
     @MockBean
     DocumentTypeDao documentTypeDao;
 
-
     @Test
-    @Transactional
     void addUser() {
         //Given
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
@@ -85,26 +95,33 @@ class UserServiceImplTest {
         when(countryDao.getCountryByCode(643)).thenReturn(country);
         when(documentTypeDao.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(documentType);
         when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
+        when(userRepository.save(user)).thenReturn(user);
 
         //When
         ResponseEntity<SuccessDto> successDtoResponseEntity = userService.addUser(userInSaveDto);
 
         //Then
-        verify(userDao).addUser(user);
-
+        verify(userRepository).save(user);
+        verify(countryDao).getCountryByCode(643);
+        verify(documentTypeDao).getDocumentTypeByCode(userInSaveDto.getDocCode());
+        verify(officeService).getOffice(userInSaveDto.getOfficeId());
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
     }
 
     @Test
-    @Transactional
+    @DisplayName("Метод проверяет работу метода сервиса addUser с неправильным кодом документа")
     void addUserFailDocumentType() {
+        //Given
         String failDocCode = "1005";
         when(documentTypeDao.getDocumentTypeByCode(failDocCode)).thenReturn(null);
+        //When
         assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(failDocCode)));
+        //Then
+        verify(documentTypeDao).getDocumentTypeByCode(failDocCode);
     }
 
     @Test
-    @Transactional
+    @DisplayName("Метод проверяет работу метода сервиса addUser() с неправильным кодом страны ")
     void addUserFailCountryCode() {
         //Given
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
@@ -131,20 +148,23 @@ class UserServiceImplTest {
         when(countryDao.getCountryByCode(failCountryCode)).thenReturn(null);
         //Then
         assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(failCountryCode)));
+        verify(documentTypeDao).getDocumentTypeByCode(userInSaveDto.getDocCode());
+        verify(officeService).getOffice(userInSaveDto.getOfficeId());
     }
 
     @Test
+    @DisplayName("Метод проверяет работу метода getUser()")
     void getUser() {
         User user = UserHelper.createUser();
         user.setId(ConstantValue.ID);
         //Given
-        when(userDao.getUserById(user.getId())).thenReturn(user);
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         //When
         ResponseEntity<UserOutDto> userServiceResponse = userService.getUser(ConstantValue.ID);
 
         //Then
-        verify(userDao).getUserById(ConstantValue.ID);
+        verify(userRepository).findById(ConstantValue.ID);
         UserOutDto userOutDto = userServiceResponse.getBody();
         assertNotNull(userServiceResponse);
         assertEquals(ConstantValue.ID, userOutDto.getId());
@@ -154,14 +174,18 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Метод проверяет работу метода getUser() с неправильным ID=10005")
     void getUserFail() {
+        //Given
         int failIdUser = 10005;
-        when(userDao.getUserById(failIdUser)).thenReturn(null);
-        assertThrows(ErrorException.class, () -> userService.getUser(failIdUser));
-        verify(userDao).getUserById(failIdUser);
+        when(userRepository.findById(failIdUser)).thenReturn(Optional.empty());
+        //Then
+        assertThrows(ErrorException.class, /*When*/() -> userService.getUser(failIdUser));
+        verify(userRepository).findById(failIdUser);
     }
 
     @Test
+    @DisplayName("Метод проверяет работу метода getListUser() ")
     void getListUser() {
         //Given
         User first = UserHelper.createUser();
@@ -174,25 +198,26 @@ class UserServiceImplTest {
         Office office = OfficeHelper.createOffice();
 
         when(officeService.getOffice(ConstantValue.ID)).thenReturn(office);
-        when(userDao.getListUser(userInListDto, office)).thenReturn(users);
+        when(userRepository.findAll(userSpecification.getUserSpecification(userInListDto, office))).thenReturn(users);
 
         //When
         ResponseEntity<List<UserOutListDto>> listUser = userService.getListUser(userInListDto);
 
         //Then
-        verify(userDao).getListUser(userInListDto, office);
+        verify(userRepository).findAll(userSpecification.getUserSpecification(userInListDto, office));
         verify(officeService).getOffice(ConstantValue.ID);
         assertNotNull(listUser);
-        assertTrue(listUser.getBody().size() == users.size());
+        assertEquals(listUser.getBody().size(), users.size());
         assertThat(listUser.getBody()
                         .stream()
                         .map(UserOutListDto::getFirstName)
                         .collect(Collectors.toList())
-                , hasItems(first.getFirstName(),second.getFirstName()));
+                , hasItems(first.getFirstName(), second.getFirstName()));
 
     }
 
     @Test
+    @DisplayName("Метод проверяет метод updateUser()")
     void updateUser() {
         //Given
         User user = UserHelper.createUser();
@@ -213,7 +238,7 @@ class UserServiceImplTest {
         office.setId(ConstantValue.ID);
 
         UpdateUserInDto updateUserInDto = UserHelper.createUpdateUserInDto();
-        when(userDao.getUserById(ConstantValue.ID)).thenReturn(user);
+        when(userRepository.findById(ConstantValue.ID)).thenReturn(Optional.of(user));
         when(countryDao.getCountryByCode(countryForTestUser.getCode())).thenReturn(countryForTestUser);
         when(officeService.getOffice(updateUserInDto.getOfficeId())).thenReturn(office);
 
@@ -221,8 +246,8 @@ class UserServiceImplTest {
         ResponseEntity<SuccessDto> successDtoResponseEntity = userService.updateUser(updateUserInDto);
 
         //Then
-        verify(userDao).updateUser(user);
-        verify(userDao).getUserById(ConstantValue.ID);
+        verify(userRepository).save(user);
+        verify(userRepository).findById(ConstantValue.ID);
         verify(countryDao).getCountryByCode(countryForTestUser.getCode());
         verify(officeService).getOffice(updateUserInDto.getOfficeId());
         assertEquals(ConstantValue.RESULT, Objects.requireNonNull(successDtoResponseEntity.getBody()).getResult());

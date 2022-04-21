@@ -1,8 +1,10 @@
-package com.bell.bellschooll.dao;
+package com.bell.bellschooll.repository;
 
+import com.bell.bellschooll.dao.OrganizationDao;
 import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.model.Office;
-import com.bell.bellschooll.model.Organization;
+import com.bell.bellschooll.repository.OfficeRepository;
+import com.bell.bellschooll.repository.specification.OfficeSpecification;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OfficeHelper;
 import org.junit.jupiter.api.Test;
@@ -19,33 +21,40 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
-class OfficeDaoImplTest {
+class OfficeRepositoryTest {
 
+    public static final String BELL_1 = "офис Bell1";
+    public static final String PHONE = "12321321321";
     @Autowired
-    OfficeDaoImpl officeDao;
+    OfficeRepository officeRepository;
+
     @Autowired
     OrganizationDao organizationDao;
 
-    @Test
-    void getOfficeById() {
-        Office officeById = officeDao.getOfficeById(1);
+    @Autowired
+    OfficeSpecification officeSpecification;
 
+    @Test
+    void getById() {
+        Office officeById = officeRepository.getById(ConstantValue.ID);
         assertNotNull(officeById);
-        assertEquals(1, officeById.getId());
+        assertEquals(ConstantValue.ID, officeById.getId());
     }
 
     @Test
-    void addOffice() {
+    void saveOffice() {
+        //Given
         Office office = OfficeHelper.createOffice(organizationDao.getOrganizationById(ConstantValue.ID));
-        officeDao.addOffice(office);
+        Office savedOffice = officeRepository.save(office);
 
-        Office officeById = officeDao.getOfficeById(office.getId());
+        //When
+        Office officeById = officeRepository.getById(savedOffice.getId());
 
+        //Then
         assertNotNull(officeById);
         assertEquals(office.getId(), officeById.getId());
         assertEquals(office.getName(), officeById.getName());
@@ -57,31 +66,50 @@ class OfficeDaoImplTest {
 
     @Test
     void getListOffice() {
+        //Given
         OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-        List<Office> listOffice = officeDao.getListOffice(officeInListDto, organizationDao.getOrganizationById(ConstantValue.ID));
 
+        //When
+        List<Office> listOffice = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto
+                , organizationDao.getOrganizationById(ConstantValue.ID)));
+
+        //Then
         assertFalse(listOffice.isEmpty());
+        assertThat(listOffice.stream()
+                        .map(Office::getName)
+                        .collect(Collectors.toList())
+                , hasItem(BELL_1));
     }
 
     @Test
     void getListOfficeNameAndPhone() {
+        //Given
         OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-        officeInListDto.setName("офис Bell1");
-        officeInListDto.setPhone("12321321321");
-        List<Office> listOffice = officeDao.getListOffice(officeInListDto, organizationDao.getOrganizationById(ConstantValue.ID));
+        officeInListDto.setName(BELL_1);
+        officeInListDto.setPhone(PHONE);
 
+        //When
+        List<Office> listOffice = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto
+                , organizationDao.getOrganizationById(ConstantValue.ID)));
+
+        //Then
         assertFalse(listOffice.isEmpty());
         assertThat(listOffice.stream().map(Office::getName).collect(Collectors.toList()), hasItem(officeInListDto.getName()));
     }
 
     @Test
     void getListOfficeNameAndPhoneAndIsActive() {
+        //Given
         OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-        officeInListDto.setName("офис Bell1");
-        officeInListDto.setPhone("12321321321");
+        officeInListDto.setName(BELL_1);
+        officeInListDto.setPhone(PHONE);
         officeInListDto.setIsActive(true);
-        List<Office> listOffice = officeDao.getListOffice(officeInListDto, organizationDao.getOrganizationById(ConstantValue.ID));
 
+        //When
+        List<Office> listOffice = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto
+                , organizationDao.getOrganizationById(ConstantValue.ID)));
+
+        //Then
         assertFalse(listOffice.isEmpty());
         assertThat(listOffice.stream()
                 .findFirst()
@@ -90,13 +118,17 @@ class OfficeDaoImplTest {
 
     @Test
     void updateOffice() {
-        Office officeById = officeDao.getOfficeById(ConstantValue.ID);
+        //Given
+        Office officeById = officeRepository.getById(ConstantValue.ID);
         officeById.setName("UpdateName");
-        officeDao.updateOffice(officeById);
 
-        Office updateOffice = officeDao.getOfficeById(officeById.getId());
+        //When
+        Office updatedOffice = officeRepository.save(officeById);
 
-        assertNotNull(updateOffice);
-        assertEquals(officeById.getName(), updateOffice.getName());
+        //Then
+        Office actualOffice = officeRepository.getById(updatedOffice.getId());
+
+        assertNotNull(actualOffice);
+        assertEquals(officeById.getName(), actualOffice.getName());
     }
 }
