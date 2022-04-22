@@ -1,6 +1,7 @@
 package com.bell.bellschooll.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -49,6 +50,7 @@ public class Document {
     /**
      * Внешний ключ на таблицу юзер
      */
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @MapsId
     @OneToOne(fetch = FetchType.LAZY)
@@ -58,17 +60,4 @@ public class Document {
     @ManyToOne
     @JoinColumn(name = "doc_type_id", nullable = false)
     private DocumentType docType;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Document document = (Document) o;
-        return Objects.equals(id, document.id) && Objects.equals(version, document.version) && Objects.equals(docNumber, document.docNumber) && Objects.equals(docDate, document.docDate) && Objects.equals(docType, document.docType);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, version, docNumber, docDate, docType);
-    }
 }
