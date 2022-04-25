@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 1-7
-      author: Admin (generated)
+      author: IASpirin
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: doc_type_id
@@ -11,17 +11,17 @@ databaseChangeLog:
             referencedTableName: document_type
   - changeSet:
       id: 1-8
-      author: Admin
+      author: IASpirin
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: id
             baseTableName: document
             constraintName: FK_DOCUMENT_ON_ID
             referencedColumnNames: id
-            referencedTableName: user1
+            referencedTableName: user
   - changeSet:
       id: 1-9
-      author: Admin
+      author: IASpirin
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: org_id
@@ -31,11 +31,11 @@ databaseChangeLog:
             referencedTableName: organization
   - changeSet:
       id: 1-10
-      author: Admin
+      author: IASpirin
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: country_id
-            baseTableName: user1
+            baseTableName: user
             constraintName: FK_USER_ON_COUNTRY
             referencedColumnNames: id
             referencedTableName: country
@@ -51,11 +51,11 @@ databaseChangeLog:
 #            referencedTableName: document
   - changeSet:
       id: 1-12
-      author: Admin
+      author: IASpirin
       changes:
         - addForeignKeyConstraint:
             baseColumnNames: office_id
-            baseTableName: user1
+            baseTableName: user
             constraintName: FK_USER_ON_OFFICE
             referencedColumnNames: id
             referencedTableName: office

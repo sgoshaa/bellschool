@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
-      id: 4-1
-      author: Admin
+      id: 3-1
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -10,17 +10,17 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 101
+                  value: 1
               - column:
                   name: name
-                  value: Паспорт гражданина РФ
+                  value: Российская Федерация
               - column:
                   name: code
-                  value: 21
-            tableName: document_type
+                  value: 643
+            tableName: country
   - changeSet:
-      id: 4-2
-      author: Admin
+      id: 3-2
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -29,11 +29,11 @@ databaseChangeLog:
                   value: 1
               - column:
                   name: id
-                  value: 102
+                  value: 2
               - column:
                   name: name
-                  value: Водительское удостоверение
+                  value: США
               - column:
                   name: code
-                  value: 22
-            tableName: document_type
+                  value: 622
+            tableName: country

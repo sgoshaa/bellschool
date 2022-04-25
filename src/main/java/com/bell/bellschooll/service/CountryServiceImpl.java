@@ -1,6 +1,6 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.CountryDao;
+import com.bell.bellschooll.repository.CountryRepository;
 import com.bell.bellschooll.dto.response.CountryDto;
 import com.bell.bellschooll.mapper.CountryMapper;
 import com.bell.bellschooll.model.Country;
@@ -13,11 +13,11 @@ import java.util.List;
  */
 @Service
 public class CountryServiceImpl implements CountryService {
-    private final CountryDao countryDao;
+    private final CountryRepository countryRepository;
     private final CountryMapper countryMapper;
 
-    public CountryServiceImpl(CountryDao countryDao, CountryMapper countryMapper) {
-        this.countryDao = countryDao;
+    public CountryServiceImpl(CountryRepository countryRepository, CountryMapper countryMapper) {
+        this.countryRepository = countryRepository;
         this.countryMapper = countryMapper;
     }
 
@@ -25,7 +25,7 @@ public class CountryServiceImpl implements CountryService {
      * @see CountryService#getAllCountry()
      */
     public List<CountryDto> getAllCountry() {
-        List<Country> countryList = countryDao.findAll();
+        List<Country> countryList = countryRepository.findAll();
         return countryMapper.toListDto(countryList);
     }
 }

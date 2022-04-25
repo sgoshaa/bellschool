@@ -29,8 +29,8 @@ public interface UserMapper {
      * @return
      */
     @Mapping(target = "docName", source = "document.docType.name")
-    @Mapping(target = "docNumber", source = "document.docNumber")
-    @Mapping(target = "docDate", source = "document.docDate")
+    @Mapping(target = "docNumber", source = "document.number")
+    @Mapping(target = "docDate", source = "document.date")
     @Mapping(target = "citizenshipName", source = "country.name")
     @Mapping(target = "citizenshipCode", source = "country.code")
     UserOutDto domainToDto(User user);

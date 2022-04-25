@@ -52,7 +52,7 @@ public class UserOutDto {
     /**
      * Код страны
      */
-    private Integer citizenshipCode;
+    private String citizenshipCode;
     /**
      * Поле isIdentified
      */

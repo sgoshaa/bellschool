@@ -1,8 +1,8 @@
 package com.bell.bellschooll.model;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,18 +14,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
-import javax.persistence.Table;
 import javax.persistence.Version;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
-@Table(name = "Document")
 @Getter
 @Setter
-@Data
+@EqualsAndHashCode
+@RequiredArgsConstructor
 @ToString
 public class Document {
+
     /**
      * Уникальный идентификатор
      */
@@ -41,12 +40,12 @@ public class Document {
      * Номер документа
      */
     @Column(length = 50)
-    private String docNumber;
+    private String number;
     /**
      * Дата документа
      */
     @Column
-    private LocalDate docDate;
+    private LocalDate date;
     /**
      * Внешний ключ на таблицу юзер
      */

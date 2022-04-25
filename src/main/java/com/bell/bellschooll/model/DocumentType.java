@@ -1,17 +1,22 @@
 package com.bell.bellschooll.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Version;
 
 
-@Data
+
 @Entity
-@Table(name = "Document_type")
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
 public class DocumentType {
     /**
      * Уникальный идентификатор

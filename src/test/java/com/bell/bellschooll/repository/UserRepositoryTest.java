@@ -1,12 +1,8 @@
 package com.bell.bellschooll.repository;
 
-import com.bell.bellschooll.dao.CountryDao;
-import com.bell.bellschooll.dao.DocumentTypeDao;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.model.Document;
 import com.bell.bellschooll.model.User;
-import com.bell.bellschooll.repository.OfficeRepository;
-import com.bell.bellschooll.repository.UserRepository;
 import com.bell.bellschooll.repository.specification.UserSpecification;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.UserHelper;
@@ -35,10 +31,10 @@ class UserRepositoryTest {
     UserRepository userRepository;
 
     @Autowired
-    DocumentTypeDao documentTypeDao;
+    DocumentTypeRepository documentTypeRepository;
 
     @Autowired
-    CountryDao countryDao;
+    CountryRepository countryRepository;
 
     @Autowired
     OfficeRepository officeRepository;
@@ -54,12 +50,12 @@ class UserRepositoryTest {
 
         Document document = new Document();
         document.setUser(newUser);
-        document.setDocType(documentTypeDao.getDocumentTypeByCode("21"));
-        document.setDocDate(LocalDate.now());
-        document.setDocNumber("12120 322323");
+        document.setDocType(documentTypeRepository.getDocumentTypeByCode("21"));
+        document.setDate(LocalDate.now());
+        document.setNumber("12120 322323");
 
         newUser.setDocument(document);
-        newUser.setCountry(countryDao.getCountryByCode(643));
+        newUser.setCountry(countryRepository.getCountryByCode("643"));
         newUser.setOffice(officeRepository.getById(ConstantValue.ID));
 
         //When
@@ -72,8 +68,8 @@ class UserRepositoryTest {
         assertEquals(savedUser.getFirstName(), userById.getFirstName());
         assertEquals(savedUser.getMiddleName(), userById.getMiddleName());
         assertEquals(savedUser.getSecondName(), userById.getSecondName());
-        assertEquals(savedUser.getDocument().getDocNumber(), userById.getDocument().getDocNumber());
-        assertEquals(savedUser.getDocument().getDocDate(), userById.getDocument().getDocDate());
+        assertEquals(savedUser.getDocument().getNumber(), userById.getDocument().getNumber());
+        assertEquals(savedUser.getDocument().getDate(), userById.getDocument().getDate());
         assertEquals(savedUser.getDocument().getDocType(), userById.getDocument().getDocType());
 
     }
@@ -84,7 +80,7 @@ class UserRepositoryTest {
         //Given
         User userById = userRepository.getById(ConstantValue.ID);
         userById.setFirstName("UpdateFirstName");
-        userById.getDocument().setDocNumber("789456123");
+        userById.getDocument().setNumber("789456123");
 
         //When
         User updatedUser = userRepository.save(userById);
@@ -93,7 +89,7 @@ class UserRepositoryTest {
         User byId = userRepository.getById(updatedUser.getId());
         assertNotNull(byId);
         assertEquals(updatedUser.getFirstName(), byId.getFirstName());
-        assertEquals(updatedUser.getDocument().getDocNumber(), byId.getDocument().getDocNumber());
+        assertEquals(updatedUser.getDocument().getNumber(), byId.getDocument().getNumber());
     }
 
     @Test

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 2-1
-      author: Admin
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -29,7 +29,7 @@ databaseChangeLog:
             tableName: office
   - changeSet:
       id: 2-2
-      author: Admin
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -57,7 +57,7 @@ databaseChangeLog:
             tableName: office
   - changeSet:
       id: 2-3
-      author: Admin
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -85,7 +85,7 @@ databaseChangeLog:
             tableName: office
   - changeSet:
       id: 2-4
-      author: Admin
+      author: IASpirin
       changes:
         - insert:
             columns:

@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 6-1
-      author: Admin
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -12,10 +12,10 @@ databaseChangeLog:
                   name: id
                   value: 101
               - column:
-                  name: doc_number
+                  name: number
                   value: 232323234
               - column:
-                  name: doc_date
+                  name: date
                   value: '2022-03-24'
               - column:
                   name: doc_type_id
@@ -23,7 +23,7 @@ databaseChangeLog:
             tableName: document
   - changeSet:
       id: 6-2
-      author: Admin
+      author: IASpirin
       changes:
         - insert:
             columns:
@@ -34,10 +34,10 @@ databaseChangeLog:
                   name: id
                   value: 102
               - column:
-                  name: doc_number
+                  name: number
                   value: 789456123
               - column:
-                  name: doc_date
+                  name: date
                   value: '2022-02-22'
               - column:
                   name: doc_type_id

@@ -63,7 +63,7 @@ public class UserInSaveDto {
      */
     @JsonProperty("citizenshipCode")
     @NotNull
-    private Integer countryCode;
+    private String countryCode;
     /**
      * Поле isIdentified
      */

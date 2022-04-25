@@ -1,7 +1,7 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.CountryDao;
-import com.bell.bellschooll.dao.DocumentTypeDao;
+import com.bell.bellschooll.repository.CountryRepository;
+import com.bell.bellschooll.repository.DocumentTypeRepository;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
@@ -36,17 +36,17 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final DocumentMapper documentMapper;
     private final OfficeService officeService;
-    private final CountryDao countryDao;
-    private final DocumentTypeDao documentTypeDao;
+    private final CountryRepository countryRepository;
+    private final DocumentTypeRepository documentTypeRepository;
     private final UserSpecification userSpecification;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, DocumentMapper documentMapper, OfficeService officeService, CountryDao countryDao, DocumentTypeDao documentTypeDao, UserSpecification userSpecification) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, DocumentMapper documentMapper, OfficeService officeService, CountryRepository countryRepository, DocumentTypeRepository documentTypeRepository, UserSpecification userSpecification) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.documentMapper = documentMapper;
         this.officeService = officeService;
-        this.countryDao = countryDao;
-        this.documentTypeDao = documentTypeDao;
+        this.countryRepository = countryRepository;
+        this.documentTypeRepository = documentTypeRepository;
         this.userSpecification = userSpecification;
     }
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Document createDocument(UserInSaveDto userInSaveDto) {
-        DocumentType documentType = documentTypeDao.getDocumentTypeByCode(userInSaveDto.getDocCode());
+        DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode());
         if (documentType == null) {
             throw new ErrorException("Не найден нужный тип документа.");
         }
@@ -85,8 +85,8 @@ public class UserServiceImpl implements UserService {
         return document;
     }
 
-    private Country getCountry(Integer code) {
-        Country country = countryDao.getCountryByCode(code);
+    private Country getCountry(String code) {
+        Country country = countryRepository.getCountryByCode(code);
         if (country == null) {
             throw new ErrorException("Не найдена страна по данному коду.");
         }

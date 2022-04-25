@@ -19,7 +19,7 @@ public class UserHelper {
     public static final String SECOND_NAME = "Имя";
     public static final String UPDATED_MIDDLE_NAME = "Отчество";
     public static final String POSITION = "должность";
-    public static final int COUNTRY_CODE = 643;
+    public static final String COUNTRY_CODE = "643";
     public static final String DOC_CODE = "21";
     public static final String DOC_NUMBER = "1111 1111";
     public static final String PHONE = "2-57-05";
@@ -46,17 +46,17 @@ public class UserHelper {
         return userInSaveDto;
     }
 
-    public static UserInSaveDto createUserInSaveDto(int countryCode) {
-        UserInSaveDto userInSaveDto = createUserInSaveDto();
-        userInSaveDto.setCountryCode(countryCode);
-        return userInSaveDto;
-    }
-
-    public static UserInSaveDto createUserInSaveDto(String docCode) {
-        UserInSaveDto userInSaveDto = createUserInSaveDto();
-        userInSaveDto.setDocCode(docCode);
-        return userInSaveDto;
-    }
+//    public static UserInSaveDto createUserInSaveDto(String countryCode) {
+//        UserInSaveDto userInSaveDto = createUserInSaveDto();
+//        userInSaveDto.setCountryCode(countryCode);
+//        return userInSaveDto;
+//    }
+//
+//    public static UserInSaveDto createUserInSaveDto(String docCode) {
+//        UserInSaveDto userInSaveDto = createUserInSaveDto();
+//        userInSaveDto.setDocCode(docCode);
+//        return userInSaveDto;
+//    }
 
     public static UpdateUserInDto createUpdateUserInDto() {
         UpdateUserInDto updateUserInDto = new UpdateUserInDto();
@@ -77,7 +77,7 @@ public class UserHelper {
     public static UserInListDto createUserInListDto() {
         UserInListDto userInListDto = new UserInListDto();
         userInListDto.setOfficeId(ConstantValue.ID);
-        userInListDto.setCitizenshipCode(Integer.toString(COUNTRY_CODE));
+        userInListDto.setCitizenshipCode(COUNTRY_CODE);
         return userInListDto;
     }
 

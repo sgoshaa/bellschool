@@ -1,20 +1,25 @@
 package com.bell.bellschooll.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Version;
 
 
 @Entity
-@Table(name = "Country")
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@EqualsAndHashCode
 public class Country {
+
     /**
      * уникальный идентификатор
      */
@@ -36,5 +41,5 @@ public class Country {
      * Код страны
      */
     @Column
-    private Integer code;
+    private String code;
 }

@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-2
+      author: IASpirin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: document_pk
+                  name: id
+                  type: int
+              - column:
+                  name: version
+                  type: int
+              - column:
+                  name: number
+                  type: varchar(50)
+              - column:
+                  name: date
+                  type: date
+              - column:
+                  constraints:
+                    nullable: false
+                  name: doc_type_id
+                  type: int
+            tableName: document

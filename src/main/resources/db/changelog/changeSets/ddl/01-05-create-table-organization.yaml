@@ -1,7 +1,8 @@
 databaseChangeLog:
   - changeSet:
-      id: 1-4
-      author: Admin
+      id: 1-5
+      author: IASpirin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
             columns:
@@ -10,31 +11,41 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                     primaryKey: true
-                    primaryKeyName: pk_office
+                    primaryKeyName: organization_pk
                   name: id
-                  type: INT
+                  type: int
               - column:
                   name: version
-                  type: INT
+                  type: int
               - column:
                   constraints:
                     nullable: false
                   name: name
-                  type: VARCHAR(255)
+                  type: varchar(50)
               - column:
                   constraints:
                     nullable: false
-                  name: org_id
-                  type: INT
+                  name: full_name
+                  type: varchar(255)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: inn
+                  type: int
+              - column:
+                  constraints:
+                    nullable: false
+                  name: kpp
+                  type: int
               - column:
                   constraints:
                     nullable: false
                   name: address
-                  type: VARCHAR(255)
+                  type: varchar(255)
               - column:
                   name: phone
-                  type: VARCHAR(255)
+                  type: varchar(255)
               - column:
                   name: is_active
-                  type: BOOLEAN
-            tableName: office
+                  type: boolean
+            tableName: organization

@@ -1,12 +1,12 @@
 package com.bell.bellschooll.model;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,24 +15,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Entity
-@Table(name = "User1")
 @Getter
 @Setter
-@Data
+@RequiredArgsConstructor
+@EqualsAndHashCode
 @ToString
+@Table(name="\"user\"")
 public class User {
     /**
      * Уникальный идентификатор
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     /**
      * Служебное поле hibernate
@@ -49,28 +50,31 @@ public class User {
     /**
      * Фамилия пользователя
      */
-    @Column(name = "first_name", nullable = false, length = 50)
+    @Size(min = 3,max = 50,message = "Размер поля firstName должен быть от 3 до 50 симолов.")
+    @NotNull
     private String firstName;
     /**
      * Имя пользователя
      */
-    @Column(name = "second_name", length = 50)
+    @Size(min = 3,max = 50,message = "Размер поля secondName должен быть от 3 до 50 симолов.")
+    @NotNull
     private String secondName;
 
     /**
      * Отчество пользователя
      */
-    @Column(name = "middle_name", length = 50)
+    @Size(min = 0,max = 50,message = "Размер поля middleName должен быть от 0 до 50 симолов.")
     private String middleName;
     /**
      * Должность пользователя
      */
-    @Column(nullable = false, length = 255)
+    @Size(min = 3,max = 50,message = "Размер поля position должен быть от 3 до 255 симолов.")
+    @NotNull
     private String position;
     /**
      * Телефон пользователя
      */
-    @Column(length = 25)
+    @Size(max = 25,message = "Размер поля position должен быть от 0 до 25 симолов.")
     private String phone;
     /**
      * Внешний ключ на таблицу документов
@@ -79,8 +83,6 @@ public class User {
     @OneToOne(fetch = FetchType.LAZY,
             cascade = CascadeType.ALL, optional = true,
             mappedBy = "user")
-    //@JoinColumn(name = "doc_id", nullable = false)
-    @PrimaryKeyJoinColumn
     private Document document;
     /**
      * Внешний ключ на таблицу стран
@@ -92,6 +94,5 @@ public class User {
     /**
      * Поле isIdentified
      */
-    @Column(name = "is_identified")
     private Boolean isIdentified;
 }
