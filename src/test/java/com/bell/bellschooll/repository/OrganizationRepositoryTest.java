@@ -1,10 +1,7 @@
 package com.bell.bellschooll.repository;
 
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
-import com.bell.bellschooll.exception.ErrorException;
 import com.bell.bellschooll.model.Organization;
-import com.bell.bellschooll.repository.OfficeRepository;
-import com.bell.bellschooll.repository.OrganizationRepository;
 import com.bell.bellschooll.repository.specification.OrganizationSpecification;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OrganizationHelper;

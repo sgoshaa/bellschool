@@ -1,7 +1,7 @@
 package com.bell.bellschooll.dao;
 
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.model.Organization;
 import org.springframework.stereotype.Repository;
 
@@ -63,7 +63,7 @@ public class OrganizationDaoImpl implements OrganizationDao {
         Integer inn = organisationDtoRequest.getInn();
         Boolean isActive = organisationDtoRequest.getIsActive();
         if (name.isEmpty()) {
-            throw new ErrorException("Не заполнено название организации");
+            throw new anyUserErrorException("Не заполнено название организации");
         }
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Organization> organizationCriteriaQuery = criteriaBuilder.createQuery(Organization.class);

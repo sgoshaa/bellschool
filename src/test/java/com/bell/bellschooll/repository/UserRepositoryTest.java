@@ -50,12 +50,12 @@ class UserRepositoryTest {
 
         Document document = new Document();
         document.setUser(newUser);
-        document.setDocType(documentTypeRepository.getDocumentTypeByCode("21"));
+        document.setDocType(documentTypeRepository.getDocumentTypeByCode("21").get());
         document.setDate(LocalDate.now());
         document.setNumber("12120 322323");
 
         newUser.setDocument(document);
-        newUser.setCountry(countryRepository.getCountryByCode("643"));
+        newUser.setCountry(countryRepository.getCountryByCode("643").get());
         newUser.setOffice(officeRepository.getById(ConstantValue.ID));
 
         //When

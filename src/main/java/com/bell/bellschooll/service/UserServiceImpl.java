@@ -8,7 +8,7 @@ import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.dto.response.UserOutListDto;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.mapper.DocumentMapper;
 import com.bell.bellschooll.mapper.UserMapper;
 import com.bell.bellschooll.model.Country;
@@ -32,6 +32,7 @@ import java.util.Optional;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final DocumentMapper documentMapper;
@@ -75,22 +76,29 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
+    /**
+     * Метод для создания нового документа
+     *
+     * @param userInSaveDto объект с параеметрами нового документа
+     * @return Document
+     */
     private Document createDocument(UserInSaveDto userInSaveDto) {
-        DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode());
-        if (documentType == null) {
-            throw new ErrorException("Не найден нужный тип документа.");
-        }
+        DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())
+                .orElseThrow(() -> new anyUserErrorException("Не найден нужный тип документа."));
         Document document = documentMapper.dtoToDomain(userInSaveDto);
         document.setDocType(documentType);
         return document;
     }
 
+    /**
+     * Метод для получения страны по коду
+     *
+     * @param code код страны
+     * @return Country
+     */
     private Country getCountry(String code) {
-        Country country = countryRepository.getCountryByCode(code);
-        if (country == null) {
-            throw new ErrorException("Не найдена страна по данному коду.");
-        }
-        return country;
+        return countryRepository.getCountryByCode(code)
+                .orElseThrow(() -> new anyUserErrorException("Не найдена страна по данному коду."));
     }
 
     /**
@@ -106,12 +114,15 @@ public class UserServiceImpl implements UserService {
         return new ResponseEntity<>(userOutDto, HttpStatus.OK);
     }
 
+    /**
+     * Метод для получения пользователя по его Id
+     *
+     * @param id Уникальный идентификатор пользователя
+     * @return User
+     */
     private User getUserById(Integer id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new ErrorException("Пользователь с данным id = " + id + " не найден.");
-        }
-        return user.get();
+        return userRepository.findById(id)
+                .orElseThrow(() -> new anyUserErrorException("Пользователь с данным id = " + id + " не найден."));
     }
 
     /**
@@ -124,9 +135,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<List<UserOutListDto>> getListUser(UserInListDto userInListDto) {
         Office office = officeService.getOffice(userInListDto.getOfficeId());
         List<User> users = userRepository.findAll(userSpecification.getUserSpecification(userInListDto, office));
-        List<UserOutListDto> userOutListDtos = new ArrayList<>();
-        users.forEach(user -> userOutListDtos.add(userMapper.domainToOutListDto(user)));
-        return new ResponseEntity<>(userOutListDtos, HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.toListDto(users), HttpStatus.OK);
     }
 
     /**
@@ -140,7 +149,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<SuccessDto> updateUser(UpdateUserInDto updateUserInDto) {
         User user = getUserById(updateUserInDto.getId());
         User currentUser = userMapper.updateUserFromDto(updateUserInDto, user);
-        currentUser.setDocument(documentMapper.updateDocument(updateUserInDto, currentUser.getDocument()));
+        currentUser.setDocument(documentMapper.dtoToDomain(updateUserInDto));
         if (updateUserInDto.getCitizenshipCode() != null) {
             currentUser.setCountry(getCountry(updateUserInDto.getCitizenshipCode()));
         }

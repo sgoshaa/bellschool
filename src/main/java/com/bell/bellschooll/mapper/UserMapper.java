@@ -9,6 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 /**
  * Маппер для User
  */
@@ -47,16 +49,16 @@ public interface UserMapper {
      * Метод для маппинга из UpdateUserInDto в User
      *
      * @param updateUserInDto
-     * @return
-     */
-    User toDomainUpdate(UpdateUserInDto updateUserInDto);
-
-    /**
-     * Метод для маппинга из UpdateUserInDto в User
-     *
-     * @param updateUserInDto
      * @param user
      * @return
      */
     User updateUserFromDto(UpdateUserInDto updateUserInDto, @MappingTarget User user);
+
+    /**
+     * Метод для маппинга из Списка пользователей в список UserOutListDto
+     *
+     * @param users список пользователей
+     * @return List<UserOutListDto>
+     */
+    List<UserOutListDto> toListDto(List<User> users);
 }

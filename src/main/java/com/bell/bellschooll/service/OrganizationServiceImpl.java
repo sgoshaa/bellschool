@@ -7,7 +7,7 @@ import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.mapper.OrganizationMapper;
 import com.bell.bellschooll.model.Organization;
@@ -25,6 +25,8 @@ import java.util.Optional;
  */
 @Service
 public class OrganizationServiceImpl implements OrganizationService {
+
+    public static final String ORGANIZATION_NOT_FOUND = "Не найдена организация с id = ";
     private final OrganizationMapper organizationMapper;
     private final OrganizationRepository organizationRepository;
     private final OrganizationSpecification organizationSpecification;
@@ -45,7 +47,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     public ResponseEntity<OrganizationOutDto> getOrganizationById(Integer id) {
         Organization organization = getOrgById(id);
         OrganizationOutDto organizationOutDto = organizationMapper.organizationToDto(organization);
-        return new ResponseEntity<OrganizationOutDto>(organizationOutDto, HttpStatus.OK);
+        return new ResponseEntity<>(organizationOutDto, HttpStatus.OK);
     }
 
     /**
@@ -55,13 +57,11 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @return List Список объектов типа OrganizationListOut
      */
     @Override
-    public ResponseEntity<List<OrganizationListOut>> getOrganizationByOrganizationDtoRequest(OrganisationDtoRequest organisationDTO) {
-        List<Organization> organizationList = organizationRepository.findAll(organizationSpecification.getSpecification(organisationDTO));
-        List<OrganizationListOut> organizations = new ArrayList<>();
-        organizationList.forEach(organization -> {
-            organizations.add(organizationMapper.organizationToListDto(organization));
-        });
-        return new ResponseEntity<>(organizations, HttpStatus.OK);
+    public ResponseEntity<List<OrganizationListOut>> getOrganizationByOrganizationDtoRequest(
+            OrganisationDtoRequest organisationDTO) {
+        List<Organization> organizationList = organizationRepository.findAll(organizationSpecification
+                .getSpecification(organisationDTO));
+        return new ResponseEntity<>(organizationMapper.toListDto(organizationList), HttpStatus.OK);
     }
 
     /**
@@ -100,10 +100,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      * @return Organization
      */
     public Organization getOrgById(Integer id) {
-        Optional<Organization> organization = organizationRepository.findById(id);
-        if (organization.isEmpty()) {
-            throw new ErrorException("Не найдена организация с id = " + id);
-        }
-        return organization.get();
+        return organizationRepository
+                .findById(id).orElseThrow(() -> new anyUserErrorException(ORGANIZATION_NOT_FOUND + id));
     }
 }

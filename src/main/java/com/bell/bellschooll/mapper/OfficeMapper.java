@@ -9,6 +9,8 @@ import com.bell.bellschooll.model.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 /**
  * Маппер для Office
  */
@@ -34,7 +36,6 @@ public interface OfficeMapper {
     @Mapping(target = "phone", source = "officeDto.phone")
     @Mapping(target = "isActive", source = "officeDto.isActive")
     @Mapping(target = "address", source = "officeDto.address")
-    @Mapping(target = "id", ignore = true)
     @Mapping(target = "version", ignore = true)
     Office dtoToDomain(OfficeInSaveDto officeDto, Organization organization);
 
@@ -45,6 +46,14 @@ public interface OfficeMapper {
      * @return
      */
     OfficeListOutDto officeToListDto(Office office);
+
+    /**
+     * Метод для маппинга из списка офисов в список OfficeListOutDto
+     *
+     * @param officeList список офисов
+     * @return List<OfficeListOutDto>
+     */
+    List<OfficeListOutDto> toListDto(List<Office> officeList);
 
     /**
      * метод для маппинга из OfficeInUpdateDto в Office

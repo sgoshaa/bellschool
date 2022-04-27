@@ -1,41 +1,32 @@
 databaseChangeLog:
   - changeSet:
-      id: 1-4
+      id: 1-3
       author: IASpirin
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
         - createTable:
             columns:
               - column:
-                  autoIncrement: true
                   constraints:
-                    nullable: false
                     primaryKey: true
-                    primaryKeyName: office_pk
+                    primaryKeyName: document_type_pk
                   name: id
                   type: int
+                  remarks: Уникальный идентификатор
               - column:
                   name: version
                   type: int
+                  remarks: Служебное поле hibernate
               - column:
                   constraints:
                     nullable: false
                   name: name
                   type: varchar(255)
+                  remarks: Название документа
               - column:
                   constraints:
                     nullable: false
-                  name: org_id
-                  type: int
-              - column:
-                  constraints:
-                    nullable: false
-                  name: address
-                  type: varchar(255)
-              - column:
-                  name: phone
-                  type: varchar(255)
-              - column:
-                  name: is_active
-                  type: boolean
-            tableName: office
+                  name: code
+                  type: varchar(15)
+                  remarks: Код документа
+            tableName: document_type

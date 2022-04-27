@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class ErrorResponseException {
+public class ErrorResponse {
     /**
      * Поле с описание ошибки
      */

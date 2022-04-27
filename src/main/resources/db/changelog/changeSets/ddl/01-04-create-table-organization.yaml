@@ -14,38 +14,47 @@ databaseChangeLog:
                     primaryKeyName: organization_pk
                   name: id
                   type: int
+                  remarks: Уникальный идентификатор
               - column:
                   name: version
                   type: int
+                  remarks: Служебное поле hibernate
               - column:
                   constraints:
                     nullable: false
                   name: name
                   type: varchar(50)
+                  remarks: Название организации
               - column:
                   constraints:
                     nullable: false
                   name: full_name
                   type: varchar(255)
+                  remarks: Полное название организации
               - column:
                   constraints:
                     nullable: false
                   name: inn
                   type: int
+                  remarks: ИНН организации
               - column:
                   constraints:
                     nullable: false
                   name: kpp
                   type: int
+                  remarks: КПП организации
               - column:
                   constraints:
                     nullable: false
                   name: address
                   type: varchar(255)
+                  remarks: Адрес организации
               - column:
                   name: phone
                   type: varchar(255)
+                  remarks: Номер телефона организации
               - column:
                   name: is_active
                   type: boolean
+                  remarks: Активна ли организация
             tableName: organization

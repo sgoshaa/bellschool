@@ -17,13 +17,13 @@ public class UserHelper {
 
     public static final String FIRST_NAME = "Фамилия";
     public static final String SECOND_NAME = "Имя";
-    public static final String UPDATED_MIDDLE_NAME = "Отчество";
+    public static final String UPDATED_MIDDLE_NAME = "UPDATED_MIDDLE_NAME";
     public static final String POSITION = "должность";
     public static final String COUNTRY_CODE = "643";
     public static final String DOC_CODE = "21";
     public static final String DOC_NUMBER = "1111 1111";
     public static final String PHONE = "2-57-05";
-    public static final String UPDATED_FIRST_NAME = "фамилия";
+    public static final String UPDATED_FIRST_NAME = "UPDATED_FIRST_NAME";
     public static final String UPDATED_SECOND_NAME = "UPDATED_SECOND_NAME";
     public static final String UPDATED_POSITION = "Обновленная должность";
     public static final String UPDATED_DOC_NUMBER = "123456";
@@ -34,7 +34,7 @@ public class UserHelper {
         UserInSaveDto userInSaveDto = new UserInSaveDto();
         userInSaveDto.setFirstName(FIRST_NAME);
         userInSaveDto.setSecondName(SECOND_NAME);
-        userInSaveDto.setMiddleName(UPDATED_MIDDLE_NAME);
+        userInSaveDto.setMiddleName(MIDDLE_NAME);
         userInSaveDto.setPosition(POSITION);
         userInSaveDto.setCountryCode(COUNTRY_CODE);
         userInSaveDto.setDocDate(LocalDate.now());
@@ -45,18 +45,6 @@ public class UserHelper {
         userInSaveDto.setPhone(PHONE);
         return userInSaveDto;
     }
-
-//    public static UserInSaveDto createUserInSaveDto(String countryCode) {
-//        UserInSaveDto userInSaveDto = createUserInSaveDto();
-//        userInSaveDto.setCountryCode(countryCode);
-//        return userInSaveDto;
-//    }
-//
-//    public static UserInSaveDto createUserInSaveDto(String docCode) {
-//        UserInSaveDto userInSaveDto = createUserInSaveDto();
-//        userInSaveDto.setDocCode(docCode);
-//        return userInSaveDto;
-//    }
 
     public static UpdateUserInDto createUpdateUserInDto() {
         UpdateUserInDto updateUserInDto = new UpdateUserInDto();

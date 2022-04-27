@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 @RequiredArgsConstructor
 @EqualsAndHashCode
 @ToString
-@Table(name="\"user\"")
+@Table(name = "\"user\"")
 public class User {
     /**
      * Уникальный идентификатор
@@ -50,31 +50,31 @@ public class User {
     /**
      * Фамилия пользователя
      */
-    @Size(min = 3,max = 50,message = "Размер поля firstName должен быть от 3 до 50 симолов.")
+    @Size(min = 3, max = 50, message = "Размер поля firstName должен быть от 3 до 50 симолов.")
     @NotNull
     private String firstName;
     /**
      * Имя пользователя
      */
-    @Size(min = 3,max = 50,message = "Размер поля secondName должен быть от 3 до 50 симолов.")
+    @Size(min = 3, max = 50, message = "Размер поля secondName должен быть от 3 до 50 симолов.")
     @NotNull
     private String secondName;
 
     /**
      * Отчество пользователя
      */
-    @Size(min = 0,max = 50,message = "Размер поля middleName должен быть от 0 до 50 симолов.")
+    @Size(min = 0, max = 50, message = "Размер поля middleName должен быть от 0 до 50 симолов.")
     private String middleName;
     /**
      * Должность пользователя
      */
-    @Size(min = 3,max = 50,message = "Размер поля position должен быть от 3 до 255 симолов.")
+    @Size(min = 3, max = 50, message = "Размер поля position должен быть от 3 до 255 симолов.")
     @NotNull
     private String position;
     /**
      * Телефон пользователя
      */
-    @Size(max = 25,message = "Размер поля position должен быть от 0 до 25 симолов.")
+    @Size(max = 25, message = "Размер поля position должен быть от 0 до 25 симолов.")
     private String phone;
     /**
      * Внешний ключ на таблицу документов

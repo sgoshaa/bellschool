@@ -1,5 +1,7 @@
-package com.bell.bellschooll.exception;
+package com.bell.bellschooll.handler;
 
+import com.bell.bellschooll.exception.ErrorResponse;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
@@ -15,20 +17,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * ControllerAdvisor для обработки исключений
+ * ErrorHandler для обработки исключений
  */
 @ControllerAdvice
 @Log4j2
-public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+public class ErrorHandler extends ResponseEntityExceptionHandler {
     /**
      * Метод для обработки исключений типа ErrorException
      *
      * @param exception
      * @return
      */
-    @ExceptionHandler(ErrorException.class)
-    public ResponseEntity<ErrorResponseException> handlerErrorException(ErrorException exception) {
-        ErrorResponseException errorResponse = new ErrorResponseException(exception.getMessage());
+    @ExceptionHandler(anyUserErrorException.class)
+    public ResponseEntity<ErrorResponse> handlerErrorException(anyUserErrorException exception) {
+        ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -39,10 +41,10 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseException> handlerException(Exception exception) {
+    public ResponseEntity<ErrorResponse> handlerException(Exception exception) {
         String stringError = getRandomString(exception.getMessage());
         log.error(stringError);
-        ErrorResponseException errorResponse = new ErrorResponseException(stringError);
+        ErrorResponse errorResponse = new ErrorResponse(stringError);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
@@ -63,7 +65,7 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
                 .map(fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage())
                 .sorted()
                 .collect(Collectors.toList());
-        ErrorResponseException errorResponse = new ErrorResponseException(list.toString());
+        ErrorResponse errorResponse = new ErrorResponse(list.toString());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 

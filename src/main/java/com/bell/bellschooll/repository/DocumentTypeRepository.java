@@ -4,6 +4,8 @@ import com.bell.bellschooll.model.DocumentType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * DAO для работы с DocumentType
  */
@@ -15,5 +17,5 @@ public interface DocumentTypeRepository extends JpaRepository<DocumentType, Inte
      * @param code Код типа документа
      * @return DocumentType объект,содержащий тип документа
      */
-    DocumentType getDocumentTypeByCode(String code);
+    Optional<DocumentType> getDocumentTypeByCode(String code);
 }

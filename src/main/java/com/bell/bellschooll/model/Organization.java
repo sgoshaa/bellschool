@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -28,7 +30,6 @@ public class Organization {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     /**
      * Служебное поле hibernate
@@ -38,43 +39,44 @@ public class Organization {
     /**
      * Название организации
      */
-    @Column(name = "name",nullable = false ,length = 50)
+    @NotNull
+    @Size(min = 1, max = 50)
     private String name;
     /**
      * Полное название организации
      */
-    @Column(name = "full_name",nullable = false,length = 255)
+    @NotNull
+    @Size(min = 1, max = 255)
     private String fullName;
     /**
      * ИНН организации
      */
-    @Column(name = "inn",nullable = false)
+    @NotNull
     private Integer inn;
     /**
      * КПП организации
      */
-    @Column(name = "kpp",nullable = false)
+    @NotNull
     private Integer kpp;
     /**
      * Адрес организации
      */
-    @Column(name = "address",nullable = false)
+    @NotNull
     private String address;
     /**
      * Телефон организации
      */
-    @Column
     private String phone;
     /**
      * Поле isActive
      */
-    @Column(name = "is_active")
     private Boolean isActive;
 
     /**
      * Список офисов в организации
      */
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL)
     private List<Office> offices;
 }

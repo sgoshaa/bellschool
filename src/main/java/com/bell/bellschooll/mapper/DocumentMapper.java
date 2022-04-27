@@ -4,6 +4,7 @@ import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.DocumentDto;
 import com.bell.bellschooll.model.Document;
+import com.bell.bellschooll.model.DocumentType;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -18,33 +19,39 @@ public interface DocumentMapper {
     /**
      * Метод для маппинга из RequestDTO  UserInSaveDto в Document
      *
-     * @param userInSaveDto
-     * @return
+     * @param userInSaveDto Объект с полями для отображения в документе
+     * @return Document
      */
+    @Mapping(target = "number", source = "docNumber")
+    @Mapping(target = "date", source = "docDate")
     Document dtoToDomain(UserInSaveDto userInSaveDto);
 
     /**
      * Метод для маппинга из UpdateUserInDto в Document
      *
-     * @param updateUserInDto
-     * @return
+     * @param updateUserInDto Объект с полями для отображения в документе
+     * @return Document
      */
     @Mapping(target = "id", ignore = true)
-    Document dtoToDomainUpdate(UpdateUserInDto updateUserInDto);
+    @Mapping(target = "number", source = "docNumber")
+    @Mapping(target = "date", source = "docDate")
+    Document dtoToDomain(UpdateUserInDto updateUserInDto);
 
     /**
-     * Метод для маппинга из UpdateUserInDto в Document
+     * Метод для маппинга DocumentType в Dto
      *
-     * @param updateUserInDto
-     * @param document
-     * @return
+     * @param document объект с полями для отображения
+     * @return DocumentDto
      */
-    @Mapping(target = "id", ignore = true)
-    Document updateDocument(UpdateUserInDto updateUserInDto, @MappingTarget Document document);
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "code", source = "code")
+    DocumentDto toDto(DocumentType document);
 
-    @Mapping(target = "name",source = "docType.name")
-    @Mapping(target = "code",source = "docType.code")
-    DocumentDto toDto(Document document);
-
-    List<DocumentDto> toListDto(List<Document> documentList);
+    /**
+     * Метод для маппинга из списка документов в список Dto документа
+     *
+     * @param documentList Список документов
+     * @return List<DocumentDto>
+     */
+    List<DocumentDto> toListDto(List<DocumentType> documentList);
 }

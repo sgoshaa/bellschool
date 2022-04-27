@@ -7,7 +7,8 @@ import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.model.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 /**
  * Маппер для работы с Organization
@@ -17,33 +18,41 @@ public interface OrganizationMapper {
     /**
      * Метод для маппинга из Organization в OrganizationOutDto
      *
-     * @param organization
-     * @return
+     * @param organization Организация
+     * @return OrganizationOutDto
      */
     OrganizationOutDto organizationToDto(Organization organization);
 
     /**
      * Метод для маппинза из Organization в OrganizationListOut
      *
-     * @param organization
-     * @return
+     * @param organization Организация
+     * @return OrganizationListOut
      */
     OrganizationListOut organizationToListDto(Organization organization);
 
     /**
+     * Метод для маппинга из списка организаций в список OrganizationListOut
+     *
+     * @param organizationList Список организаций
+     * @return List<OrganizationListOut>
+     */
+    List<OrganizationListOut> toListDto(List<Organization> organizationList);
+
+    /**
      * Метод для маппинза из OrganizationSaveInDto в Organization
      *
-     * @param organizationSaveInDto
-     * @return
+     * @param organizationSaveInDto Объект с параметрами для новой организации
+     * @return Organization
      */
     Organization organizationInToDomain(OrganizationSaveInDto organizationSaveInDto);
 
     /**
      * Метод для маппинза из OrganizationUpdateInDto в Organization
      *
-     * @param organizationUpdateInDto
-     * @param currentOrganization
-     * @return
+     * @param organizationUpdateInDto Объект с новыми параметрами организации
+     * @param currentOrganization     текущаяорганизация
+     * @return Organization
      */
     @Mapping(target = "offices", ignore = true)
     @Mapping(target = "version", source = "currentOrganization.version")

@@ -61,6 +61,7 @@ public class OfficeHelper {
         office.setIsActive(true);
         office.setOrganization(OrganizationHelper.createOrganization());
         office.setPhone(PHONE);
+        office.setId(ConstantValue.ID);
         return office;
     }
 
@@ -68,6 +69,7 @@ public class OfficeHelper {
         OfficeOutDto officeOutDto = new OfficeOutDto();
         officeOutDto.setAddress(ADDRESS);
         officeOutDto.setName(NAME);
+        officeOutDto.setPhone(PHONE);
         officeOutDto.setIsActive(true);
         officeOutDto.setId(ConstantValue.ID);
         return officeOutDto;
@@ -81,5 +83,13 @@ public class OfficeHelper {
         officeListOutDto.setIsActive(true);
         officeListOut.add(officeListOutDto);
         return officeListOut;
+    }
+
+    public static OfficeListOutDto createSimpleOfficeForListOutDto() {
+        OfficeListOutDto officeListOutDto = new OfficeListOutDto();
+        officeListOutDto.setId(ConstantValue.ID);
+        officeListOutDto.setName(NAME);
+        officeListOutDto.setIsActive(true);
+        return officeListOutDto;
     }
 }

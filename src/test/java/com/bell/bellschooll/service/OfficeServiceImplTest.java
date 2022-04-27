@@ -6,7 +6,7 @@ import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
@@ -164,7 +164,7 @@ class OfficeServiceImplTest {
         when(officeRepository.findById(ConstantValue.ID)).thenReturn(Optional.empty());
 
         //then
-        assertThrows(ErrorException.class, () -> officeService.getOffice(ConstantValue.ID));
+        assertThrows(anyUserErrorException.class, () -> officeService.getOffice(ConstantValue.ID));
         verify(officeRepository).findById(ConstantValue.ID);
     }
 
@@ -180,7 +180,7 @@ class OfficeServiceImplTest {
         when(organizationService.getOrgById(officeInListDto.getOrgId())).thenReturn(organization);
 
         //When
-        assertThrows(ErrorException.class, () -> officeService.getListOffice(officeInListDto));
+        assertThrows(anyUserErrorException.class, () -> officeService.getListOffice(officeInListDto));
 
         //Then
         verify(officeRepository).findAll(officeSpecification.getSpecification(officeInListDto, organization));

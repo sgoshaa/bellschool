@@ -4,6 +4,8 @@ import com.bell.bellschooll.model.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * DAO для работы с Country
  */
@@ -15,5 +17,5 @@ public interface CountryRepository extends JpaRepository<Country, Integer> {
      * @param code Код страны
      * @return Country Объект, содержащий страну
      */
-    Country getCountryByCode(String code);
+    Optional<Country> getCountryByCode(String code);
 }

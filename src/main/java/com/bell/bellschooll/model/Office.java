@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
@@ -31,7 +32,6 @@ public class Office {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     /**
      * Служебное поле hibernate
@@ -41,7 +41,7 @@ public class Office {
     /**
      * Название офиса
      */
-    @Column(nullable = false,length = 255)
+    @NotNull
     private String name;
     /**
      * Организация,внешний ключ таблицы организация
@@ -52,17 +52,15 @@ public class Office {
     /**
      * Адрес офиса
      */
-    @Column(name = "address",nullable = false,length = 255)
+    @NotNull
     private String address;
     /**
      * Телефон офиса
      */
-    @Column(name = "phone")
     private String phone;
     /**
      * Поле isActive
      */
-    @Column(name = "is_active")
     private Boolean isActive;
     /**
      * Список сотрудников

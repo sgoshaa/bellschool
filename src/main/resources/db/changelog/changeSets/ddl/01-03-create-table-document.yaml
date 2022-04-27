@@ -13,18 +13,33 @@ databaseChangeLog:
                     primaryKeyName: document_pk
                   name: id
                   type: int
+                  remarks: Уникальный идентификатор
               - column:
                   name: version
                   type: int
+                  remarks: Служебное поле hibernate
               - column:
                   name: number
                   type: varchar(50)
+                  remarks: Номер документа
               - column:
                   name: date
                   type: date
+                  remarks: Дата выдачи документа
               - column:
                   constraints:
                     nullable: false
                   name: doc_type_id
                   type: int
+                  remarks: Тип документа
             tableName: document
+  - changeSet:
+      id: 1-7
+      author: IASpirin
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: doc_type_id
+            baseTableName: document
+            constraintName: FK_DOCUMENT_ON_DOC_TYPE
+            referencedColumnNames: id
+            referencedTableName: document_type

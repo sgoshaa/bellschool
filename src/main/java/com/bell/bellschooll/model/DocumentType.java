@@ -9,7 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Version;
-
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -31,11 +31,11 @@ public class DocumentType {
     /**
      * Название документа
      */
-    @Column(nullable = false)
+    @NotNull
     private String name;
     /**
      * Код документа
      */
-    @Column(nullable = false)
+    @NotNull
     private String code;
 }

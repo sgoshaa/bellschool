@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Entity
@@ -25,7 +27,6 @@ public class Country {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private Integer id;
     /**
      * Служебное поле hibernate
@@ -35,11 +36,11 @@ public class Country {
     /**
      * Название страны
      */
-    @Column(length = 100, nullable = false)
+    @NotNull
+    @Size(min = 1, max = 100)
     private String name;
     /**
      * Код страны
      */
-    @Column
     private String code;
 }

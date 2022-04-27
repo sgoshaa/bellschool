@@ -7,7 +7,7 @@ import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
@@ -27,6 +27,8 @@ import java.util.Optional;
  */
 @Service
 public class OfficeServiceImpl implements OfficeService {
+
+    public static final String OFFICE_NOT_FOUND = "Офис не найден c таким id= ";
     private final OfficeMapper officeMapper;
     private final OrganizationService organizationService;
     private final OfficeRepository officeRepository;
@@ -42,8 +44,8 @@ public class OfficeServiceImpl implements OfficeService {
     /**
      * Метод для получения офиса по его id
      *
-     * @param id
-     * @return
+     * @param id уникальный идентификатор офиса
+     * @return ResponseEntity<OfficeOutDto>
      */
     public ResponseEntity<OfficeOutDto> getOfficeById(Integer id) {
         Office office = getOffice(id);
@@ -53,8 +55,8 @@ public class OfficeServiceImpl implements OfficeService {
     /**
      * Метод для сохранения нового офиса
      *
-     * @param officeDto
-     * @return
+     * @param officeDto объект с параметрами для сохранения нового офиса
+     * @return ResponseEntity<SuccessDto>
      * @see OfficeDao#addOffice(Office)
      */
     @Transactional
@@ -73,13 +75,12 @@ public class OfficeServiceImpl implements OfficeService {
      */
     public ResponseEntity<List<OfficeListOutDto>> getListOffice(OfficeInListDto officeInListDto) {
         Organization organization = organizationService.getOrgById(officeInListDto.getOrgId());
-        List<Office> offices = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto, organization));
+        List<Office> offices = officeRepository.findAll(officeSpecification
+                .getSpecification(officeInListDto, organization));
         if (offices.isEmpty()) {
-            throw new ErrorException("У " + organization.getFullName() + " нет офисов.");
+            throw new anyUserErrorException("У " + organization.getFullName() + " нет офисов.");
         }
-        List<OfficeListOutDto> officeListOutDtos = new ArrayList<>();
-        offices.forEach(office -> officeListOutDtos.add(officeMapper.officeToListDto(office)));
-        return new ResponseEntity<>(officeListOutDtos, HttpStatus.OK);
+        return new ResponseEntity<>(officeMapper.toListDto(offices), HttpStatus.OK);
     }
 
     /**
@@ -103,10 +104,6 @@ public class OfficeServiceImpl implements OfficeService {
      * @return Office
      */
     public Office getOffice(Integer id) {
-        Optional<Office> office = officeRepository.findById(id);
-        if (office.isEmpty()) {
-            throw new ErrorException("Офис не найден c таким id= "+id);
-        }
-        return office.get();
+        return officeRepository.findById(id).orElseThrow(() -> new anyUserErrorException(OFFICE_NOT_FOUND + id));
     }
 }

@@ -1,10 +1,9 @@
-package com.bell.bellschooll.dto.response;
+package com.bell.bellschooll.handler;
 
-import com.bell.bellschooll.exception.ErrorResponseException;
+import com.bell.bellschooll.dto.response.ResponseDto;
+import com.bell.bellschooll.exception.ErrorResponse;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -41,7 +40,7 @@ public class ResponseBodyHandler implements ResponseBodyAdvice<Object> {
      */
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class<? extends HttpMessageConverter<?>> selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        if (body instanceof ErrorResponseException) {
+        if (body instanceof ErrorResponse) {
             return body;
         }
         ResponseDto responseDto = new ResponseDto();

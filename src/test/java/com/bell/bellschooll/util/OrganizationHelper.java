@@ -58,9 +58,9 @@ public class OrganizationHelper {
         organization.setPhone(PHONE);
         organization.setKpp(KPP);
         organization.setInn(INN);
-        organization.setName(NEW_ORGANIZATION);
+        organization.setName(NAME);
         organization.setAddress(ADDRESS);
-        organization.setFullName(FN_ORGANIZATION);
+        organization.setFullName(FULL_NAME);
         organization.setIsActive(true);
         return organization;
     }
@@ -72,6 +72,8 @@ public class OrganizationHelper {
         organizationOutDto.setAddress(ADDRESS);
         organizationOutDto.setPhone(PHONE);
         organizationOutDto.setName(NAME);
+        organizationOutDto.setInn(INN);
+        organizationOutDto.setKpp(KPP);
         organizationOutDto.setIsActive(true);
         return organizationOutDto;
     }

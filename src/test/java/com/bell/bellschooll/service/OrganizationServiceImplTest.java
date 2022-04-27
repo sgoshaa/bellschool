@@ -1,13 +1,12 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.dao.OrganizationDao;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.mapper.OrganizationMapper;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.repository.OrganizationRepository;
@@ -164,7 +163,7 @@ class OrganizationServiceImplTest {
         when(organizationRepository.findById(ConstantValue.ID)).thenReturn(Optional.empty());
 
         //Then
-        assertThrows(ErrorException.class, () -> organizationService.getOrgById(ConstantValue.ID));
+        assertThrows(anyUserErrorException.class, () -> organizationService.getOrgById(ConstantValue.ID));
         verify(organizationRepository).findById(ConstantValue.ID);
     }
 }

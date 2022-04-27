@@ -8,7 +8,7 @@ import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.dto.response.UserOutListDto;
-import com.bell.bellschooll.exception.ErrorException;
+import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.mapper.DocumentMapper;
 import com.bell.bellschooll.mapper.UserMapper;
 import com.bell.bellschooll.model.Country;
@@ -91,8 +91,8 @@ class UserServiceImplTest {
 
         user.setDocument(document);
 
-        when(countryRepository.getCountryByCode("643")).thenReturn(country);
-        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(documentType);
+        when(countryRepository.getCountryByCode("643").get()).thenReturn(country);
+        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode()).get()).thenReturn(documentType);
         when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -112,9 +112,11 @@ class UserServiceImplTest {
     void addUserFailDocumentType() {
         //Given
         String failDocCode = "1005";
+        UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
+        userInSaveDto.setDocCode(failDocCode);
         when(documentTypeRepository.getDocumentTypeByCode(failDocCode)).thenReturn(null);
         //When
-       // assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(failDocCode)));
+        assertThrows(anyUserErrorException.class, () -> userService.addUser(userInSaveDto));
         //Then
         verify(documentTypeRepository).getDocumentTypeByCode(failDocCode);
     }
@@ -140,13 +142,15 @@ class UserServiceImplTest {
 
         user.setDocument(document);
 
-        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(documentType);
+        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode()).get()).thenReturn(documentType);
         when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
 
         String failCountryCode = "1005";
+        userInSaveDto.setCountryCode(failCountryCode);
+
         when(countryRepository.getCountryByCode(failCountryCode)).thenReturn(null);
         //Then
-       // assertThrows(ErrorException.class, () -> userService.addUser(UserHelper.createUserInSaveDto(failCountryCode)));
+        assertThrows(anyUserErrorException.class, () -> userService.addUser(userInSaveDto));
         verify(documentTypeRepository).getDocumentTypeByCode(userInSaveDto.getDocCode());
         verify(officeService).getOffice(userInSaveDto.getOfficeId());
     }
@@ -179,7 +183,7 @@ class UserServiceImplTest {
         int failIdUser = 10005;
         when(userRepository.findById(failIdUser)).thenReturn(Optional.empty());
         //Then
-        assertThrows(ErrorException.class, /*When*/() -> userService.getUser(failIdUser));
+        assertThrows(anyUserErrorException.class, /*When*/() -> userService.getUser(failIdUser));
         verify(userRepository).findById(failIdUser);
     }
 
@@ -238,7 +242,7 @@ class UserServiceImplTest {
 
         UpdateUserInDto updateUserInDto = UserHelper.createUpdateUserInDto();
         when(userRepository.findById(ConstantValue.ID)).thenReturn(Optional.of(user));
-        when(countryRepository.getCountryByCode(countryForTestUser.getCode())).thenReturn(countryForTestUser);
+        when(countryRepository.getCountryByCode(countryForTestUser.getCode()).get()).thenReturn(countryForTestUser);
         when(officeService.getOffice(updateUserInDto.getOfficeId())).thenReturn(office);
 
         //When

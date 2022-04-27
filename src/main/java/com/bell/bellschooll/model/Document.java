@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Version;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -39,12 +40,11 @@ public class Document {
     /**
      * Номер документа
      */
-    @Column(length = 50)
+    @Size(max = 50)
     private String number;
     /**
      * Дата документа
      */
-    @Column
     private LocalDate date;
     /**
      * Внешний ключ на таблицу юзер

@@ -1,0 +1,58 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-4
+      author: IASpirin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: office_pk
+                  name: id
+                  type: int
+                  remarks: Уникальный идентификатор
+              - column:
+                  name: version
+                  type: int
+                  remarks: Служебное поле hibernate
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: varchar(255)
+                  remarks: Название офиса
+              - column:
+                  constraints:
+                    nullable: false
+                  name: org_id
+                  type: int
+                  remarks: Организация
+              - column:
+                  constraints:
+                    nullable: false
+                  name: address
+                  type: varchar(255)
+                  remarks: Адрес офиса
+              - column:
+                  name: phone
+                  type: varchar(255)
+                  remarks: Номер телефона офиса
+              - column:
+                  name: is_active
+                  type: boolean
+                  remarks: Активен ли офис
+            tableName: office
+  - changeSet:
+      id: 1-9
+      author: IASpirin
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: org_id
+            baseTableName: office
+            constraintName: FK_OFFICE_ON_ORG
+            referencedColumnNames: id
+            referencedTableName: organization
