@@ -1,63 +1,63 @@
 databaseChangeLog:
   - changeSet:
-    id: 1-6
-    author: IASpirin
-    objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
-    changes:
-      - createTable:
-          columns:
-            - column:
-                autoIncrement: true
-                constraints:
-                  nullable: false
-                  primaryKey: true
-                  primaryKeyName: user_pk
-                name: id
-                type: int
-                remarks: Уникальный идентификатор
-            - column:
-                name: version
-                type: int
-                remarks: Служебное поле hibernate
-            - column:
-                constraints:
-                  nullable: false
-                name: office_id
-                type: int
-                remarks: Офис
-            - column:
-                constraints:
-                  nullable: false
-                name: first_name
-                type: varchar(50)
-                remarks: Фамилия
-            - column:
-                name: second_name
-                type: varchar(50)
-                remarks: Имя
-            - column:
-                name: middle_name
-                type: varchar(50)
-                remarks: Отчество
-            - column:
-                constraints:
-                  nullable: false
-                name: position
-                type: varchar(255)
-                remarks: Должность
-            - column:
-                name: phone
-                type: varchar(25)
-                remarks: Номер телефона пользователя
-            - column:
-                name: country_id
-                type: int
-                remarks: Страна
-            - column:
-                name: is_identified
-                type: boolean
-                remarks: Идентифицирован ли пользователь
-          tableName: user
+      id: 1-6
+      author: IASpirin
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: user_pk
+                  name: id
+                  type: int
+                  remarks: Уникальный идентификатор
+              - column:
+                  name: version
+                  type: int
+                  remarks: Служебное поле hibernate
+              - column:
+                  constraints:
+                    nullable: false
+                  name: office_id
+                  type: int
+                  remarks: Офис
+              - column:
+                  constraints:
+                    nullable: false
+                  name: first_name
+                  type: varchar(50)
+                  remarks: Фамилия
+              - column:
+                  name: second_name
+                  type: varchar(50)
+                  remarks: Имя
+              - column:
+                  name: middle_name
+                  type: varchar(50)
+                  remarks: Отчество
+              - column:
+                  constraints:
+                    nullable: false
+                  name: position
+                  type: varchar(255)
+                  remarks: Должность
+              - column:
+                  name: phone
+                  type: varchar(25)
+                  remarks: Номер телефона пользователя
+              - column:
+                  name: country_id
+                  type: int
+                  remarks: Страна
+              - column:
+                  name: is_identified
+                  type: boolean
+                  remarks: Идентифицирован ли пользователь
+            tableName: user
   - changeSet:
       id: 1-8
       author: IASpirin

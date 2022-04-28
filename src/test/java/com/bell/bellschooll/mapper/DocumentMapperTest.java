@@ -50,7 +50,7 @@ class DocumentMapperTest {
         document.setDate(updateUserInDto.getDocDate());
 
         //When
-        Document documentActual = documentMapper.dtoToDomain(updateUserInDto);
+        Document documentActual = documentMapper.dtoToDomain(updateUserInDto,document);
 
         //Then
         assertEquals(document.getNumber(), documentActual.getNumber());

@@ -23,9 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Сервис для User
@@ -33,20 +31,20 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final CountryService countryService;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final DocumentMapper documentMapper;
     private final OfficeService officeService;
-    private final CountryRepository countryRepository;
     private final DocumentTypeRepository documentTypeRepository;
     private final UserSpecification userSpecification;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper, DocumentMapper documentMapper, OfficeService officeService, CountryRepository countryRepository, DocumentTypeRepository documentTypeRepository, UserSpecification userSpecification) {
+    public UserServiceImpl(CountryService countryService, UserRepository userRepository, UserMapper userMapper, DocumentMapper documentMapper, OfficeService officeService, DocumentTypeRepository documentTypeRepository, UserSpecification userSpecification) {
+        this.countryService = countryService;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.documentMapper = documentMapper;
         this.officeService = officeService;
-        this.countryRepository = countryRepository;
         this.documentTypeRepository = documentTypeRepository;
         this.userSpecification = userSpecification;
     }
@@ -70,35 +68,10 @@ public class UserServiceImpl implements UserService {
             user.setDocument(document);
         }
         if (userInSaveDto.getCountryCode() != null) {
-            user.setCountry(getCountry(userInSaveDto.getCountryCode()));
+            user.setCountry(countryService.getCountryByCode(userInSaveDto.getCountryCode()));
         }
         userRepository.save(user);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
-    }
-
-    /**
-     * Метод для создания нового документа
-     *
-     * @param userInSaveDto объект с параеметрами нового документа
-     * @return Document
-     */
-    private Document createDocument(UserInSaveDto userInSaveDto) {
-        DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())
-                .orElseThrow(() -> new anyUserErrorException("Не найден нужный тип документа."));
-        Document document = documentMapper.dtoToDomain(userInSaveDto);
-        document.setDocType(documentType);
-        return document;
-    }
-
-    /**
-     * Метод для получения страны по коду
-     *
-     * @param code код страны
-     * @return Country
-     */
-    private Country getCountry(String code) {
-        return countryRepository.getCountryByCode(code)
-                .orElseThrow(() -> new anyUserErrorException("Не найдена страна по данному коду."));
     }
 
     /**
@@ -112,17 +85,6 @@ public class UserServiceImpl implements UserService {
         User user = getUserById(id);
         UserOutDto userOutDto = userMapper.domainToDto(user);
         return new ResponseEntity<>(userOutDto, HttpStatus.OK);
-    }
-
-    /**
-     * Метод для получения пользователя по его Id
-     *
-     * @param id Уникальный идентификатор пользователя
-     * @return User
-     */
-    private User getUserById(Integer id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new anyUserErrorException("Пользователь с данным id = " + id + " не найден."));
     }
 
     /**
@@ -149,14 +111,40 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<SuccessDto> updateUser(UpdateUserInDto updateUserInDto) {
         User user = getUserById(updateUserInDto.getId());
         User currentUser = userMapper.updateUserFromDto(updateUserInDto, user);
-        currentUser.setDocument(documentMapper.dtoToDomain(updateUserInDto));
-        if (updateUserInDto.getCitizenshipCode() != null) {
-            currentUser.setCountry(getCountry(updateUserInDto.getCitizenshipCode()));
+        if (updateUserInDto.getCitizenshipCode() != null && !updateUserInDto.getCitizenshipCode().equals(currentUser.getCountry().getCode())){
+            Country country = countryService.getCountryByCode(updateUserInDto.getCitizenshipCode());
+            currentUser.setCountry(country);
         }
         if (updateUserInDto.getOfficeId() != null) {
             currentUser.setOffice(officeService.getOffice(updateUserInDto.getOfficeId()));
         }
+        currentUser.setDocument(documentMapper.dtoToDomain(updateUserInDto, currentUser.getDocument()));
         userRepository.save(currentUser);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+    }
+
+    /**
+     * Метод для создания нового документа
+     *
+     * @param userInSaveDto объект с параеметрами нового документа
+     * @return Document
+     */
+    private Document createDocument(UserInSaveDto userInSaveDto) {
+        DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())
+                .orElseThrow(() -> new anyUserErrorException("Не найден нужный тип документа."));
+        Document document = documentMapper.dtoToDomain(userInSaveDto);
+        document.setDocType(documentType);
+        return document;
+    }
+
+    /**
+     * Метод для получения пользователя по его Id
+     *
+     * @param id Уникальный идентификатор пользователя
+     * @return User
+     */
+    private User getUserById(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new anyUserErrorException("Пользователь с данным id = " + id + " не найден."));
     }
 }
