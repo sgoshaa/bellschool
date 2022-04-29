@@ -1,17 +1,16 @@
 package com.bell.bellschooll.mapper;
 
-import com.bell.bellschooll.util.OfficeHelper;
-import com.bell.bellschooll.util.OrganizationHelper;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
 import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
+import com.bell.bellschooll.util.OfficeHelper;
+import com.bell.bellschooll.util.OrganizationHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 class OfficeMapperTest {
 
     @Autowired

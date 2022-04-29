@@ -1,5 +1,6 @@
 package com.bell.bellschooll.mapper;
 
+import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
 import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
@@ -9,7 +10,12 @@ import com.bell.bellschooll.model.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Маппер для Office
@@ -71,4 +77,27 @@ public interface OfficeMapper {
     @Mapping(target = "isActive", source = "officeInUpdateDto.isActive")
     @Mapping(target = "users", ignore = true)
     Office updateOfficeDtoToDomain(OfficeInUpdateDto officeInUpdateDto, Office currentOffice);
+
+
+
+
+    default Map<String,Object> fromDtoToMap(OfficeInListDto officeInListDto){
+        Map<String,Object> map = new HashMap<>();
+        if (officeInListDto == null){
+            return null;
+        }
+        if (officeInListDto.getIsActive()!= null){
+            map.put("isActive",officeInListDto.getIsActive());
+        }
+        if (officeInListDto.getName()!= null){
+            map.put("name",officeInListDto.getName());
+        }
+        if (officeInListDto.getPhone()!= null){
+            map.put("phone",officeInListDto.getPhone());
+        }
+        if (officeInListDto.getPhone()!= null){
+            map.put("orgId",officeInListDto.getOrgId());
+        }
+        return new HashMap<>();
+    }
 }

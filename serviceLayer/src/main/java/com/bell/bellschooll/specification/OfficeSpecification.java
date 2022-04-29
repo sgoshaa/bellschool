@@ -9,6 +9,8 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Класс для создания спецификации для работы с Office
@@ -33,6 +35,28 @@ public class OfficeSpecification {
             }
             if (officeInListDto.getPhone() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("phone"), officeInListDto.getPhone()));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+
+
+    public Specification<Office> getSpecification(Map<String,Object> map, Integer orgId) {
+        return (root, query, criteriaBuilder) -> {
+            ArrayList<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.equal(root.get("organization").get("id"), orgId));
+
+            Set<String> keys = map.keySet();
+            for (String key:keys) {
+                if (key.equals("name")) {
+                    predicates.add(criteriaBuilder.equal(root.get("name"), map.get(key)));
+                }
+                if (key.equals("isActive")) {
+                    predicates.add(criteriaBuilder.equal(root.get("isActive"), map.get(key)));
+                }
+                if (key.equals("phone")) {
+                    predicates.add(criteriaBuilder.equal(root.get("phone"), map.get(key)));
+                }
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

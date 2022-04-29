@@ -19,7 +19,7 @@ public class UserHelper {
     public static final String SECOND_NAME = "Имя";
     public static final String UPDATED_MIDDLE_NAME = "UPDATED_MIDDLE_NAME";
     public static final String POSITION = "должность";
-    public static final String COUNTRY_CODE = "643";
+    public static final String COUNTRY_CODE = "622";
     public static final String DOC_CODE = "21";
     public static final String DOC_NUMBER = "1111 1111";
     public static final String PHONE = "2-57-05";

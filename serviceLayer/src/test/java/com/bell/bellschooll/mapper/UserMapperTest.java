@@ -1,18 +1,16 @@
 package com.bell.bellschooll.mapper;
 
-import com.bell.bellschooll.util.UserHelper;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.model.User;
+import com.bell.bellschooll.util.UserHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 class UserMapperTest {
 
     @Autowired

@@ -54,7 +54,7 @@ public class OfficeServiceImpl implements OfficeService {
      *
      * @param officeDto объект с параметрами для сохранения нового офиса
      * @return ResponseEntity<SuccessDto>
-     * @see OfficeDao#addOffice(Office)
+     * @see OfficeServiceImpl#addOffice(OfficeInSaveDto)
      */
     @Transactional
     public ResponseEntity<SuccessDto> addOffice(OfficeInSaveDto officeDto) {
@@ -74,6 +74,10 @@ public class OfficeServiceImpl implements OfficeService {
         Organization organization = organizationService.getOrgById(officeInListDto.getOrgId());
         List<Office> offices = officeRepository.findAll(officeSpecification
                 .getSpecification(officeInListDto, organization));
+//        List<Office> offices = officeRepository
+//                .findAll(officeSpecification.getSpecification(
+//                        officeMapper.fromDtoToMap(officeInListDto), organization.getId()));
+
         if (offices.isEmpty()) {
             throw new anyUserErrorException("У " + organization.getFullName() + " нет офисов.");
         }

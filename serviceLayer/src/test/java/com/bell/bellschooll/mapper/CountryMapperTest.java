@@ -1,12 +1,11 @@
 package com.bell.bellschooll.mapper;
 
-import com.bell.bellschooll.util.CountryHelper;
 import com.bell.bellschooll.dto.response.CountryDto;
 import com.bell.bellschooll.model.Country;
+import com.bell.bellschooll.util.CountryHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,7 +15,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 class CountryMapperTest {
 
     @Autowired

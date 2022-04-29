@@ -29,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -45,7 +44,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 @Transactional
 class UserServiceImplTest {
 
@@ -79,6 +77,7 @@ class UserServiceImplTest {
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
         DocumentType documentType = UserHelper.createDocumentTypeForTest();
         Country country = UserHelper.createCountryForTestUser();
+        Optional<Country> optionalCountry = Optional.of(country);
         Office office = OfficeHelper.createOffice();
 
         User user = userMapper.dtoToDomain(userInSaveDto);
@@ -91,8 +90,8 @@ class UserServiceImplTest {
 
         user.setDocument(document);
 
-        when(countryRepository.getCountryByCode("643").get()).thenReturn(country);
-        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode()).get()).thenReturn(documentType);
+        when(countryRepository.getCountryByCode(country.getCode())).thenReturn(optionalCountry);
+        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(Optional.of(documentType));
         when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -101,7 +100,7 @@ class UserServiceImplTest {
 
         //Then
         verify(userRepository).save(user);
-        verify(countryRepository).getCountryByCode("643");
+        verify(countryRepository).getCountryByCode(country.getCode());
         verify(documentTypeRepository).getDocumentTypeByCode(userInSaveDto.getDocCode());
         verify(officeService).getOffice(userInSaveDto.getOfficeId());
         assertEquals(ConstantValue.RESULT, successDtoResponseEntity.getBody().getResult());
@@ -114,7 +113,7 @@ class UserServiceImplTest {
         String failDocCode = "1005";
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
         userInSaveDto.setDocCode(failDocCode);
-        when(documentTypeRepository.getDocumentTypeByCode(failDocCode)).thenReturn(null);
+        when(documentTypeRepository.getDocumentTypeByCode(failDocCode)).thenThrow(new anyUserErrorException("test"));
         //When
         assertThrows(anyUserErrorException.class, () -> userService.addUser(userInSaveDto));
         //Then
@@ -142,13 +141,13 @@ class UserServiceImplTest {
 
         user.setDocument(document);
 
-        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode()).get()).thenReturn(documentType);
+        when(documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())).thenReturn(Optional.of(documentType));
         when(officeService.getOffice(userInSaveDto.getOfficeId())).thenReturn(office);
 
         String failCountryCode = "1005";
         userInSaveDto.setCountryCode(failCountryCode);
 
-        when(countryRepository.getCountryByCode(failCountryCode)).thenReturn(null);
+        when(countryRepository.getCountryByCode(failCountryCode)).thenThrow(new anyUserErrorException("test"));
         //Then
         assertThrows(anyUserErrorException.class, () -> userService.addUser(userInSaveDto));
         verify(documentTypeRepository).getDocumentTypeByCode(userInSaveDto.getDocCode());
@@ -242,7 +241,7 @@ class UserServiceImplTest {
 
         UpdateUserInDto updateUserInDto = UserHelper.createUpdateUserInDto();
         when(userRepository.findById(ConstantValue.ID)).thenReturn(Optional.of(user));
-        when(countryRepository.getCountryByCode(countryForTestUser.getCode()).get()).thenReturn(countryForTestUser);
+        when(countryRepository.getCountryByCode(countryForTestUser.getCode())).thenReturn(Optional.of(countryForTestUser));
         when(officeService.getOffice(updateUserInDto.getOfficeId())).thenReturn(office);
 
         //When
@@ -251,7 +250,7 @@ class UserServiceImplTest {
         //Then
         verify(userRepository).save(user);
         verify(userRepository).findById(ConstantValue.ID);
-        verify(countryRepository).getCountryByCode(countryForTestUser.getCode());
+        // verify(countryRepository).getCountryByCode(countryForTestUser.getCode());
         verify(officeService).getOffice(updateUserInDto.getOfficeId());
         assertEquals(ConstantValue.RESULT, Objects.requireNonNull(successDtoResponseEntity.getBody()).getResult());
     }

@@ -1,8 +1,5 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.util.ConstantValue;
-import com.bell.bellschooll.util.OfficeHelper;
-import com.bell.bellschooll.util.OrganizationHelper;
 import com.bell.bellschooll.dto.request.OfficeInListDto;
 import com.bell.bellschooll.dto.request.OfficeInSaveDto;
 import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
@@ -15,13 +12,15 @@ import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.repository.OfficeRepository;
 import com.bell.bellschooll.specification.OfficeSpecification;
+import com.bell.bellschooll.util.ConstantValue;
+import com.bell.bellschooll.util.OfficeHelper;
+import com.bell.bellschooll.util.OrganizationHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
@@ -32,12 +31,13 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 class OfficeServiceImplTest {
 
     @MockBean

@@ -1,24 +1,22 @@
 package com.bell.bellschooll.mapper;
 
-import com.bell.bellschooll.util.ConstantValue;
-import com.bell.bellschooll.util.UserHelper;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.DocumentDto;
 import com.bell.bellschooll.model.Document;
 import com.bell.bellschooll.model.DocumentType;
+import com.bell.bellschooll.util.ConstantValue;
+import com.bell.bellschooll.util.UserHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 class DocumentMapperTest {
 
     @Autowired

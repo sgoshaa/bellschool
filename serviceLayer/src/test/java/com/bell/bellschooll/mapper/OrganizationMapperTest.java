@@ -1,16 +1,15 @@
 package com.bell.bellschooll.mapper;
 
-import com.bell.bellschooll.util.ConstantValue;
-import com.bell.bellschooll.util.OrganizationHelper;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.model.Organization;
+import com.bell.bellschooll.util.ConstantValue;
+import com.bell.bellschooll.util.OrganizationHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@TestPropertySource(locations = "classpath:application-test.properties")
 class OrganizationMapperTest {
 
     @Autowired
