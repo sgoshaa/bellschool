@@ -41,6 +41,7 @@
                             <goals>
                                 <goal>repackage</goal>
                             </goals>
+                            <encoding>UTF-8</encoding>
                         </configuration>
                     </execution>
                 </executions>

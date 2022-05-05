@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS Office (
 );
 COMMENT ON TABLE Office  IS 'Офис';
 
-CREATE TABLE IF NOT EXISTS User (
+CREATE TABLE IF NOT EXISTS "user" (
     version    INTEGER NOT NULL                 COMMENT 'Служебное поле hibernate',
     id                  INTEGER                 COMMENT 'Уникальный идентификатор' PRIMARY KEY AUTO_INCREMENT,
     office_id           INTEGER NOT NULL        COMMENT 'Офис',
@@ -34,13 +34,13 @@ CREATE TABLE IF NOT EXISTS User (
     country_id          INTEGER     NOT NULL    COMMENT 'Гражданство',
     is_identified       BOOLEAN                 COMMENT 'идентифицируется'
     );
-COMMENT ON TABLE User  IS 'Пользователь';
+COMMENT ON TABLE "user"  IS 'Пользователь';
 
 CREATE TABLE IF NOT EXISTS Document (
     version        INTEGER NOT NULL     COMMENT 'Служебное поле hibernate',
     id                  INTEGER         COMMENT 'Уникальный идентификатор' PRIMARY KEY,
-    doc_number          VARCHAR         COMMENT 'номер документа',
-    doc_date            DATE            COMMENT 'Дата выдачи документа',
+    number          VARCHAR         COMMENT 'номер документа',
+    date            DATE            COMMENT 'Дата выдачи документа',
     doc_type_id         INTEGER         COMMENT 'Тип документа'
 );
 COMMENT ON TABLE Document  IS 'Документ';
@@ -65,13 +65,13 @@ CREATE INDEX IX_DOCUMENT_ID  ON Document(id);
 -- ALTER TABLE User ADD FOREIGN KEY (doc_id) REFERENCES Document(id);
 
 CREATE INDEX IX_OFFICE_ID  ON Office(id);
-ALTER TABLE User ADD FOREIGN KEY (office_id) REFERENCES Office(id);
+ALTER TABLE "user" ADD FOREIGN KEY (office_id) REFERENCES Office(id);
 
 CREATE INDEX IX_ORGANIZATION_ID ON Organization(id);
 ALTER TABLE Office ADD FOREIGN KEY (org_id) REFERENCES Organization(id);
 
 CREATE INDEX IX_COUNTRY_ID ON Country(id);
-ALTER TABLE User ADD FOREIGN KEY (country_id) REFERENCES Country(id);
+ALTER TABLE "user" ADD FOREIGN KEY (country_id) REFERENCES Country(id);
 
 CREATE INDEX IX_DOCUMENT_TYPE_ID  ON Document_type(id);
 ALTER TABLE Document ADD FOREIGN KEY (doc_type_id) REFERENCES Document_type(id);

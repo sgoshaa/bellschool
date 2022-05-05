@@ -31,10 +31,10 @@ VALUES (0, 1, 'Паспорт гражданина РФ', 21);
 INSERT INTO Document_type(version, id, name, code)
 VALUES (0, 2, 'Водительское удостоверение', 22);
 
-INSERT INTO User(version, id, office_id, first_name, second_name, middle_name, position, phone, country_id,is_identified)
+INSERT INTO "user"(version, id, office_id, first_name, second_name, middle_name, position, phone, country_id,is_identified)
 VALUES (0, 1, 1, 'Спирин', 'Игорь', 'Александрович', 'программист', '123213213', 1, TRUE),
        (0, 2, 1, 'Иванов', 'Иван', 'Иванович', 'водитель', '54568797', 1, TRUE);
 
-INSERT INTO Document(version, id, doc_number, doc_date, doc_type_id)
+INSERT INTO Document(version, id, number, date, doc_type_id)
 VALUES (0, 1, '232323234', '2022-03-24', 1),
        (0, 2, '789456123', '2022-02-22', 2);

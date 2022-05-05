@@ -1,9 +1,11 @@
 package com.bell.bellschooll.repository;
 
 import com.bell.bellschooll.model.Organization;
-import org.hamcrest.Matcher;
+import com.bell.bellschooll.util.OrganizationHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,11 +19,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.google.common.base.Predicates.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.hasProperty;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -44,12 +47,17 @@ class OrganizationRepositoryTest {
         assertEquals(10005, organization.get().getId());
     }
 
-    @Test
-    @DisplayName("Тест проверяет работу метода findAll() c параметром name")
-    void getListOrganizationByName() {
+    @DisplayName("Тест проверяет работу метода findAll() c параметрами")
+    @ParameterizedTest
+    @CsvSource({
+            "BELL,,",
+            "BELL,true,",
+            "BELL,true,123456789"
+    })
+    void getListOrganization(String name, Boolean isActive, Integer inn) {
         //When
         List<Organization> listOrganization = organizationRepository
-                .findAll(getSpecification("BELL",null,null));
+                .findAll(getSpecification(name, isActive, inn));
 
         //Then
         assertFalse(listOrganization.isEmpty());
@@ -64,90 +72,16 @@ class OrganizationRepositoryTest {
     void getListOrganizationByNameAnyName() {
         //When
         List<Organization> listOrganization = organizationRepository
-                .findAll(getSpecification("name",null,null));
+                .findAll(getSpecification("name", null, null));
         //Then
         assertTrue(listOrganization.isEmpty());
-    }
-
-    @Test
-    @DisplayName("Тест проверяет работу метода findAll с параметрами name and inn")
-    void getListOrganizationByNameAndInn() {
-//        //Given
-//        OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
-//        organisationDtoRequest.setInn(456123787);
-//
-//        //When
-//        List<Organization> listOrganization = organizationRepository
-//                .findAll(organizationSpecification.getSpecification(organisationDtoRequest));
-//
-//        //Then
-//        assertFalse(listOrganization.isEmpty());
-//        assertThat(listOrganization.stream()
-//                .map(Organization::getInn)
-//                .collect(Collectors.toList()
-//                ), hasItem(organisationDtoRequest.getInn()));
-//        assertThat(listOrganization.stream()
-//                .map(Organization::getName)
-//                .collect(Collectors.toList()
-//                ), hasItem(organisationDtoRequest.getName()));
-    }
-
-    @Test
-    @DisplayName("Тест проверяет работу метода findAll() с параметрами name and inn and isActive")
-    void getListOrganizationByNameAndInnAndIsActive() {
-//        //Given
-//
-//        int inn = 456123787;
-//
-//        //When
-//        String name = "СБЕР";
-//        List<Organization> listOrganization = organizationRepository
-//                .findAll(getSpecification(name,true,inn));
-//
-//        //Then
-//        assertFalse(listOrganization.isEmpty());
-//        listOrganization.forEach(organization -> {
-//            assertEquals(organization.getName(), name);
-//            assertEquals(organization.getIsActive(), true);
-//            assertEquals(organization.getInn(), inn);
-//        });
-    }
-
-    @Test
-    @DisplayName("Тест проверяет работу метода findAll() с параметрами name and isActive")
-    void getListOrganizationByNameAndIsActive() {
-//        //Given
-//        OrganisationDtoRequest organisationDtoRequest = OrganizationHelper.createOrganisationDtoRequest();
-//        organisationDtoRequest.setIsActive(true);
-//
-//        //When
-//        List<Organization> listOrganization = organizationRepository
-//                .findAll(organizationSpecification.getSpecification(organisationDtoRequest));
-//
-//        //Then
-//        assertFalse(listOrganization.isEmpty());
-//        assertThat(listOrganization.stream()
-//                        .findFirst().get()
-//                , hasProperty("name", equalTo(organisationDtoRequest.getName())));
-//
-//        listOrganization.forEach(organization -> {
-//            assertEquals(organization.getIsActive(),organisationDtoRequest.getIsActive());
-//            assertEquals(organization.getName(),organisationDtoRequest.getName());
-//        });
     }
 
     @Test
     @DisplayName("Тест проверяет работу метода save()")
     void save() {
         //Given
-        Organization organization = new Organization();
-        organization.setAddress("address");
-        organization.setFullName("full_name");
-        organization.setInn(1111111);
-        organization.setKpp(2222222);
-        organization.setIsActive(true);
-        organization.setName("name");
-        organization.setPhone("phone");
+        Organization organization = OrganizationHelper.getNewOrganization();
 
         //When
         Organization savedOrg = organizationRepository.save(organization);

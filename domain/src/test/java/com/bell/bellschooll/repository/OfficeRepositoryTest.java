@@ -1,133 +1,113 @@
-//package com.bell.bellschooll.repository;
-//
-//
-//import com.bell.bellschooll.model.Office;
-//
-//
-//import com.bell.bellschooll.repository.OfficeRepository;
-//import com.bell.bellschooll.repository.OrganizationRepository;
-//import org.junit.jupiter.api.Test;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.TestPropertySource;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import java.util.List;
-//import java.util.stream.Collectors;
-//
-//import static org.hamcrest.MatcherAssert.assertThat;
-//import static org.hamcrest.Matchers.equalTo;
-//import static org.hamcrest.Matchers.hasItem;
-//import static org.hamcrest.Matchers.hasProperty;
-//import static org.junit.jupiter.api.Assertions.*;
-//
-//@SpringBootTest
-//@TestPropertySource(locations = "classpath:application-test.properties")
-//@Transactional
-//class OfficeRepositoryTest {
-//
-//    public static final String BELL_1 = "офис Bell1";
-//    public static final String PHONE = "12321321321";
-//    @Autowired
-//    OfficeRepository officeRepository;
-//
-//    @Autowired
-//    OrganizationRepository organizationRepository;
-//
-//    @Autowired
-//   // OfficeSpecification officeSpecification;
-//
-//    @Test
-//    void getById() {
-////        Office officeById = officeRepository.getById(ConstantValue.ID);
-////        assertNotNull(officeById);
-////        assertEquals(ConstantValue.ID, officeById.getId());
-//    }
-//
-//    @Test
-//    void saveOffice() {
-////        //Given
-////        Office office = OfficeHelper.createOffice(organizationRepository.findById(ConstantValue.ID).get());
-////        Office savedOffice = officeRepository.save(office);
-////
-////        //When
-////        Office officeById = officeRepository.getById(savedOffice.getId());
-////
-////        //Then
-////        assertNotNull(officeById);
-////        assertEquals(office.getId(), officeById.getId());
-////        assertEquals(office.getName(), officeById.getName());
-////        assertEquals(office.getAddress(), officeById.getAddress());
-////        assertEquals(office.getIsActive(), officeById.getIsActive());
-////        assertEquals(office.getOrganization(), officeById.getOrganization());
-////        assertEquals(office.getPhone(), officeById.getPhone());
-//    }
-//
-//    @Test
-//    void getListOffice() {
-//        //Given
-//        //OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-//
-//        //When
-//        //List<Office> listOffice = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto
-//         //       , organizationRepository.findById(ConstantValue.ID).get()));
-//
-//        //Then
-////        assertFalse(listOffice.isEmpty());
-////        assertThat(listOffice.stream()
-////                        .map(Office::getName)
-////                        .collect(Collectors.toList())
-////                , hasItem(BELL_1));
-//    }
-//
-//    @Test
-//    void getListOfficeNameAndPhone() {
-//        //Given
-////        OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-////        officeInListDto.setName(BELL_1);
-////        officeInListDto.setPhone(PHONE);
-////
-////        //When
-////        List<Office> listOffice = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto
-////                , organizationRepository.findById(ConstantValue.ID).get()));
-////
-////        //Then
-////        assertFalse(listOffice.isEmpty());
-////        assertThat(listOffice.stream().map(Office::getName).collect(Collectors.toList()), hasItem(officeInListDto.getName()));
-//    }
-//
-//    @Test
-//    void getListOfficeNameAndPhoneAndIsActive() {
-//        //Given
-////        OfficeInListDto officeInListDto = OfficeHelper.createOfficeInListDto();
-////        officeInListDto.setName(BELL_1);
-////        officeInListDto.setPhone(PHONE);
-////        officeInListDto.setIsActive(true);
-////
-////        //When
-////        List<Office> listOffice = officeRepository.findAll(officeSpecification.getSpecification(officeInListDto
-////                , organizationRepository.findById(ConstantValue.ID).get()));
-////
-////        //Then
-////        assertFalse(listOffice.isEmpty());
-////        assertThat(listOffice.stream()
-////                .findFirst()
-////                .get(), hasProperty("name", equalTo(officeInListDto.getName())));
-//    }
-//
-//    @Test
-//    void updateOffice() {
-//        //Given
-////        Office officeById = officeRepository.getById(ConstantValue.ID);
-////        officeById.setName("UpdateName");
-////
-////        //When
-////        Office updatedOffice = officeRepository.save(officeById);
-////
-////        //Then
-////        Office actualOffice = officeRepository.getById(updatedOffice.getId());
-////
-////        assertNotNull(actualOffice);
-////        assertEquals(officeById.getName(), actualOffice.getName());
-//    }
-//}
+package com.bell.bellschooll.repository;
+
+import com.bell.bellschooll.model.Office;
+import com.bell.bellschooll.util.OfficeHelper;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@TestPropertySource(locations = "classpath:application-test.properties")
+@Transactional
+class OfficeRepositoryTest {
+
+    @Autowired
+    OfficeRepository officeRepository;
+
+    @Autowired
+    OrganizationRepository organizationRepository;
+
+    @Test
+    void getById() {
+        Optional<Office> officeById = officeRepository.findById(1);
+        assertTrue(officeById.isPresent());
+        assertEquals(1, officeById.get().getId());
+    }
+
+    @Test
+    void saveOffice() {
+        //Given
+        Office office = OfficeHelper.createOffice(organizationRepository.findById(1).get());
+        Office savedOffice = officeRepository.save(office);
+
+        //When
+        Optional<Office> officeById = officeRepository.findById(savedOffice.getId());
+
+        //Then
+        assertTrue(officeById.isPresent());
+        assertEquals(office.getId(), officeById.get().getId());
+        assertEquals(office.getName(), officeById.get().getName());
+        assertEquals(office.getAddress(), officeById.get().getAddress());
+        assertEquals(office.getIsActive(), officeById.get().getIsActive());
+        assertEquals(office.getOrganization(), officeById.get().getOrganization());
+        assertEquals(office.getPhone(), officeById.get().getPhone());
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            ",,,1",
+            ",true,,1",
+            "офис Bell1,true,,1",
+            "офис Bell1,,,1",
+            "офис Bell1,true,12321321321,1"
+    })
+    void getListOffice(String name, Boolean isActive, String phone, Integer orgId) {
+        //When
+        List<Office> listOffice = officeRepository.findAll(getSpecification(name, isActive, phone, orgId));
+
+        //Then
+        assertFalse(listOffice.isEmpty());
+        assertThat(listOffice.stream()
+                        .map(Office::getName)
+                        .collect(Collectors.toList())
+                , hasItem("офис Bell1"));
+    }
+
+    @Test
+    void updateOffice() {
+        //Given
+        Office officeById = officeRepository.getById(1);
+        officeById.setName("UpdatedName");
+
+        //When
+        Office updatedOffice = officeRepository.save(officeById);
+
+        //Then
+        Office actualOffice = officeRepository.getById(updatedOffice.getId());
+
+        assertNotNull(actualOffice);
+        assertEquals(officeById, actualOffice);
+    }
+
+    private Specification<Office> getSpecification(String name, Boolean isActive, String phone, Integer orgId) {
+        return (root, query, criteriaBuilder) -> {
+            ArrayList<Predicate> predicates = new ArrayList<>();
+            predicates.add(criteriaBuilder.equal(root.get("organization").get("id"), orgId));
+            if (name != null) {
+                predicates.add(criteriaBuilder.equal(root.get("name"), name));
+            }
+            if (isActive != null) {
+                predicates.add(criteriaBuilder.equal(root.get("isActive"), isActive));
+            }
+            if (phone != null) {
+                predicates.add(criteriaBuilder.equal(root.get("phone"), phone));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
+    }
+}
