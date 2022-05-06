@@ -1,13 +1,23 @@
 package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.dto.response.CountryDto;
+import com.bell.bellschooll.mapper.CountryMapper;
+import com.bell.bellschooll.mapper.MapperTestConfig;
 import com.bell.bellschooll.model.Country;
 import com.bell.bellschooll.repository.CountryRepository;
 import com.bell.bellschooll.util.CountryHelper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@ActiveProfiles("test2")
 class CountryServiceImplTest {
 
     @MockBean

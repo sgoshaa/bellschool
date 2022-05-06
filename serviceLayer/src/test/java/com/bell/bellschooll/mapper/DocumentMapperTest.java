@@ -10,13 +10,15 @@ import com.bell.bellschooll.util.UserHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = {DocumentMapper.class})
+@ContextConfiguration(classes = MapperTestConfig.class)
 class DocumentMapperTest {
 
     @Autowired
@@ -48,7 +50,7 @@ class DocumentMapperTest {
         document.setDate(updateUserInDto.getDocDate());
 
         //When
-        Document documentActual = documentMapper.dtoToDomain(updateUserInDto,document);
+        Document documentActual = documentMapper.dtoToDomain(updateUserInDto, document);
 
         //Then
         assertEquals(document.getNumber(), documentActual.getNumber());

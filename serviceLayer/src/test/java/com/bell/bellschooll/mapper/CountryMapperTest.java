@@ -6,6 +6,7 @@ import com.bell.bellschooll.util.CountryHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,7 +15,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = {CountryMapper.class})
+@ContextConfiguration(classes = MapperTestConfig.class )
 class CountryMapperTest {
 
     @Autowired
