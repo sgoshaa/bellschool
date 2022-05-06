@@ -1,11 +1,5 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.util.ConstantValue;
-import com.bell.bellschooll.util.OfficeHelper;
-import com.bell.bellschooll.util.OrganizationHelper;
-import com.bell.bellschooll.util.UserHelper;
-import com.bell.bellschooll.repository.CountryRepository;
-import com.bell.bellschooll.repository.DocumentTypeRepository;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
@@ -13,25 +7,32 @@ import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.dto.response.UserOutListDto;
 import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.mapper.CountryMapperImpl;
 import com.bell.bellschooll.mapper.DocumentMapper;
+import com.bell.bellschooll.mapper.DocumentMapperImpl;
 import com.bell.bellschooll.mapper.UserMapper;
+import com.bell.bellschooll.mapper.UserMapperImpl;
 import com.bell.bellschooll.model.Country;
 import com.bell.bellschooll.model.Document;
 import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.model.User;
+import com.bell.bellschooll.repository.CountryRepository;
+import com.bell.bellschooll.repository.DocumentTypeRepository;
 import com.bell.bellschooll.repository.UserRepository;
 import com.bell.bellschooll.specification.UserSpecification;
+import com.bell.bellschooll.util.ConstantValue;
+import com.bell.bellschooll.util.OfficeHelper;
+import com.bell.bellschooll.util.OrganizationHelper;
+import com.bell.bellschooll.util.UserHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -41,12 +42,19 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test2")
+@SpringBootTest(classes = {
+        UserServiceImpl.class,
+        UserMapperImpl.class,
+        DocumentMapperImpl.class,
+        CountryServiceImpl.class,
+        CountryMapperImpl.class
+})
 class UserServiceImplTest {
 
     @Autowired

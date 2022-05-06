@@ -8,6 +8,7 @@ import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
+import com.bell.bellschooll.mapper.OfficeMapperImpl;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.repository.OfficeRepository;
@@ -39,8 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test2")
+@SpringBootTest(classes = {OfficeServiceImpl.class, OfficeMapperImpl.class})
 class OfficeServiceImplTest {
 
     @MockBean
@@ -81,7 +81,6 @@ class OfficeServiceImplTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("Метод проверяет работу метода сервиса addOffice()")
     void addOffice() {
         //Given

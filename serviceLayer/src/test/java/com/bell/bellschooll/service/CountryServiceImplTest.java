@@ -2,6 +2,7 @@ package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.dto.response.CountryDto;
 import com.bell.bellschooll.mapper.CountryMapper;
+import com.bell.bellschooll.mapper.CountryMapperImpl;
 import com.bell.bellschooll.mapper.MapperTestConfig;
 import com.bell.bellschooll.model.Country;
 import com.bell.bellschooll.repository.CountryRepository;
@@ -14,10 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test2")
+@SpringBootTest(classes = {CountryServiceImpl.class, CountryMapperImpl.class})
 class CountryServiceImplTest {
 
     @MockBean
@@ -69,7 +65,7 @@ class CountryServiceImplTest {
         Country countryByCode = countryService.getCountryByCode(code);
 
         //Then
-        assertEquals(country,countryByCode);
+        assertEquals(country, countryByCode);
         verify(countryRepository).getCountryByCode(code);
     }
 }

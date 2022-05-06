@@ -76,6 +76,7 @@ public class UserHelper {
         user.setSecondName(SECOND_NAME);
         user.setPosition(POSITION);
         user.setPhone(PHONE);
+        user.setIsIdentified(true);
         return user;
     }
 

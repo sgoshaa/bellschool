@@ -1,6 +1,8 @@
 package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.dto.response.DocumentDto;
+import com.bell.bellschooll.mapper.DocumentMapper;
+import com.bell.bellschooll.mapper.DocumentMapperImpl;
 import com.bell.bellschooll.model.DocumentType;
 import com.bell.bellschooll.repository.DocumentTypeRepository;
 import com.bell.bellschooll.util.DocumentHelper;
@@ -20,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
-@ActiveProfiles("test2")
+@SpringBootTest(classes = {DocumentServiceImpl.class, DocumentMapperImpl.class})
 class DocumentServiceImplTest {
 
     @MockBean

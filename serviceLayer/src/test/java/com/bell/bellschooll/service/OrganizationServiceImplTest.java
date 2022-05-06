@@ -1,5 +1,6 @@
 package com.bell.bellschooll.service;
 
+import com.bell.bellschooll.mapper.OrganizationMapperImpl;
 import com.bell.bellschooll.util.ConstantValue;
 import com.bell.bellschooll.util.OrganizationHelper;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
@@ -38,8 +39,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-@SpringBootTest
-@ActiveProfiles("test2")
+@SpringBootTest(classes = {OrganizationServiceImpl.class, OrganizationMapperImpl.class})
 class OrganizationServiceImplTest {
 
     @MockBean
