@@ -9,6 +9,9 @@ plugins {
 
 dependencies {
     implementation project(':domain')
+    implementation libs.mapstruct.core
+    annotationProcessor libs.mapstruct.processor
+    testAnnotationProcessor libs.mapstruct.processor
 }
 
 description = 'serviceLayer'

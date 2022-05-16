@@ -45,6 +45,9 @@ public interface OrganizationMapper {
      * @param organizationSaveInDto Объект с параметрами для новой организации
      * @return Organization
      */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "offices", ignore = true)
     Organization organizationInToDomain(OrganizationSaveInDto organizationSaveInDto);
 
     /**

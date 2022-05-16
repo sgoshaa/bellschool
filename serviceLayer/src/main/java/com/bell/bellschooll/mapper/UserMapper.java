@@ -22,6 +22,11 @@ public interface UserMapper {
      * @param userInSaveDto
      * @return
      */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "office", ignore = true)
+    @Mapping(target = "document", ignore = true)
+    @Mapping(target = "country", ignore = true)
     User dtoToDomain(UserInSaveDto userInSaveDto);
 
     /**
@@ -52,6 +57,10 @@ public interface UserMapper {
      * @param user
      * @return
      */
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "office", ignore = true)
+    @Mapping(target = "document", ignore = true)
+    @Mapping(target = "country", ignore = true)
     User updateUserFromDto(UpdateUserInDto updateUserInDto, @MappingTarget User user);
 
     /**

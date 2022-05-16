@@ -10,12 +10,9 @@ import com.bell.bellschooll.model.Organization;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Маппер для Office
@@ -43,6 +40,7 @@ public interface OfficeMapper {
     @Mapping(target = "isActive", source = "officeDto.isActive")
     @Mapping(target = "address", source = "officeDto.address")
     @Mapping(target = "version", ignore = true)
+    @Mapping(target = "users", ignore = true)
     Office dtoToDomain(OfficeInSaveDto officeDto, Organization organization);
 
     /**
@@ -79,24 +77,22 @@ public interface OfficeMapper {
     Office updateOfficeDtoToDomain(OfficeInUpdateDto officeInUpdateDto, Office currentOffice);
 
 
-
-
-    default Map<String,Object> fromDtoToMap(OfficeInListDto officeInListDto){
-        Map<String,Object> map = new HashMap<>();
-        if (officeInListDto == null){
+    default Map<String, Object> fromDtoToMap(OfficeInListDto officeInListDto) {
+        Map<String, Object> map = new HashMap<>();
+        if (officeInListDto == null) {
             return null;
         }
-        if (officeInListDto.getIsActive()!= null){
-            map.put("isActive",officeInListDto.getIsActive());
+        if (officeInListDto.getIsActive() != null) {
+            map.put("isActive", officeInListDto.getIsActive());
         }
-        if (officeInListDto.getName()!= null){
-            map.put("name",officeInListDto.getName());
+        if (officeInListDto.getName() != null) {
+            map.put("name", officeInListDto.getName());
         }
-        if (officeInListDto.getPhone()!= null){
-            map.put("phone",officeInListDto.getPhone());
+        if (officeInListDto.getPhone() != null) {
+            map.put("phone", officeInListDto.getPhone());
         }
-        if (officeInListDto.getPhone()!= null){
-            map.put("orgId",officeInListDto.getOrgId());
+        if (officeInListDto.getPhone() != null) {
+            map.put("orgId", officeInListDto.getOrgId());
         }
         return new HashMap<>();
     }

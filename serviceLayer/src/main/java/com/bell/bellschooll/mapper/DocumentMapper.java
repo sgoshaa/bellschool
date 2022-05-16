@@ -23,6 +23,10 @@ public interface DocumentMapper {
      */
     @Mapping(target = "number", source = "docNumber")
     @Mapping(target = "date", source = "docDate")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "docType", ignore = true)
     Document dtoToDomain(UserInSaveDto userInSaveDto);
 
     /**
@@ -31,10 +35,10 @@ public interface DocumentMapper {
      * @param updateUserInDto Объект с полями для отображения в документе
      * @return Document
      */
-    @Mapping(target = "id",source = "currentDocument.id")
+    @Mapping(target = "id", source = "currentDocument.id")
     @Mapping(target = "number", source = "updateUserInDto.docNumber")
     @Mapping(target = "date", source = "updateUserInDto.docDate")
-    Document dtoToDomain(UpdateUserInDto updateUserInDto,Document currentDocument);
+    Document dtoToDomain(UpdateUserInDto updateUserInDto, Document currentDocument);
 
     /**
      * Метод для маппинга DocumentType в Dto
