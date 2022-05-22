@@ -12,6 +12,8 @@ dependencies {
     implementation libs.mapstruct.core
     annotationProcessor libs.mapstruct.processor
     testAnnotationProcessor libs.mapstruct.processor
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-amqp
+    implementation 'org.springframework.boot:spring-boot-starter-amqp:2.7.0'
 }
 
 description = 'serviceLayer'

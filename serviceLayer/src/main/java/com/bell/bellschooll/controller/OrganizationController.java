@@ -1,5 +1,6 @@
 package com.bell.bellschooll.controller;
 
+import com.bell.bellschooll.config.RabbitMQConfig;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
@@ -7,6 +8,9 @@ import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.service.OrganizationService;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +31,14 @@ public class OrganizationController {
 
     private final OrganizationService organizationService;
 
-    public OrganizationController(OrganizationService organizationService) {
+    private final RabbitTemplate template;
+
+    private final FanoutExchange exchange;
+
+    public OrganizationController(OrganizationService organizationService, RabbitTemplate template, FanoutExchange exchange) {
         this.organizationService = organizationService;
+        this.template = template;
+        this.exchange = exchange;
     }
 
     /**
@@ -62,6 +72,18 @@ public class OrganizationController {
     @PostMapping("save")
     public ResponseEntity<SuccessDto> addOrganization(@Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
         return organizationService.addOrganization(organizationSaveInDto);
+    }
+
+    /**
+     * Сохранение новой организации Через очередь RabbitMQ
+     *
+     * @param organizationSaveInDto Объект, содержащий  параметры новой организации
+     * @return SuccessDto
+     */
+    @PostMapping("save/queue")
+    public ResponseEntity<SuccessDto> addOrganizationQueue(@Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
+        template.convertAndSend(RabbitMQConfig.QUERY_SAVE_ORGANIZATION, organizationSaveInDto);
+        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.bell.bellschooll.service;
 
+import com.bell.bellschooll.config.RabbitMQConfig;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
@@ -11,6 +12,8 @@ import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.exception.anyUserErrorException;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.model.Organization;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -101,5 +104,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     public Organization getOrgById(Integer id) {
         return organizationRepository
                 .findById(id).orElseThrow(() -> new anyUserErrorException(ORGANIZATION_NOT_FOUND + id));
+    }
+
+    @RabbitListener(queues = RabbitMQConfig.QUERY_SAVE_ORGANIZATION)
+    public void processingOrganizations(OrganizationSaveInDto organizationSaveInDto) {
+        addOrganization(organizationSaveInDto);
     }
 }
