@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -23,6 +24,7 @@ import java.util.List;
 @EqualsAndHashCode
 @RequiredArgsConstructor
 @ToString
+@DynamicUpdate
 public class Organization {
     /**
      * Уникальный идентификатор

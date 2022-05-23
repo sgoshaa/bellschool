@@ -4,16 +4,18 @@ import com.bell.bellschooll.config.RabbitMQConfig;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
-import com.bell.bellschooll.mapper.OrganizationMapper;
-import com.bell.bellschooll.repository.OrganizationRepository;
-import com.bell.bellschooll.specification.OrganizationSpecification;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
+import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.exception.anyUserErrorException;
-import com.bell.bellschooll.dto.response.OrganizationOutDto;
+import com.bell.bellschooll.mapper.OrganizationMapper;
 import com.bell.bellschooll.model.Organization;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import com.bell.bellschooll.repository.OrganizationRepository;
+import com.bell.bellschooll.specification.OrganizationSpecification;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -32,10 +34,15 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationRepository organizationRepository;
     private final OrganizationSpecification organizationSpecification;
 
-    public OrganizationServiceImpl(OrganizationMapper organizationMapper, OrganizationRepository organizationRepository, OrganizationSpecification organizationSpecification) {
+    private final RabbitTemplate rabbitTemplate;
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+    public OrganizationServiceImpl(OrganizationMapper organizationMapper, OrganizationRepository organizationRepository, OrganizationSpecification organizationSpecification, RabbitTemplate rabbitTemplate) {
         this.organizationMapper = organizationMapper;
         this.organizationRepository = organizationRepository;
         this.organizationSpecification = organizationSpecification;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
 
@@ -106,8 +113,29 @@ public class OrganizationServiceImpl implements OrganizationService {
                 .findById(id).orElseThrow(() -> new anyUserErrorException(ORGANIZATION_NOT_FOUND + id));
     }
 
+    /**
+     * метод для сохранения организации из очереди
+     *
+     * @param message
+     * @throws InterruptedException - для понта
+     */
     @RabbitListener(queues = RabbitMQConfig.QUERY_SAVE_ORGANIZATION)
-    public void processingOrganizations(OrganizationSaveInDto organizationSaveInDto) {
+    public void processingOrganizations(String message) throws InterruptedException, JsonProcessingException {
+        OrganizationSaveInDto organizationSaveInDto = objectMapper.readValue(message,OrganizationSaveInDto.class);
+        Thread.sleep(2000);
         addOrganization(organizationSaveInDto);
+    }
+
+    /**
+     * Метод для получения организации по id из очереди
+     *
+     * @param id Уникальный идентификатор организации
+     * @return OrganizationOutDto
+     */
+    @RabbitListener(queues = RabbitMQConfig.NAME_QUEUE_GET_ORGANIZATION)
+    public void getOrganizationByIdQueue(Integer id) throws JsonProcessingException {
+        Organization organization = getOrgById(id);
+        OrganizationOutDto organizationOutDto = organizationMapper.organizationToDto(organization);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.NAME_QUEUE_RETURN_ORGANIZATION,objectMapper.writeValueAsString(organizationOutDto));
     }
 }
