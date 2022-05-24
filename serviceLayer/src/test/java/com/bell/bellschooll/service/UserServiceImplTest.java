@@ -6,7 +6,7 @@ import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.dto.response.UserOutListDto;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import com.bell.bellschooll.mapper.CountryMapperImpl;
 import com.bell.bellschooll.mapper.DocumentMapper;
 import com.bell.bellschooll.mapper.DocumentMapperImpl;
@@ -32,7 +32,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -123,9 +122,9 @@ class UserServiceImplTest {
         String failDocCode = "1005";
         UserInSaveDto userInSaveDto = UserHelper.createUserInSaveDto();
         userInSaveDto.setDocCode(failDocCode);
-        when(documentTypeRepository.getDocumentTypeByCode(failDocCode)).thenThrow(new anyUserErrorException("test"));
+        when(documentTypeRepository.getDocumentTypeByCode(failDocCode)).thenThrow(new AnyUserErrorException("test"));
         //When
-        assertThrows(anyUserErrorException.class, () -> userService.addUser(userInSaveDto));
+        assertThrows(AnyUserErrorException.class, () -> userService.addUser(userInSaveDto));
         //Then
         verify(documentTypeRepository).getDocumentTypeByCode(failDocCode);
     }
@@ -157,9 +156,9 @@ class UserServiceImplTest {
         String failCountryCode = "1005";
         userInSaveDto.setCountryCode(failCountryCode);
 
-        when(countryRepository.getCountryByCode(failCountryCode)).thenThrow(new anyUserErrorException("test"));
+        when(countryRepository.getCountryByCode(failCountryCode)).thenThrow(new AnyUserErrorException("test"));
         //Then
-        assertThrows(anyUserErrorException.class, () -> userService.addUser(userInSaveDto));
+        assertThrows(AnyUserErrorException.class, () -> userService.addUser(userInSaveDto));
         verify(documentTypeRepository).getDocumentTypeByCode(userInSaveDto.getDocCode());
         verify(officeService).getOffice(userInSaveDto.getOfficeId());
     }
@@ -192,7 +191,7 @@ class UserServiceImplTest {
         int failIdUser = 10005;
         when(userRepository.findById(failIdUser)).thenReturn(Optional.empty());
         //Then
-        assertThrows(anyUserErrorException.class, /*When*/() -> userService.getUser(failIdUser));
+        assertThrows(AnyUserErrorException.class, /*When*/() -> userService.getUser(failIdUser));
         verify(userRepository).findById(failIdUser);
     }
 

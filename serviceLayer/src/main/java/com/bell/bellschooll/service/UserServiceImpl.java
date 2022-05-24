@@ -3,7 +3,7 @@ package com.bell.bellschooll.service;
 import com.bell.bellschooll.dto.request.UpdateUserInDto;
 import com.bell.bellschooll.dto.request.UserInListDto;
 import com.bell.bellschooll.dto.request.UserInSaveDto;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import com.bell.bellschooll.mapper.DocumentMapper;
 import com.bell.bellschooll.mapper.UserMapper;
 import com.bell.bellschooll.repository.DocumentTypeRepository;
@@ -130,7 +130,7 @@ public class UserServiceImpl implements UserService {
      */
     private Document createDocument(UserInSaveDto userInSaveDto) {
         DocumentType documentType = documentTypeRepository.getDocumentTypeByCode(userInSaveDto.getDocCode())
-                .orElseThrow(() -> new anyUserErrorException("Не найден нужный тип документа."));
+                .orElseThrow(() -> new AnyUserErrorException("Не найден нужный тип документа."));
         Document document = documentMapper.dtoToDomain(userInSaveDto);
         document.setDocType(documentType);
         return document;
@@ -144,6 +144,6 @@ public class UserServiceImpl implements UserService {
      */
     private User getUserById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new anyUserErrorException("Пользователь с данным id = " + id + " не найден."));
+                .orElseThrow(() -> new AnyUserErrorException("Пользователь с данным id = " + id + " не найден."));
     }
 }

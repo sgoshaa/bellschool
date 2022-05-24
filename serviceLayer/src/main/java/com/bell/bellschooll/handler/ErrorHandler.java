@@ -1,7 +1,7 @@
 package com.bell.bellschooll.handler;
 
 import com.bell.bellschooll.exception.ErrorResponse;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpHeaders;
@@ -28,8 +28,8 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
      * @param exception
      * @return
      */
-    @ExceptionHandler(anyUserErrorException.class)
-    public ResponseEntity<ErrorResponse> handlerErrorException(anyUserErrorException exception) {
+    @ExceptionHandler(AnyUserErrorException.class)
+    public ResponseEntity<ErrorResponse> handlerErrorException(AnyUserErrorException exception) {
         ErrorResponse errorResponse = new ErrorResponse(exception.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

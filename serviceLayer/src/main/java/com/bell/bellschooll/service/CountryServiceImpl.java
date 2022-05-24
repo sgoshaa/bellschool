@@ -1,7 +1,7 @@
 package com.bell.bellschooll.service;
 
 import com.bell.bellschooll.mapper.CountryMapper;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import com.bell.bellschooll.repository.CountryRepository;
 import com.bell.bellschooll.dto.response.CountryDto;
 import com.bell.bellschooll.model.Country;
@@ -34,6 +34,6 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public Country getCountryByCode(String code) {
         return countryRepository.getCountryByCode(code)
-                .orElseThrow(() -> new anyUserErrorException("Не найдена страна по данному коду."));
+                .orElseThrow(() -> new AnyUserErrorException("Не найдена страна по данному коду."));
     }
 }

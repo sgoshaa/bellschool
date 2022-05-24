@@ -6,7 +6,7 @@ import com.bell.bellschooll.dto.request.OfficeInUpdateDto;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.mapper.OfficeMapperImpl;
 import com.bell.bellschooll.model.Office;
@@ -22,9 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -166,7 +163,7 @@ class OfficeServiceImplTest {
         when(officeRepository.findById(ConstantValue.ID)).thenReturn(Optional.empty());
 
         //then
-        assertThrows(anyUserErrorException.class, () -> officeService.getOffice(ConstantValue.ID));
+        assertThrows(AnyUserErrorException.class, () -> officeService.getOffice(ConstantValue.ID));
         verify(officeRepository).findById(ConstantValue.ID);
     }
 
@@ -182,7 +179,7 @@ class OfficeServiceImplTest {
         when(organizationService.getOrgById(officeInListDto.getOrgId())).thenReturn(organization);
 
         //When
-        assertThrows(anyUserErrorException.class, () -> officeService.getListOffice(officeInListDto));
+        assertThrows(AnyUserErrorException.class, () -> officeService.getListOffice(officeInListDto));
 
         //Then
         verify(officeRepository).findAll(officeSpecification.getSpecification(officeInListDto, organization));

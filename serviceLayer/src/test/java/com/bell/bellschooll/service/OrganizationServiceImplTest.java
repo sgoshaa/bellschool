@@ -9,7 +9,7 @@ import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import com.bell.bellschooll.mapper.OrganizationMapper;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.repository.OrganizationRepository;
@@ -21,8 +21,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +161,7 @@ class OrganizationServiceImplTest {
         when(organizationRepository.findById(ConstantValue.ID)).thenReturn(Optional.empty());
 
         //Then
-        assertThrows(anyUserErrorException.class, () -> organizationService.getOrgById(ConstantValue.ID));
+        assertThrows(AnyUserErrorException.class, () -> organizationService.getOrgById(ConstantValue.ID));
         verify(organizationRepository).findById(ConstantValue.ID);
     }
 }

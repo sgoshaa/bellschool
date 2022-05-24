@@ -7,7 +7,7 @@ import com.bell.bellschooll.mapper.OfficeMapper;
 import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
-import com.bell.bellschooll.exception.anyUserErrorException;
+import com.bell.bellschooll.exception.AnyUserErrorException;
 import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.model.Organization;
 import com.bell.bellschooll.repository.OfficeRepository;
@@ -79,7 +79,7 @@ public class OfficeServiceImpl implements OfficeService {
 //                        officeMapper.fromDtoToMap(officeInListDto), organization.getId()));
 
         if (offices.isEmpty()) {
-            throw new anyUserErrorException("У " + organization.getFullName() + " нет офисов.");
+            throw new AnyUserErrorException("У " + organization.getFullName() + " нет офисов.");
         }
         return new ResponseEntity<>(officeMapper.toListDto(offices), HttpStatus.OK);
     }
@@ -105,6 +105,6 @@ public class OfficeServiceImpl implements OfficeService {
      * @return Office
      */
     public Office getOffice(Integer id) {
-        return officeRepository.findById(id).orElseThrow(() -> new anyUserErrorException(OFFICE_NOT_FOUND + id));
+        return officeRepository.findById(id).orElseThrow(() -> new AnyUserErrorException(OFFICE_NOT_FOUND + id));
     }
 }
