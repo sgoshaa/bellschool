@@ -39,7 +39,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationSpecification organizationSpecification;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private Logger logger = Logger.getLogger(OrganizationServiceImpl.class.getName());
+    private final Logger logger = Logger.getLogger(OrganizationServiceImpl.class.getName());
 
     public OrganizationServiceImpl(OrganizationMapper organizationMapper, OrganizationRepository organizationRepository, OrganizationSpecification organizationSpecification, RabbitTemplate rabbitTemplate) {
         this.organizationMapper = organizationMapper;
@@ -136,7 +136,7 @@ public class OrganizationServiceImpl implements OrganizationService {
      */
     @RabbitListener(queues = RabbitMQConfig.NAME_QUEUE_GET_ORGANIZATION)
     public void getOrganizationFromQueue(String message) throws JsonProcessingException, InterruptedException {
-        Thread.sleep(5000);
+        Thread.sleep(5000);//имитируем асинхронное выполнение
         JsonNode jsonNode = objectMapper.readTree(message);
         int idMessage = jsonNode.get("id").asInt();
         String method = jsonNode.get("method").asText();
