@@ -1,6 +1,6 @@
 package com.bell.bellschooll.service;
 
-import com.bell.bellschooll.config.Message;
+import com.bell.bellschooll.config.MessageDto;
 import com.bell.bellschooll.config.RabbitMQConfig;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
@@ -47,7 +47,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         this.organizationSpecification = organizationSpecification;
         this.rabbitTemplate = rabbitTemplate;
     }
-
 
     /**
      * Метод для получения организации по id
@@ -154,12 +153,12 @@ public class OrganizationServiceImpl implements OrganizationService {
             body = getOrganizationByOrganizationDtoRequest(objectMapper
                     .treeToValue(jsonNode.get("body"), OrganisationDtoRequest.class)).getBody();
         }
-        Message messageToQueue = new Message();
-        messageToQueue.setId(idMessage);
-        messageToQueue.setMethod(method);
-        messageToQueue.setBody(body);
+        MessageDto messageDtoToQueue = new MessageDto();
+        messageDtoToQueue.setId(idMessage);
+        messageDtoToQueue.setMethod(method);
+        messageDtoToQueue.setBody(body);
         rabbitTemplate.convertAndSend(RabbitMQConfig.NAME_QUEUE_RETURN_ORGANIZATION
-                , objectMapper.writeValueAsString(messageToQueue));
+                , objectMapper.writeValueAsString(messageDtoToQueue));
         assert body != null;
         logger.log(Level.INFO, "В очередь отправлен Объект:" + body.toString());
     }

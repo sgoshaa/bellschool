@@ -8,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Message {
+public class MessageDto {
     private int id;
     private String method;
     private Object body;

@@ -7,6 +7,7 @@ import com.bell.bellschooll.dto.response.OfficeListOutDto;
 import com.bell.bellschooll.dto.response.OfficeOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.service.OfficeService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("api/office/")
+@Log4j2
 public class OfficeController {
 
     private final OfficeService officeService;
@@ -38,7 +40,7 @@ public class OfficeController {
      * @return OfficeOutDto объект ,содержащий представление офиса
      */
     @GetMapping("{id}")
-    public ResponseEntity<OfficeOutDto> getById(@PathVariable Integer id) {
+    public ResponseEntity<OfficeOutDto> getOfficeById(@PathVariable Integer id) {
         return officeService.getOfficeById(id);
     }
 
