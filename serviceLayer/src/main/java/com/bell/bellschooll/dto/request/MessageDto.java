@@ -1,4 +1,4 @@
-package com.bell.bellschooll.config;
+package com.bell.bellschooll.dto.request;
 
 
 import lombok.Getter;
