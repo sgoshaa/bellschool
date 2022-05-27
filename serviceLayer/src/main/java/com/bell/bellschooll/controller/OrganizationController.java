@@ -1,14 +1,13 @@
 package com.bell.bellschooll.controller;
 
 import com.bell.bellschooll.config.RabbitMQConfig;
+import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
 import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.service.OrganizationService;
-import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +32,9 @@ public class OrganizationController {
 
     private final RabbitTemplate template;
 
-    private final FanoutExchange exchange;
-
-    public OrganizationController(OrganizationService organizationService, RabbitTemplate template, FanoutExchange exchange) {
+    public OrganizationController(OrganizationService organizationService, RabbitTemplate template) {
         this.organizationService = organizationService;
         this.template = template;
-        this.exchange = exchange;
     }
 
     /**
@@ -48,7 +44,8 @@ public class OrganizationController {
      * @return List Список объектов OrganizationListOut
      */
     @PostMapping("list")
-    public ResponseEntity<List<OrganizationListOut>> getListOrganization(@Valid @RequestBody OrganisationDtoRequest organisationDTO) {
+    public ResponseEntity<List<OrganizationListOut>> getListOrganization(
+            @Valid @RequestBody OrganisationDtoRequest organisationDTO) {
         return organizationService.getOrganizationByOrganizationDtoRequest(organisationDTO);
     }
 
@@ -70,7 +67,8 @@ public class OrganizationController {
      * @return SuccessDto
      */
     @PostMapping("save")
-    public ResponseEntity<SuccessDto> addOrganization(@Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
+    public ResponseEntity<SuccessDto> addOrganization(
+            @Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
         return organizationService.addOrganization(organizationSaveInDto);
     }
 
@@ -81,7 +79,8 @@ public class OrganizationController {
      * @return SuccessDto
      */
     @PostMapping("save/queue")
-    public ResponseEntity<SuccessDto> addOrganizationQueue(@Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
+    public ResponseEntity<SuccessDto> addOrganizationQueue(
+            @Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
         template.convertAndSend(RabbitMQConfig.QUERY_SAVE_ORGANIZATION, organizationSaveInDto);
         return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
     }
@@ -93,7 +92,8 @@ public class OrganizationController {
      * @return SuccessDto
      */
     @PostMapping("update")
-    public ResponseEntity<SuccessDto> updateOrganization(@Valid @RequestBody OrganizationUpdateInDto organizationUpdateInDto) {
+    public ResponseEntity<SuccessDto> updateOrganization(
+            @Valid @RequestBody OrganizationUpdateInDto organizationUpdateInDto) {
         return organizationService.updateOrganization(organizationUpdateInDto);
     }
 }

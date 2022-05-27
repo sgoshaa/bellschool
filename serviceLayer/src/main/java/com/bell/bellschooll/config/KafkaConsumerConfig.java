@@ -15,11 +15,20 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Конфигурация KafkaConsumer
+ */
 @Configuration
 public class KafkaConsumerConfig {
+
     @Value("${spring.kafka.bootstrap-servers}")
     private String boostrapServers;
 
+    /**
+     * Метод для создания бина consumerConfig
+     *
+     * @return Map<String, Object>
+     */
     @Bean
     public Map<String, Object> consumerConfig() {
         HashMap<String, Object> props = new HashMap<>();
@@ -29,16 +38,29 @@ public class KafkaConsumerConfig {
         return props;
     }
 
+    /**
+     * Метод для создания бина consumerFactory
+     *
+     * @return ConsumerFactory<String, MessageDto>
+     */
     @Bean
     public ConsumerFactory<String, MessageDto> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfig());
     }
 
+    /**
+     * Метод для создания бина
+     *
+     * @param consumerFactory listenerContainerFactory
+     * @return KafkaListenerContainerFactory<ConcurrentMessageListenerContainer < String, MessageDto>>
+     */
     @Bean
-    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, MessageDto>> listenerContainerFactory(
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, MessageDto>>
+    listenerContainerFactory(
             ConsumerFactory<String, MessageDto> consumerFactory
     ) {
-        ConcurrentKafkaListenerContainerFactory<String, MessageDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, MessageDto> factory
+                = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory);
         return factory;
     }

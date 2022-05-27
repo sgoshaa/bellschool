@@ -14,6 +14,9 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+/**
+ * Контроллер для работы с очередью RabbitMQ
+ */
 @Log4j2
 @Component
 public class RabbitOrganizationController {

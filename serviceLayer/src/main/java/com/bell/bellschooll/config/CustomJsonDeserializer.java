@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Level;
 
 import java.util.Map;
 
+/**
+ * Кастомный десериализатор для JSON объектов в MessageDto
+ */
 @Log4j2
 public class CustomJsonDeserializer implements Deserializer<MessageDto> {
 
@@ -21,6 +24,13 @@ public class CustomJsonDeserializer implements Deserializer<MessageDto> {
 
     }
 
+    /**
+     * Метод десериализует из очереди в MessageDto
+     *
+     * @param topic очередь
+     * @param data  сообщение в очереди
+     * @return MessageDto
+     */
     @Override
     public MessageDto deserialize(String topic, byte[] data) {
         MessageDto messageDto = null;

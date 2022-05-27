@@ -6,7 +6,6 @@ import com.bell.bellschooll.dto.request.UserInSaveDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.dto.response.UserOutDto;
 import com.bell.bellschooll.dto.response.UserOutListDto;
-import com.bell.bellschooll.model.Office;
 import com.bell.bellschooll.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,7 +58,6 @@ public class UserController {
      *
      * @param userInListDto Объект,содержащий параметры, для фильтрации пользователей
      * @return List объектов типа UserOutListDto
-     * @see com.bell.bellschooll.dao.UserDao#getListUser(UserInListDto, Office)
      */
     @PostMapping("list")
     public ResponseEntity<List<UserOutListDto>> getListUser(@Valid @RequestBody UserInListDto userInListDto) {
