@@ -73,10 +73,10 @@ public class RabbitOrganizationController {
      */
     @RabbitListener(queues = RabbitMQConfig.QUERY_SAVE_ORGANIZATION)
     public void processingOrganizations(String message) throws InterruptedException, JsonProcessingException {
-        log.log(Level.INFO,"Из очереди получен объект: "+message);
+        log.log(Level.INFO, "Из очереди получен объект: " + message);
         OrganizationSaveInDto organizationSaveInDto = objectMapper.readValue(message, OrganizationSaveInDto.class);
         Thread.sleep(2000);
         organizationController.addOrganization(organizationSaveInDto);
-        log.log(Level.INFO,"Объект сохранен в БД: "+message);
+        log.log(Level.INFO, "Объект сохранен в БД: " + message);
     }
 }
