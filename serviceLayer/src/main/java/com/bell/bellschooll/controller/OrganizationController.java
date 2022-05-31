@@ -1,6 +1,5 @@
 package com.bell.bellschooll.controller;
 
-import com.bell.bellschooll.config.RabbitMQConfig;
 import com.bell.bellschooll.dto.request.OrganisationDtoRequest;
 import com.bell.bellschooll.dto.request.OrganizationSaveInDto;
 import com.bell.bellschooll.dto.request.OrganizationUpdateInDto;
@@ -8,8 +7,6 @@ import com.bell.bellschooll.dto.response.OrganizationListOut;
 import com.bell.bellschooll.dto.response.OrganizationOutDto;
 import com.bell.bellschooll.dto.response.SuccessDto;
 import com.bell.bellschooll.service.OrganizationService;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +27,9 @@ public class OrganizationController {
 
     private final OrganizationService organizationService;
 
-    private final RabbitTemplate template;
-
-    public OrganizationController(OrganizationService organizationService, RabbitTemplate template) {
+    public OrganizationController(OrganizationService organizationService) {
         this.organizationService = organizationService;
-        this.template = template;
+
     }
 
     /**
@@ -72,18 +67,18 @@ public class OrganizationController {
         return organizationService.addOrganization(organizationSaveInDto);
     }
 
-    /**
-     * Сохранение новой организации Через очередь RabbitMQ
-     *
-     * @param organizationSaveInDto Объект, содержащий  параметры новой организации
-     * @return SuccessDto
-     */
-    @PostMapping("save/queue")
-    public ResponseEntity<SuccessDto> addOrganizationQueue(
-            @Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
-        template.convertAndSend(RabbitMQConfig.QUERY_SAVE_ORGANIZATION, organizationSaveInDto);
-        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
-    }
+//    /**
+//     * Сохранение новой организации Через очередь RabbitMQ
+//     *
+//     * @param organizationSaveInDto Объект, содержащий  параметры новой организации
+//     * @return SuccessDto
+//     */
+//    @PostMapping("save/queue")
+//    public ResponseEntity<SuccessDto> addOrganizationQueue(
+//            @Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
+//        template.convertAndSend(RabbitMQConfig.QUERY_SAVE_ORGANIZATION, organizationSaveInDto);
+//        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
+//    }
 
     /**
      * Обновление организации

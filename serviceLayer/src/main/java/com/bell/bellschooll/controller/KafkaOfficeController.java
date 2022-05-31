@@ -23,13 +23,13 @@ public class KafkaOfficeController {
 
     private final KafkaTemplate<String, MessageDto> kafkaTemplate;
     private final OfficeController officeController;
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public KafkaOfficeController(KafkaTemplate<String, MessageDto> kafkaTemplate
-            , OfficeController officeController, ObjectMapper objectMapper) {
+            , OfficeController officeController) {//, ObjectMapper objectMapper) {
         this.kafkaTemplate = kafkaTemplate;
         this.officeController = officeController;
-        this.objectMapper = objectMapper;
+        // this.objectMapper = objectMapper;
     }
 
     /**
