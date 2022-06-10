@@ -67,19 +67,6 @@ public class OrganizationController {
         return organizationService.addOrganization(organizationSaveInDto);
     }
 
-//    /**
-//     * Сохранение новой организации Через очередь RabbitMQ
-//     *
-//     * @param organizationSaveInDto Объект, содержащий  параметры новой организации
-//     * @return SuccessDto
-//     */
-//    @PostMapping("save/queue")
-//    public ResponseEntity<SuccessDto> addOrganizationQueue(
-//            @Valid @RequestBody OrganizationSaveInDto organizationSaveInDto) {
-//        template.convertAndSend(RabbitMQConfig.QUERY_SAVE_ORGANIZATION, organizationSaveInDto);
-//        return new ResponseEntity<>(new SuccessDto(), HttpStatus.OK);
-//    }
-
     /**
      * Обновление организации
      *

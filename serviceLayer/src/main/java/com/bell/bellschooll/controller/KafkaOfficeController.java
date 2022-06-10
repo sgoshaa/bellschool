@@ -25,11 +25,9 @@ public class KafkaOfficeController {
     private final OfficeController officeController;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public KafkaOfficeController(KafkaTemplate<String, MessageDto> kafkaTemplate
-            , OfficeController officeController) {//, ObjectMapper objectMapper) {
+    public KafkaOfficeController(KafkaTemplate<String, MessageDto> kafkaTemplate, OfficeController officeController) {
         this.kafkaTemplate = kafkaTemplate;
         this.officeController = officeController;
-        // this.objectMapper = objectMapper;
     }
 
     /**
